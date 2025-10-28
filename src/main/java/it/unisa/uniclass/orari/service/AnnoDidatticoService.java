@@ -30,7 +30,7 @@ public class AnnoDidatticoService {
     public AnnoDidatticoService() {
         try {
             InitialContext ctx = new InitialContext();
-            this.annoDidatticoDao = (AnnoDidatticoRemote) ctx.lookup("java:global/UniClass/AnnoDidatticoDAO");
+            this.annoDidatticoDao = (AnnoDidatticoRemote) ctx.lookup("java:global/UniClass-Dependability/AnnoDidatticoDAO");
         } catch (NamingException e) {
             throw new RuntimeException("Errore durante il lookup di AnnoDidatticoDAO.", e);
         }

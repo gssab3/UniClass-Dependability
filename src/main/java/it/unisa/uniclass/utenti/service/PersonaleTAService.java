@@ -25,7 +25,7 @@ public class PersonaleTAService {
     public PersonaleTAService() {
         try {
             InitialContext ctx = new InitialContext();
-            personaleTAdao = (PersonaleTARemote) ctx.lookup("java:global/UniClass/PersonaleTADAO");
+            personaleTAdao = (PersonaleTARemote) ctx.lookup("java:global/UniClass-Dependability/PersonaleTADAO");
         } catch (NamingException e) {
             throw new RuntimeException("Errore durante il lookup di PersonaleTADAO", e);
         }

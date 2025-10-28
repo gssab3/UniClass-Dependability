@@ -28,7 +28,7 @@ public class DocenteService {
     public DocenteService() {
         try {
             InitialContext ctx = new InitialContext();
-            docenteDao = (DocenteRemote) ctx.lookup("java:global/UniClass/DocenteDAO");
+            docenteDao = (DocenteRemote) ctx.lookup("java:global/UniClass-Dependability/DocenteDAO");
         } catch (NamingException e) {
             throw new RuntimeException("Errore durante il lookup di DocenteDAO", e);
         }

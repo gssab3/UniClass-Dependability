@@ -25,7 +25,7 @@ public class RestoService {
     public RestoService() {
         try {
             InitialContext ctx = new InitialContext();
-            this.restoDao = (RestoRemote) ctx.lookup("java:global/UniClass/RestoDAO");
+            this.restoDao = (RestoRemote) ctx.lookup("java:global/UniClass-Dependability/RestoDAO");
         } catch (NamingException e) {
             throw new RuntimeException("Errore durante il lookup di RestoDAO", e);
         }

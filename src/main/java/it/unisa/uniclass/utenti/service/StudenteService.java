@@ -29,7 +29,7 @@ public class StudenteService {
     public StudenteService() {
         try {
             InitialContext ctx = new InitialContext();
-            studenteDao = (StudenteRemote) ctx.lookup("java:global/UniClass/StudenteDAO");
+            studenteDao = (StudenteRemote) ctx.lookup("java:global/UniClass-Dependability/StudenteDAO");
         } catch (NamingException e) {
             throw new RuntimeException("Errore durante il lookup di StudenteDAO", e);
         }

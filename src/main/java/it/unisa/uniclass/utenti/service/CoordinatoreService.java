@@ -28,7 +28,7 @@ public class CoordinatoreService {
     public CoordinatoreService() {
         try {
             InitialContext ctx = new InitialContext();
-            coordinatoreDao = (CoordinatoreRemote) ctx.lookup("java:global/UniClass/CoordinatoreDAO");
+            coordinatoreDao = (CoordinatoreRemote) ctx.lookup("java:global/UniClass-Dependability/CoordinatoreDAO");
         } catch (NamingException e) {
             throw new RuntimeException("Errore durante il lookup di CoordinatoreDAO", e);
         }

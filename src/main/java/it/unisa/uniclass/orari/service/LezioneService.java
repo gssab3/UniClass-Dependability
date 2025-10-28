@@ -31,7 +31,7 @@ public class LezioneService {
     public LezioneService() {
         try {
             InitialContext ctx = new InitialContext();
-            this.lezioneDao = (LezioneRemote) ctx.lookup("java:global/UniClass/LezioneDAO");
+            this.lezioneDao = (LezioneRemote) ctx.lookup("java:global/UniClass-Dependability/LezioneDAO");
         } catch (NamingException e) {
             throw new RuntimeException("Errore durante il lookup di LezioneDAO.", e);
         }

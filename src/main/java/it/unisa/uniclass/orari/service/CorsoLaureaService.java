@@ -28,7 +28,7 @@ public class CorsoLaureaService {
     public CorsoLaureaService() {
         try {
             InitialContext ctx = new InitialContext();
-            this.corsoLaureaDAO = (CorsoLaureaRemote) ctx.lookup("java:global/UniClass/CorsoLaureaDAO");
+            this.corsoLaureaDAO = (CorsoLaureaRemote) ctx.lookup("java:global/UniClass-Dependability/CorsoLaureaDAO!it.unisa.uniclass.orari.service.dao.CorsoLaureaRemote");
         } catch (NamingException e) {
             throw new RuntimeException("Errore durante il lookup di CorsoLaureaDAO.", e);
         }

@@ -24,7 +24,7 @@ public class TopicService {
     public TopicService() {
         try {
             InitialContext ctx = new InitialContext();
-            topicDao = (TopicRemote) ctx.lookup("java:global/UniClass/TopicDAO");
+            topicDao = (TopicRemote) ctx.lookup("java:global/UniClass-Dependability/TopicDAO");
         } catch (NamingException e) {
             throw new RuntimeException("Impossibile trovare il messaggioDAO", e);
         }

@@ -26,7 +26,7 @@ public class AulaService {
     public AulaService() throws NamingException {
         try {
             InitialContext ctx = new InitialContext();
-            this.aulaDao = (AulaRemote) ctx.lookup("java:global/UniClass/AulaDAO");
+            this.aulaDao = (AulaRemote) ctx.lookup("java:global/UniClass-Dependability/AulaDAO");
         } catch (NamingException e) {
             throw new RuntimeException("Errore durante il lookup di AulaDAO.", e);
         }

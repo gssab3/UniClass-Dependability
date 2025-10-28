@@ -26,7 +26,7 @@ public class CorsoService {
     public CorsoService() throws NamingException {
         try {
             InitialContext ctx = new InitialContext();
-            this.corsoDao = (CorsoRemote) ctx.lookup("java:global/UniClass/CorsoDAO");
+            this.corsoDao = (CorsoRemote) ctx.lookup("java:global/UniClass-Dependability/CorsoDAO");
         } catch (NamingException e) {
             throw new RuntimeException("Errore durante il lookup di CorsoDAO", e);
         }
