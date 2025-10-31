@@ -31,8 +31,11 @@ UniClass è costruita con una serie di moduli separati che coprono le diverse fu
     - Un'interfaccia utente accessibile via browser per la visualizzazione delle informazioni e l'interazione con il sistema.
 
 
-## Installazione
+## Avvio
 
 Per iniziare a utilizzare UniClass, segui questi passaggi:
 
-mvn clean package
+- mvn clean package
+- docker compose down --volumes --remove-orphans
+- docker compose build --no-cache
+- docker compose up
