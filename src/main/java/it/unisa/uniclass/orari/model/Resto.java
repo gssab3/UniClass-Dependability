@@ -14,6 +14,7 @@ import static it.unisa.uniclass.orari.model.Resto.*;
  * Viene mappata come entità JPA per la persistenza.
  * */
 @Entity
+@Access(AccessType.FIELD)
 @NamedQueries({
         @NamedQuery(name = TROVA_RESTI_CORSO, query = "SELECT r FROM Resto r WHERE r.corsoLaurea.nome = :nome"),
         @NamedQuery(name = TROVA_RESTO, query = "SELECT r FROM Resto r WHERE r.id = :id"),
@@ -40,7 +41,7 @@ public class Resto implements Serializable {
     public static final String TROVA_RESTO_NOME_CORSO = "Resto.trovaRestoNomeCorso";
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     private String nome; // Esempio: "Resto 0", "Resto 1", ecc.

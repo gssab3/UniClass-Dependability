@@ -17,6 +17,7 @@ import static it.unisa.uniclass.utenti.model.Studente.*;
  * Implementa l'interfaccia {@link Serializable} per supportare la serializzazione.
  */
 @Entity
+@Access(AccessType.FIELD)
 @Table(name = "studenti")
 @NamedQueries({
         @NamedQuery(name = TROVA_STUDENTE, query = "SELECT s FROM Studente s WHERE s.matricola = :matricola"),

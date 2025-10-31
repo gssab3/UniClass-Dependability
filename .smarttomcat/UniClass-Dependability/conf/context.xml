@@ -28,7 +28,7 @@
               auth="Container"
               type="javax.sql.DataSource"
               driverClassName="org.postgresql.Driver"
-              url="jdbc:postgresql://localhost:5432/dbuniclass"
+              url="jdbc:postgresql://postgres:5432/dbuniclass"
               username="postgres"
               password="password"
               maxTotal="20"

@@ -17,6 +17,7 @@ import static it.unisa.uniclass.utenti.model.Docente.*;
  * Estende la classe {@link Accademico} e implementa {@link Serializable}.
  * */
 @Entity
+@Access(AccessType.FIELD)
 @Table(name = "docenti")
 @NamedQueries({
         @NamedQuery(name = TROVA_DOCENTE, query = "SELECT d FROM Docente d WHERE d.matricola = :matricola"),

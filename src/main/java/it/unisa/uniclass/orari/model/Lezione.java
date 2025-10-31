@@ -17,6 +17,7 @@ import static it.unisa.uniclass.orari.model.Lezione.*;
  * */
 
 @Entity
+@Access(AccessType.FIELD)
 @Table(name = "lezioni")
 @NamedQueries({
         @NamedQuery(name = TROVA_LEZIONE, query = "SELECT l FROM Lezione l WHERE l.id = :id"),
@@ -83,7 +84,7 @@ public class Lezione implements Serializable {
      * */
     public static final String TROVA_LEZIONI_DOCENTE = "Lezione.trovaLezioniDocente";
 
-    @Id @GeneratedValue(strategy = GenerationType.AUTO)
+    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @ManyToMany(mappedBy = "lezioni")
@@ -200,8 +201,6 @@ public class Lezione implements Serializable {
     public void setOraFine(Time oraFine) {
         this.oraFine = oraFine;
     }
-
-    @Enumerated(EnumType.STRING)
 
     /**
      * Ottiene il giorno della lezione.

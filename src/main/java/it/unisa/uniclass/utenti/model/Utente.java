@@ -1,6 +1,8 @@
 package it.unisa.uniclass.utenti.model;
 
 
+import jakarta.persistence.Access;
+import jakarta.persistence.AccessType;
 import jakarta.persistence.MappedSuperclass;
 
 import java.io.Serializable;
@@ -12,6 +14,7 @@ import java.time.LocalDate;
  * Implementa l'interfaccia Serializable per consentire la serializzazione.
  * */
 @MappedSuperclass
+@Access(AccessType.FIELD)
 public class Utente implements Serializable {
 
     protected String nome;

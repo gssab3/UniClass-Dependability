@@ -2,10 +2,7 @@ package it.unisa.uniclass.utenti.model;
 
 import it.unisa.uniclass.orari.model.Corso;
 import it.unisa.uniclass.orari.model.CorsoLaurea;
-import jakarta.persistence.Entity;
-import jakarta.persistence.NamedQueries;
-import jakarta.persistence.NamedQuery;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 
 import java.io.Serializable;
 import java.time.LocalDate;
@@ -24,6 +21,7 @@ import static it.unisa.uniclass.utenti.model.Coordinatore.*;
  * @see Docente
  * */
 @Entity
+@Access(AccessType.FIELD)
 @Table(name = "coordinatori")
 @NamedQueries({
         @NamedQuery(name = TROVA_COORDINATORE, query = "SELECT c FROM Coordinatore c WHERE c.matricola = :matricola"),

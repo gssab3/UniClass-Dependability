@@ -26,7 +26,7 @@ import java.time.LocalDate;
 @DataSourceDefinition(
         name = "java:app/jdbc/DBUniClass",
         className = "org.postgresql.Driver",
-        url = "jdbc:postgresql://localhost:5432/dbuniclass",
+        url = "jdbc:postgresql://postgres:5432/dbuniclass",
         user = "postgres",
         password = "password"
 )

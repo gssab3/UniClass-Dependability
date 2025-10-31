@@ -15,6 +15,7 @@ import static it.unisa.uniclass.orari.model.CorsoLaurea.*;
  * Contiene informazioni relative ai corsi, anni didattici e resti associati.
  * */
 @Entity
+@Access(AccessType.FIELD)
 @NamedQueries({
         @NamedQuery(name = TROVA_CORSOLAUREA, query = "SELECT c FROM CorsoLaurea c WHERE c.id = :id"),
         @NamedQuery(name = TROVA_TUTTI, query = "SELECT c FROM CorsoLaurea c"),
@@ -38,7 +39,7 @@ public class CorsoLaurea implements Serializable {
     /**
      * Identificativo unico del corso di laurea.
      * */
-    @Id @GeneratedValue(strategy = GenerationType.AUTO)
+    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     /**

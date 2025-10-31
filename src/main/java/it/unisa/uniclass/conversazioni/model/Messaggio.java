@@ -13,6 +13,7 @@ import static it.unisa.uniclass.conversazioni.model.Messaggio.*;
  * E' persistito in un database tramite JPA.
  * */
 @Entity
+@Access(AccessType.FIELD)
 @Table(name = "messaggi")
 @NamedQueries({
         @NamedQuery(name = TROVA_MESSAGGIO, query = "SELECT m FROM Messaggio m WHERE m.id = :id"),
@@ -66,7 +67,7 @@ public class Messaggio implements Serializable {
      */
     public static final String TROVA_TOPIC = "Messaggio.trovaTopic";
 
-    @Id @GeneratedValue(strategy = GenerationType.AUTO)
+    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     /**

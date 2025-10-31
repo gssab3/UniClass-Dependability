@@ -29,11 +29,27 @@
 
     <!-- Persistence Unit del database di UniClass -->
     <persistence-unit name="DBUniClassPU" transaction-type="JTA">
+        <provider>org.eclipse.persistence.jpa.PersistenceProvider</provider>
         <jta-data-source>jdbc/DBUniClass</jta-data-source>
+
+        <class>it.unisa.uniclass.conversazioni.model.Messaggio</class>
+        <class>it.unisa.uniclass.conversazioni.model.Topic</class>
+        <class>it.unisa.uniclass.orari.model.CorsoLaurea</class>
+        <class>it.unisa.uniclass.orari.model.Corso</class>
+        <class>it.unisa.uniclass.orari.model.Lezione</class>
+        <class>it.unisa.uniclass.orari.model.AnnoDidattico</class>
+        <class>it.unisa.uniclass.orari.model.Aula</class>
+        <class>it.unisa.uniclass.orari.model.Resto</class>
+        <class>it.unisa.uniclass.utenti.model.Accademico</class>
+        <class>it.unisa.uniclass.utenti.model.Coordinatore</class>
+        <class>it.unisa.uniclass.utenti.model.Docente</class>
+        <class>it.unisa.uniclass.utenti.model.Studente</class>
+        <class>it.unisa.uniclass.utenti.model.Utente</class>
+
         <properties>
             <!-- Configurazioni per PostgreSQL -->
             <property name="jakarta.persistence.jdbc.driver" value="org.postgresql.Driver"/>
-            <property name="jakarta.persistence.jdbc.url" value="jdbc:postgresql://localhost:5432/dbuniclass"/>
+            <property name="jakarta.persistence.jdbc.url" value="jdbc:postgresql://postgres:5432/dbuniclass"/>
             <property name="jakarta.persistence.jdbc.user" value="postgres"/>
             <property name="jakarta.persistence.jdbc.password" value="password"/>
 

@@ -238,6 +238,7 @@
     </dependencies>
 
     <build>
+        <finalName>UniClass-Dependability</finalName>
         <plugins>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>

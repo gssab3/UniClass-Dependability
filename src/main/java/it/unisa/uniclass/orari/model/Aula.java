@@ -13,6 +13,7 @@ import static it.unisa.uniclass.orari.model.Aula.*;
  * Classe che rappresenta un'Aula universitaria, con informazioni relative a edificio, nome e relazioni con lezioni e appelli.
  * */
 @Entity
+@Access(AccessType.FIELD)
 @Table(name = "aule")
 @NamedQueries({
         @NamedQuery(name = TROVA_AULANOME, query = "SELECT a FROM Aula a WHERE a.nome = :nome"),
@@ -48,7 +49,7 @@ public class Aula implements Serializable {
     /**
      * Identificativo univoco dell'Aula
      * */
-    @Id @GeneratedValue
+    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
     /**

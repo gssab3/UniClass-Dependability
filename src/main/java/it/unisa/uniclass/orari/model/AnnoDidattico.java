@@ -13,6 +13,7 @@ import static it.unisa.uniclass.orari.model.AnnoDidattico.*;
  * Utilizza annotazioni JPA per la mappatura con una tabella del database.
  * */
 @Entity
+@Access(AccessType.FIELD)
 @Table(name = "anni")
 @NamedQueries({
         @NamedQuery(name = TROVA_ANNO, query = "SELECT a FROM AnnoDidattico a WHERE a.anno = :anno"),
@@ -48,7 +49,7 @@ public class AnnoDidattico implements Serializable {
     /**
      * Identificativo unico del'anno didattico
      * */
-    @Id @GeneratedValue(strategy = GenerationType.AUTO)
+    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
     /**

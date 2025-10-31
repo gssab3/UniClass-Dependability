@@ -22,6 +22,7 @@ import static it.unisa.uniclass.utenti.model.Accademico.*;
  * @version 1.0
  * */
 @Entity
+@Access(AccessType.FIELD)
 @Inheritance(strategy = InheritanceType.JOINED)
 @NamedQueries({
         @NamedQuery(name = TROVA_ACCADEMICO, query = "SELECT a FROM Accademico a WHERE a.matricola = :matricola"),
