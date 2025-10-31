@@ -17,11 +17,11 @@ COPY .smarttomcat/UniClass-Dependability/conf/context.xml /usr/local/tomee/conf/
 COPY .smarttomcat/UniClass-Dependability/conf/system.properties /usr/local/tomee/conf/system.properties
 
 # Utile per mettere in attesa tomEE per l'avvio del dbuniclass. Ottimo se il server non si riavvia automaticamente alla ricerca del driver attivo
-COPY wait-for-it.sh /wait-for-it.sh
-RUN chmod +x /wait-for-it.sh
+# COPY wait-for-it.sh /wait-for-it.sh
+# RUN chmod +x /wait-for-it.sh
 
 
 # Va sulla porta 8080
 EXPOSE 8080
 
-CMD ["/wait-for-it.sh", "postgres:5432", "--", "/usr/local/tomee/bin/catalina.sh", "run"]
+CMD ["/usr/local/tomee/bin/catalina.sh", "run"]

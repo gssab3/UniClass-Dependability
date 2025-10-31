@@ -35,13 +35,4 @@ UniClass è costruita con una serie di moduli separati che coprono le diverse fu
 
 Per iniziare a utilizzare UniClass, segui questi passaggi:
 
-### Prerequisiti
-
-- jdk: 21
-- Server database (in questo caso PostgreSQL)
-- TomEE 10 (o Plume)
-- Plugin Smart Tomcat per una gestione intelligente delle configurazioni dinamiche del server
-
-### Setup
-- Per garantire la serializzazione degli oggetti, inserire le seguenti impostazioni in Tomcat->VM OPTIONS:-Dtomee.serialization.class.blacklist=-  -Dtomee.serialization.class.whitelist=*
-- Dopo aver effettuato **Run** su TomEE, indirizzarsi verso http://localhost:8080/UniClass-Dependability/Home  
+mvn clean package
