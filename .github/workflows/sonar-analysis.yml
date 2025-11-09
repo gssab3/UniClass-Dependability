@@ -31,11 +31,11 @@ jobs:
         env:
           # TOKEN fornito da GitHub per le azioni, necessario per commentare sulla PR
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} 
-          # TOKEN che devi creare e salvare come Secret di GitHub
+          # TOKEN nei secrets
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }} 
           
-          # Parametri specifici del tuo progetto SonarCloud
-          # SARÀ FORNITO DAL TUO COLLEGA
-          SONAR_PROJECT_KEY: <SOSTITUIRE CON LA CHIAVE PROGETTO> 
-          # SARÀ FORNITO DAL TUO COLLEGA
-          SONAR_ORGANIZATION: <SOSTITUIRE CON LA CHIAVE ORGANIZZAZIONE>
+          # Parametri specifici del progetto SonarCloud
+         
+          SONAR_PROJECT_KEY: <gssab3_UniClass-Dependability> 
+          
+          SONAR_ORGANIZATION: <dependability8214128428148>
