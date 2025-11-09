@@ -2,10 +2,20 @@ name: Analisi Statica SonarCloud
 
 on:
   push:
-    branches: [ main, develop ]
+    # Si avvia su push per feedback immediato E dopo un merge nei branch principali
+    branches: 
+      - main
+      - develop
+      - lucagen  
+      - prototype
   pull_request:
     types: [opened, synchronize, reopened]
-    branches: [ main, develop ]
+    # Si avvia solo quando si cerca di unire il codice in questi branch
+    branches: 
+      - main
+      - develop
+      - prototype
+      - lucagen
     
 jobs:
   sonar_analysis:
