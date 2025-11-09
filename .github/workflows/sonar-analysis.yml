@@ -1,0 +1,41 @@
+name: Analisi Statica SonarCloud
+
+on:
+  push:
+    branches: [ main, develop ]
+  pull_request:
+    types: [opened, synchronize, reopened]
+    branches: [ main, develop ]
+    
+jobs:
+  sonar_analysis:
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout del codice (con fetch-depth 0)
+        uses: actions/checkout@v4
+        with:
+          # Necessario per l'analisi differenziale (solo codice modificato) di SonarCloud
+          fetch-depth: 0 
+          
+      - name: Setup Java 17
+        uses: actions/setup-java@v4
+        with:
+          java-version: '17'
+          distribution: 'temurin'
+          cache: 'maven'
+          
+      - name: Esecuzione Analisi SonarCloud
+        # Lancia lo scanner Maven. Il comando 'verify' esegue i test prima dell'analisi.
+        run: mvn -B verify org.sonarsource.scanner.maven:sonar-maven-plugin:sonar 
+        env:
+          # TOKEN fornito da GitHub per le azioni, necessario per commentare sulla PR
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} 
+          # TOKEN nei secrets
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }} 
+          
+          # Parametri specifici del progetto SonarCloud
+         
+          SONAR_PROJECT_KEY: <gssab3_UniClass-Dependability> 
+          
+          SONAR_ORGANIZATION: <dependability8214128428148>

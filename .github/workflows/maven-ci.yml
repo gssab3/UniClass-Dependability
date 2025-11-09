@@ -1,0 +1,33 @@
+name: Java CI con Maven
+
+on:
+  push:
+    branches: [ main, develop ]
+  pull_request:
+    branches: [ main, develop ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout del codice
+      uses: actions/checkout@v4
+
+    - name: Setup Java 17
+      uses: actions/setup-java@v4
+      with:
+        java-version: '17'
+        distribution: 'temurin'
+        cache: 'maven' 
+
+    - name: Build, Test ed Esecuzione LoginServletTest
+      # Questo comando esegue il build e i 7 test che hai trovato
+      run: mvn -B clean package --file pom.xml 
+
+    - name: Upload del JAR/WAR di Build (Artefatto)
+      uses: actions/upload-artifact@v4
+      with:
+        name: uni-class-build
+        # Verifica questo path. Adattalo se necessario (es. solo target/*.jar)
+        path: target/UniClass-Dependability.war
