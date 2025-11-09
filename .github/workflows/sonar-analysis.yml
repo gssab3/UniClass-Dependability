@@ -46,6 +46,6 @@ jobs:
           
           # Parametri specifici del progetto SonarCloud
          
-          SONAR_PROJECT_KEY: <gssab3_UniClass-Dependability> 
+          SONAR_PROJECT_KEY: gssab3_UniClass-Dependability 
           
-          SONAR_ORGANIZATION: <dependability8214128428148>
+          SONAR_ORGANIZATION: dependability8214128428148
