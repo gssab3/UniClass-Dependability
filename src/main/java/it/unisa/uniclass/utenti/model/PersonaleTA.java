@@ -16,10 +16,10 @@ import static it.unisa.uniclass.utenti.model.PersonaleTA.*;
 @Access(AccessType.FIELD)
 @Table(name = "personaleTA")
 @NamedQueries({
-        @NamedQuery(name = TROVA_PERSONALE, query = "SELECT p FROM PersonaleTA p WHERE p.id = :id"),
-        @NamedQuery(name = TROVA_TUTTI, query = "SELECT p FROM PersonaleTA p"),
-        @NamedQuery(name = TROVA_EMAIL, query = "SELECT p FROM PersonaleTA p WHERE p.email = :email"),
-        @NamedQuery(name = TROVA_EMAIL_PASSWORD, query = "SELECT p FROM PersonaleTA p WHERE p.email = :email AND p.password = :password" )
+        @NamedQuery(name = "PersonaleTA.trovaPersonale", query = "SELECT p FROM PersonaleTA p WHERE p.id = :id"),
+        @NamedQuery(name = "PersonaleTA.trovaTutti", query = "SELECT p FROM PersonaleTA p"),
+        @NamedQuery(name = "PersonaleTA.trovaEmail", query = "SELECT p FROM PersonaleTA p WHERE p.email = :email"),
+        @NamedQuery(name = "PersonaleTA.trovaEmailPassword", query = "SELECT p FROM PersonaleTA p WHERE p.email = :email AND p.password = :password" )
 })
 public class PersonaleTA extends Utente implements Serializable {
     /**
@@ -43,13 +43,20 @@ public class PersonaleTA extends Utente implements Serializable {
      * Identificatore univoco per il membro del personale TA
      * */
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
+    //@ spec_public
     private long id;
 
+    /**
+     * Numero di telefono del membro del personale TA
+     * */
+    //@ spec_public
+    //@ nullable
     private String telefono;
 
     /**
      * Costruttore completo per creare un'istanza di {@code PersonaleTA}.
      * */
+    //@ skipesc
     public PersonaleTA(String nome, String cognome, LocalDate dataNascita, String email, String password, String telefono) {
         this.telefono = telefono;
         this.nome = nome;
@@ -63,6 +70,7 @@ public class PersonaleTA extends Utente implements Serializable {
     /**
      * Costruttore vuoto richiesto da JPA
      * */
+    //@ skipesc
     public PersonaleTA() {}
 
     /**
@@ -70,6 +78,11 @@ public class PersonaleTA extends Utente implements Serializable {
      *
      * @return L'identificatore univoco.
      * */
+    /*@
+      @ public normal_behavior
+      @ assignable \nothing;
+      @ ensures \result == id;
+      @*/
     public long getId() {
         return id;
     }
@@ -79,7 +92,12 @@ public class PersonaleTA extends Utente implements Serializable {
      *
      * @return Il numero di telefono del membro del personale TA.
      * */
-    public String getTelefono() {
+    /*@
+      @ public normal_behavior
+      @ assignable \nothing;
+      @ ensures \result == telefono;
+      @*/
+    public /*@ nullable */ String getTelefono() {
         return telefono;
     }
 
@@ -88,6 +106,11 @@ public class PersonaleTA extends Utente implements Serializable {
      *
      * @param telefono Il numero di telefono del membro del personale TA.
      * */
+    /*@
+      @ public normal_behavior
+      @ assignable this.telefono;
+      @ ensures this.telefono == telefono;
+      @*/
     public void setTelefono(String telefono) {
         this.telefono = telefono;
     }
@@ -97,6 +120,7 @@ public class PersonaleTA extends Utente implements Serializable {
      *
      * @return String restituisce il membro del Personale TA.
      * */
+    //@ skipesc
     @Override
     public String toString() {
         return "PersonaleTA{" +

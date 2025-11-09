@@ -50,7 +50,7 @@ public class CoordinatoreDAO implements CoordinatoreRemote {
      */
     @Override
     public List<Coordinatore> trovaCoordinatoriCorsoLaurea(String nomeCorsoLaurea) {
-        TypedQuery<Coordinatore> query = emUniClass.createQuery(Coordinatore.TROVA_COORDINATORE, Coordinatore.class);
+        TypedQuery<Coordinatore> query = emUniClass.createQuery(Coordinatore.TROVA_COORDINATORE_CORSOLAUREA, Coordinatore.class);
         query.setParameter("nomeCorsoLaurea", nomeCorsoLaurea);
         return query.getResultList();
     }

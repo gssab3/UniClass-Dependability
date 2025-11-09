@@ -20,10 +20,10 @@ import static it.unisa.uniclass.utenti.model.Studente.*;
 @Access(AccessType.FIELD)
 @Table(name = "studenti")
 @NamedQueries({
-        @NamedQuery(name = TROVA_STUDENTE, query = "SELECT s FROM Studente s WHERE s.matricola = :matricola"),
-        @NamedQuery(name = TROVA_STUDENTI_CORSO, query = "SELECT s FROM Studente s WHERE s.corsoLaurea.nome = :nome"),
-        @NamedQuery(name = TROVA_TUTTI, query = "SELECT s FROM Studente s"),
-        @NamedQuery(name = TROVA_EMAIL, query = "SELECT s FROM Studente s WHERE s.email = :email")
+        @NamedQuery(name = "Studente.trovaStudente", query = "SELECT s FROM Studente s WHERE s.matricola = :matricola"),
+        @NamedQuery(name = "Studente.trovaPerCorso", query = "SELECT s FROM Studente s WHERE s.corsoLaurea.nome = :nome"),
+        @NamedQuery(name = "Studente.trovaTutti", query = "SELECT s FROM Studente s"),
+        @NamedQuery(name = "Studente.trovaEmail", query = "SELECT s FROM Studente s WHERE s.email = :email")
 })
 public class Studente extends Accademico implements Serializable {
 
@@ -49,6 +49,7 @@ public class Studente extends Accademico implements Serializable {
      * Costruttore predefinito.
      * Inizializza le liste e setta il tipo a {@link Tipo#Studente}.
      * */
+    //@ skipesc
     public Studente() {
         super.setTipo(Tipo.Studente);
     }
@@ -59,10 +60,18 @@ public class Studente extends Accademico implements Serializable {
      * */
     @ManyToOne
     @JoinColumn(name = "resto", nullable = true)
+    //@ spec_public
+    //@ nullable
     private Resto resto;
 
+    /**
+     * Corso di laurea associato allo studente.
+     * Relazione molti-a-uno.
+     * */
     @ManyToOne
     @JoinColumn(name = "corso_laurea_id", nullable = false) // Colonna FK per CorsoLaurea
+    //@ spec_public
+    //@ nullable
     private CorsoLaurea corsoLaurea;
 
 
@@ -70,6 +79,7 @@ public class Studente extends Accademico implements Serializable {
      * Costruttore con parametri.
      * Inizializza i campi principali dello stuedente.
      * */
+    //@ skipesc
     public Studente(String nome, String cognome, LocalDate dataNascita, String email, String password, String matricola, LocalDate iscrizione, CorsoLaurea corsoLaurea, Resto resto) {
         super.setNome(nome);
         super.setCognome(cognome);
@@ -89,15 +99,42 @@ public class Studente extends Accademico implements Serializable {
      *
      * @return Oggetto {@link Resto}.
      * */
-    public Resto getResto() {
+    /*@
+      @ public normal_behavior
+      @ assignable \nothing;
+      @ ensures \result == resto;
+      @*/
+    public /*@ nullable */ Resto getResto() {
         return resto;
     }
 
+    /**
+     * Restituisce il corso di laurea associato allo studente.
+     *
+     * @return Oggetto {@link CorsoLaurea}.
+     * */
+    /*@
+      @ also
+      @ public normal_behavior
+      @ assignable \nothing;
+      @ ensures \result == corsoLaurea;
+      @*/
     @Override
-    public CorsoLaurea getCorsoLaurea() {
+    public /*@ nullable */ CorsoLaurea getCorsoLaurea() {
         return corsoLaurea;
     }
 
+    /**
+     * Imposta il corso di laurea associato allo Studente.
+     *
+     * @param corsoLaurea Oggetto {@link CorsoLaurea} da associare.
+     * */
+    /*@
+      @ also
+      @ public normal_behavior
+      @ assignable this.corsoLaurea;
+      @ ensures this.corsoLaurea == corsoLaurea;
+      @*/
     @Override
     public void setCorsoLaurea(CorsoLaurea corsoLaurea) {
         this.corsoLaurea = corsoLaurea;
@@ -108,6 +145,11 @@ public class Studente extends Accademico implements Serializable {
      *
      * @param resto Oggetto {@link Resto} da associare.
      * */
+    /*@
+      @ public normal_behavior
+      @ assignable this.resto;
+      @ ensures this.resto == resto;
+      @*/
     public void setResto(Resto resto) {
         this.resto = resto;
     }
@@ -117,6 +159,7 @@ public class Studente extends Accademico implements Serializable {
      *
      * @return Stringa rappresentativa dello studente.
      * */
+    //@ skipesc
     @Override
     public String toString() {
         return "Studente{" +

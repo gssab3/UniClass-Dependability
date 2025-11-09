@@ -17,9 +17,9 @@ import static it.unisa.uniclass.orari.model.Corso.*;
 @Access(AccessType.FIELD)
 @Table(name = "corsi")
 @NamedQueries({
-    @NamedQuery(name = TROVA_CORSO, query = "SELECT c FROM Corso c WHERE c.id = :id"),
-    @NamedQuery(name = TROVA_TUTTE, query = "SELECT c FROM Corso c"),
-    @NamedQuery(name = TROVA_CORSI_CORSOLAUREA, query = "SELECT c FROM Corso c WHERE c.corsoLaurea.nome = :nomeCorsoLaurea")
+    @NamedQuery(name = "Corso.trovaCorso", query = "SELECT c FROM Corso c WHERE c.id = :id"),
+    @NamedQuery(name = "Corso.trovaTutte", query = "SELECT c FROM Corso c"),
+    @NamedQuery(name = "Corso.trovaCorsoLaurea", query = "SELECT c FROM Corso c WHERE c.corsoLaurea.nome = :nomeCorsoLaurea")
 })
 public class Corso implements Serializable {
 
@@ -40,6 +40,8 @@ public class Corso implements Serializable {
      * Identificatore univoco del Corso
      * */
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
+    //@ spec_public
+    //@ nullable
     private Long id;
 
     /**
@@ -47,18 +49,24 @@ public class Corso implements Serializable {
      * */
     @ManyToOne
     @JoinColumn(name = "corso_laurea_id")
+    //@ spec_public
+    //@ nullable
     private CorsoLaurea corsoLaurea;
 
     /**
      * Lista delle lezioni associate al corso
      * */
     @OneToMany(mappedBy = "corso", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    //@ spec_public
+    //@ nullable
     private List<Lezione> lezioni;
 
     /**
      * Lista dei docenti che insegnano il corso
      * */
     @ManyToMany(mappedBy = "corsi")
+    //@ spec_public
+    //@ nullable
     private List<Docente> docenti;
 
     /**
@@ -66,14 +74,27 @@ public class Corso implements Serializable {
      */
     @ManyToOne
     @JoinColumn(name = "anno_didattico_id", nullable = false)
+    //@ spec_public
+    //@ nullable
     private AnnoDidattico annoDidattico;
+
+    /**
+     * Nome del Corso
+     * */
+    //@ spec_public
+    //@ nullable
+    private String nome;
 
     /**
      * Restituisce l'anno didattico del corso.
      *
      * @return Anno didattico del corso
      */
-    public AnnoDidattico getAnnoDidattico() {
+    /*@ public normal_behavior
+      @ assignable \nothing;
+      @ ensures \result == annoDidattico;
+      @*/
+    public /*@ nullable */ AnnoDidattico getAnnoDidattico() {
         return annoDidattico;
     }
 
@@ -82,21 +103,27 @@ public class Corso implements Serializable {
      *
      * @param annoDidattico Anno didattico
      */
+    /*@ public normal_behavior
+      @ assignable this.annoDidattico;
+      @ ensures this.annoDidattico == annoDidattico;
+      @*/
     public void setAnnoDidattico(AnnoDidattico annoDidattico) {
         this.annoDidattico = annoDidattico;
     }
 
 
-    /**
-     * Nome del Corso
-     * */
-    private String nome;
+
 
     /**
      * Costruttore che crea un corso con un nome specificato.
      *
      * @param nome Nome del corso.
      * */
+    /*@ public normal_behavior
+      @ assignable \everything;
+      @ ensures this.nome == nome;
+      @ ensures true;
+      @*/
     public Corso(String nome) {
         this.nome = nome;
         lezioni = new ArrayList<>();
@@ -106,6 +133,10 @@ public class Corso implements Serializable {
     /**
      * Costruttore di default per creare un corso vuoto
      * */
+    /*@ public normal_behavior
+      @ assignable \nothing;
+      @ ensures true;
+      @*/
     public Corso() {
         lezioni = new ArrayList<>();
         docenti = new ArrayList<>();
@@ -115,7 +146,11 @@ public class Corso implements Serializable {
      *
      * @return Lista dei docenti
      * */
-    public List<Docente> getDocenti() {
+    /*@ public normal_behavior
+      @ assignable \nothing;
+      @ ensures \result == docenti;
+      @*/
+    public /*@ nullable */ List<Docente> getDocenti() {
         return docenti;
     }
 
@@ -124,6 +159,10 @@ public class Corso implements Serializable {
      *
      * @param docenti Lista dei docenti.
      * */
+    /*@ public normal_behavior
+      @ assignable this.docenti;
+      @ ensures this.docenti == docenti;
+      @*/
     public void setDocenti(List<Docente> docenti) {
         this.docenti = docenti;
     }
@@ -133,7 +172,11 @@ public class Corso implements Serializable {
      *
      * @return ID del corso
      * */
-    public Long getId() {
+    /*@ public normal_behavior
+      @ assignable \nothing;
+      @ ensures \result == id;
+      @*/
+    public /*@ nullable */ Long getId() {
         return id;
     }
 
@@ -142,7 +185,11 @@ public class Corso implements Serializable {
      *
      * @return Corso di laurea
      * */
-    public CorsoLaurea getCorsoLaurea() {
+    /*@ public normal_behavior
+      @ assignable \nothing;
+      @ ensures \result == corsoLaurea;
+      @*/
+    public /*@ nullable */ CorsoLaurea getCorsoLaurea() {
         return corsoLaurea;
     }
 
@@ -151,7 +198,11 @@ public class Corso implements Serializable {
      *
      * @return Lista delle lezioni.
      * */
-    public List<Lezione> getLezioni() {
+    /*@ public normal_behavior
+      @ assignable \nothing;
+      @ ensures \result == lezioni;
+      @*/
+    public /*@ nullable */ List<Lezione> getLezioni() {
         return lezioni;
     }
 
@@ -160,7 +211,11 @@ public class Corso implements Serializable {
      *
      * @return Nome del corso.
      * */
-    public String getNome() {
+    /*@ public normal_behavior
+      @ assignable \nothing;
+      @ ensures \result == nome;
+      @*/
+    public /*@ nullable */ String getNome() {
         return nome;
     }
 
@@ -169,6 +224,10 @@ public class Corso implements Serializable {
      *
      * @param corsoLaurea Corso di laurea.
      * */
+    /*@ public normal_behavior
+      @ assignable this.corsoLaurea;
+      @ ensures this.corsoLaurea == corsoLaurea;
+      @*/
     public void setCorsoLaurea(CorsoLaurea corsoLaurea) {
         this.corsoLaurea = corsoLaurea;
     }
@@ -178,6 +237,10 @@ public class Corso implements Serializable {
      *
      * @param lezioni Lista delle lezioni.
      * */
+    /*@ public normal_behavior
+      @ assignable this.lezioni;
+      @ ensures this.lezioni == lezioni;
+      @*/
     public void setLezioni(List<Lezione> lezioni) {
         this.lezioni = lezioni;
     }
@@ -187,6 +250,10 @@ public class Corso implements Serializable {
      *
      * @param nome Nome del corso
      * */
+    /*@ public normal_behavior
+      @ assignable this.nome;
+      @ ensures this.nome == nome;
+      @*/
     public void setNome(String nome) {
         this.nome = nome;
     }
@@ -196,6 +263,7 @@ public class Corso implements Serializable {
      *
      * @return Stringa che rappresenta il corso
      * */
+    //@ skipesc
     @Override
     public String toString() {
         return "Corso{" +

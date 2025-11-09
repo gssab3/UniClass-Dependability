@@ -16,11 +16,11 @@ import static it.unisa.uniclass.orari.model.Aula.*;
 @Access(AccessType.FIELD)
 @Table(name = "aule")
 @NamedQueries({
-        @NamedQuery(name = TROVA_AULANOME, query = "SELECT a FROM Aula a WHERE a.nome = :nome"),
-        @NamedQuery(name = TROVA_AULA, query = "SELECT a FROM Aula a WHERE a.id = :id"),
-        @NamedQuery(name = TROVA_AULA_EDIFICIO, query = "SELECT a FROM Aula a WHERE a.edificio = :edificio"),
-        @NamedQuery(name = TROVA_TUTTE, query = "SELECT a FROM Aula a"),
-        @NamedQuery(name = TROVA_EDIFICI, query = "SELECT a.edificio FROM Aula a GROUP BY a.edificio")
+        @NamedQuery(name = "Aula.trovaAulaNome", query = "SELECT a FROM Aula a WHERE a.nome = :nome"),
+        @NamedQuery(name = "Aula.trovaAula", query = "SELECT a FROM Aula a WHERE a.id = :id"),
+        @NamedQuery(name = "Aula.trovaAulaEdificio", query = "SELECT a FROM Aula a WHERE a.edificio = :edificio"),
+        @NamedQuery(name = "Aula.trovaTutte", query = "SELECT a FROM Aula a"),
+        @NamedQuery(name = "Aula.trovaEdifici", query = "SELECT a.edificio FROM Aula a GROUP BY a.edificio")
 })
 public class Aula implements Serializable {
     /**
@@ -50,21 +50,28 @@ public class Aula implements Serializable {
      * Identificativo univoco dell'Aula
      * */
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
+    //@ spec_public
     private int id;
 
     /**
      * Elenco delle lezioni associate all'aula
      * */
     @OneToMany(mappedBy = "aula", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    //@ spec_public
+    //@ nullable
     private List<Lezione> lezioni = new ArrayList<>();
 
     /**
      * Edificio in cui si trova l'Aula
      * */
+    //@ spec_public
+    //@ nullable
     private String edificio;
     /**
      * Nome dell'Aula
      * */
+    //@ spec_public
+    //@ nullable
     private String nome;
 
     /**
@@ -74,6 +81,14 @@ public class Aula implements Serializable {
      * @param edificio Nome dell'edificio in cui si trova al'aula.
      * @param nome Nome dell'Aula
      * */
+    /*@
+      @ public normal_behavior
+      @ assignable \everything;
+      @ ensures this.id == id;
+      @ ensures this.edificio == edificio;
+      @ ensures this.nome == nome;
+      @ ensures true;
+      @*/
     public Aula(int id, String edificio, String nome) {
         this.id = id;
         this.edificio = edificio;
@@ -83,6 +98,11 @@ public class Aula implements Serializable {
     /**
      * Costruttore di default per creare un'istanza vuota di Aula.
      * */
+    /*@
+      @ public normal_behavior
+      @ assignable \nothing;
+      @ ensures true;
+      @*/
     public Aula() {}
 
     /**
@@ -90,6 +110,11 @@ public class Aula implements Serializable {
      *
      * @return L'identificativo dell'aula
      * */
+    /*@
+      @ public normal_behavior
+      @ assignable \nothing;
+      @ ensures \result == id;
+      @*/
     public int getId() {
         return id;
     }
@@ -99,7 +124,12 @@ public class Aula implements Serializable {
      *
      * @return Lista delle lezioni
      * */
-    public List<Lezione> getLezioni() {
+    /*@
+      @ public normal_behavior
+      @ assignable \nothing;
+      @ ensures \result == lezioni;
+      @*/
+    public /*@ nullable */ List<Lezione> getLezioni() {
         return lezioni;
     }
 
@@ -108,7 +138,12 @@ public class Aula implements Serializable {
      *
      * @return Nome del'edificio.
      * */
-    public String getEdificio() {
+    /*@
+      @ public normal_behavior
+      @ assignable \nothing;
+      @ ensures \result == edificio;
+      @*/
+    public /*@ nullable */ String getEdificio() {
         return edificio;
     }
 
@@ -117,7 +152,12 @@ public class Aula implements Serializable {
      *
      * @return Nome del'aula
      * */
-    public String getNome() {
+    /*@
+      @ public normal_behavior
+      @ assignable \nothing;
+      @ ensures \result == nome;
+      @*/
+    public /*@ nullable */ String getNome() {
         return nome;
     }
 
@@ -126,6 +166,10 @@ public class Aula implements Serializable {
      *
      * @param edificio Nome dell'edificio
      * */
+    /*@ public normal_behavior
+      @ assignable this.edificio;
+      @ ensures this.edificio == edificio;
+      @*/
     public void setEdificio(String edificio) {
         this.edificio = edificio;
     }
@@ -135,6 +179,10 @@ public class Aula implements Serializable {
      *
      * @param nome Nome dell'aula.
      * */
+    /*@ public normal_behavior
+      @ assignable this.nome;
+      @ ensures this.nome == nome;
+      @*/
     public void setNome(String nome) {
         this.nome = nome;
     }
@@ -144,6 +192,7 @@ public class Aula implements Serializable {
      *
      * @return Sttringa rappresentativa dell'aula.
      * */
+    //@ skipesc
     @Override
     public String toString() {
         return "Aula{" +

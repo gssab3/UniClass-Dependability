@@ -20,11 +20,11 @@ import static it.unisa.uniclass.utenti.model.Docente.*;
 @Access(AccessType.FIELD)
 @Table(name = "docenti")
 @NamedQueries({
-        @NamedQuery(name = TROVA_DOCENTE, query = "SELECT d FROM Docente d WHERE d.matricola = :matricola"),
-        @NamedQuery(name = TROVA_DOCENTE_CORSOLAUREA, query = "SELECT d FROM Docente d WHERE d.corsoLaurea.nome = :nome"),
-        @NamedQuery(name = TROVA_TUTTI, query = "SELECT d FROM Docente d"),
-        @NamedQuery(name = TROVA_TUTTI_DOCENTI, query = "SELECT d FROM Docente d WHERE d.tipo = 'Docente'"),
-        @NamedQuery(name = TROVA_EMAIL, query = "SELECT d FROM Docente d WHERE d.email = :email")
+        @NamedQuery(name = "Docente.trovaDocente", query = "SELECT d FROM Docente d WHERE d.matricola = :matricola"),
+        @NamedQuery(name = "Docente.trovaDocenteCorsoLaurea", query = "SELECT d FROM Docente d WHERE d.corsoLaurea.nome = :nome"),
+        @NamedQuery(name = "Docente.trovaTutti", query = "SELECT d FROM Docente d"),
+        @NamedQuery(name = "Docente.trovaTuttiDocenti", query = "SELECT d FROM Docente d WHERE d.tipo = 'Docente'"),
+        @NamedQuery(name = "Docente.trovaEmail", query = "SELECT d FROM Docente d WHERE d.email = :email")
 })
 public class Docente extends Accademico implements Serializable {
 
@@ -49,32 +49,45 @@ public class Docente extends Accademico implements Serializable {
      * */
     public static final String TROVA_EMAIL = "Docente.trovaEmail";
 
+    /**
+     * Corsi associati al docente
+     * */
     @ManyToMany
     @JoinTable(
             name = "docente_corso",
             joinColumns = @JoinColumn(name = "docente_id"),
             inverseJoinColumns = @JoinColumn(name = "corso_id")
     )
+    //@ spec_public
+    //@ nullable
     protected List<Corso> corsi = new ArrayList<>();
 
 
+    /**
+     * Lezioni associate al docente
+     * */
     @ManyToMany
     @JoinTable(
             name = "docente_lezione",
             joinColumns = @JoinColumn(name = "docente_id"),
             inverseJoinColumns = @JoinColumn(name = "lezione_id")
     )
+    //@ spec_public
+    //@ nullable
     private List<Lezione> lezioni = new ArrayList<>();
 
 
     /**
      * Dipartimento a cui appartiene il docente
      * */
+    //@ spec_public
+    //@ nullable
     protected String dipartimento;
 
     /**
      * Costruttore parametrico della classe Docente
      * */
+    //@ skipesc
     public Docente(String nome, String cognome, LocalDate dataNascita, String email, String password, String matricola, LocalDate iscrizione, CorsoLaurea corsoLaurea, String dipartimento) {
         tipo = Tipo.Docente;
         corsi = new ArrayList<Corso>();
@@ -92,15 +105,36 @@ public class Docente extends Accademico implements Serializable {
     /**
      * Costruttore di default della classe Docente
      * */
+    //@ skipesc
     public Docente() {
         corsi = new ArrayList<>();
         tipo = Tipo.Docente;
     }
 
-    public List<Lezione> getLezioni() {
+    /**
+     * Restituisce la lista delle lezioni associate al docente.
+     *
+     * @return Lista di {@link Lezione}.
+     * */
+    /*@
+      @ public normal_behavior
+      @ assignable \nothing;
+      @ ensures \result == lezioni;
+      @*/
+    public /*@ nullable */ List<Lezione> getLezioni() {
         return lezioni;
     }
 
+    /**
+     * Imposta la lista delle lezioni associate al docente.
+     *
+     * @param lezioni Lista di {@link Lezione}.
+     * */
+    /*@
+      @ public normal_behavior
+      @ assignable this.lezioni;
+      @ ensures this.lezioni == lezioni;
+      @*/
     public void setLezioni(List<Lezione> lezioni) {
         this.lezioni = lezioni;
     }
@@ -110,7 +144,12 @@ public class Docente extends Accademico implements Serializable {
      *
      * @return Diaprtimento del docente
      * */
-    public String getDipartimento() {
+    /*@
+      @ public normal_behavior
+      @ assignable \nothing;
+      @ ensures \result == dipartimento;
+      @*/
+    public /*@ nullable */ String getDipartimento() {
         return dipartimento;
     }
 
@@ -119,6 +158,11 @@ public class Docente extends Accademico implements Serializable {
      *
      * @param dipartimento Dipartimento del docente.
      * */
+    /*@
+      @ public normal_behavior
+      @ assignable this.dipartimento;
+      @ ensures this.dipartimento == dipartimento;
+      @*/
     public void setDipartimento(String dipartimento) {
         this.dipartimento = dipartimento;
     }
@@ -128,7 +172,12 @@ public class Docente extends Accademico implements Serializable {
      *
      * @return Lista di {@link Corso}.
      * */
-    public List<Corso> getCorsi() {
+    /*@
+      @ public normal_behavior
+      @ assignable \nothing;
+      @ ensures \result == corsi;
+      @*/
+    public /*@ nullable */ List<Corso> getCorsi() {
         return corsi;
     }
 
@@ -137,6 +186,11 @@ public class Docente extends Accademico implements Serializable {
      *
      * @param corsi Lista di {@link Corso}.
      * */
+    /*@
+      @ public normal_behavior
+      @ assignable this.corsi;
+      @ ensures this.corsi == corsi;
+      @*/
     public void setCorsi(List<Corso> corsi) {
         this.corsi = corsi;
     }
@@ -146,6 +200,7 @@ public class Docente extends Accademico implements Serializable {
      *
      * @return Stringa rappresentante il docente.
      * */
+    //@ skipesc
     @Override
     public String toString() {
         return "Docente{" +

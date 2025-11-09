@@ -25,11 +25,11 @@ import static it.unisa.uniclass.utenti.model.Accademico.*;
 @Access(AccessType.FIELD)
 @Inheritance(strategy = InheritanceType.JOINED)
 @NamedQueries({
-        @NamedQuery(name = TROVA_ACCADEMICO, query = "SELECT a FROM Accademico a WHERE a.matricola = :matricola"),
-        @NamedQuery(name = TROVA_TUTTI, query = "SELECT a FROM Accademico a"),
-        @NamedQuery(name = TROVA_EMAIL, query = "SELECT a FROM Accademico a WHERE a.email = :email"),
-        @NamedQuery(name = TROVA_ATTIVATI, query = "SELECT a FROM Accademico a WHERE a.attivato = :attivato"),
-        @NamedQuery(name = RETRIEVE_EMAIL, query = "SELECT a.email FROM Accademico a")
+        @NamedQuery(name = "Accademico.trovaAccademico", query = "SELECT a FROM Accademico a WHERE a.matricola = :matricola"),
+        @NamedQuery(name = "Accademico.trovaTutti", query = "SELECT a FROM Accademico a"),
+        @NamedQuery(name = "Accademico.trovaEmail", query = "SELECT a FROM Accademico a WHERE a.email = :email"),
+        @NamedQuery(name = "Accademico.trovaAttivati", query = "SELECT a FROM Accademico a WHERE a.attivato = :attivato"),
+        @NamedQuery(name = "Accademico.retrieveEmail", query = "SELECT a.email FROM Accademico a")
 })
 public class Accademico extends Utente implements Serializable {
 
@@ -45,29 +45,58 @@ public class Accademico extends Utente implements Serializable {
      * Nome della query per trovare un accademico data l'email
      */
     public static final String TROVA_EMAIL = "Accademico.trovaEmail";
+
+    /**
+     * Nome della query per trovare accademici attivati o disattivati
+     */
     public static final String TROVA_ATTIVATI = "Accademico.trovaAttivati";
+
+    /**
+     * Nome della query per recuperare tutte le email degli accademici
+     */
     public static final String RETRIEVE_EMAIL = "Accademico.retrieveEmail";
 
     /** Relazione unidirezionale {@code @OneToOne}, mappata sul campo {@code corso_laurea_id}
      * */
     @Id
+    //@ spec_public
+    //@ nullable
     protected String matricola;
+
+    /**
+     * Data di iscrizione dell'accademico.
+     */
+    //@ spec_public
+    //@ nullable
     protected LocalDate iscrizione;
+
+    /**
+     * Corso di Laurea dell'Accademico
+     */
     @OneToOne
     @JoinColumn(name = "corso_laurea_id")
+    //@ spec_public
+    //@ nullable
     protected CorsoLaurea corsoLaurea;
 
-
+    /**
+     * Stato di attivazione dell'account
+     */
+    //@ spec_public
     protected boolean attivato = false;
 
     /** Relazione unidirezionale {@code @OneToMany}, con cascata totale e rimoazione orfana
      * */
     @OneToMany(mappedBy = "autore", cascade = CascadeType.ALL, orphanRemoval = true)
+    //@ spec_public
+    //@ nullable
     private Set<Messaggio> messaggiInviati = new HashSet<>();
 
     /** Relazione unidirezionale {@code @OneToMany}, con cascata totale e rimozione orfana.
      */
     @OneToMany(mappedBy = "destinatario", cascade = CascadeType.ALL, orphanRemoval = true)
+    //@ spec_public
+    //@ nullable
     private Set<Messaggio> messaggiRicevuti = new HashSet<>();
 
 
@@ -75,6 +104,7 @@ public class Accademico extends Utente implements Serializable {
      <p>
      Inizializza un'istanza vuota di {@code Accademico}
      */
+    //@ skipesc
     public Accademico() {}
 
 
@@ -83,6 +113,11 @@ public class Accademico extends Utente implements Serializable {
      *
      * @return il valore dell'attivazione
      */
+    /*@
+      @ public normal_behavior
+      @ assignable \nothing;
+      @ ensures \result == attivato;
+      @*/
     public boolean isAttivato() {
         return attivato;
     }
@@ -92,6 +127,11 @@ public class Accademico extends Utente implements Serializable {
      *
      * @param attivato il nuovo valore d'attivazione
      */
+    /*@
+      @ public normal_behavior
+      @ assignable this.attivato;
+      @ ensures this.attivato == attivato;
+      @*/
     public void setAttivato(boolean attivato) {
         this.attivato = attivato;
     }
@@ -101,7 +141,12 @@ public class Accademico extends Utente implements Serializable {
      *
      * @return la data di iscrizione, come {@link LocalDate}
      * */
-    public LocalDate getIscrizione() {
+    /*@
+      @ public normal_behavior
+      @ assignable \nothing;
+      @ ensures \result == iscrizione;
+      @*/
+    public /*@ nullable */ LocalDate getIscrizione() {
         return iscrizione;
     }
 
@@ -110,6 +155,11 @@ public class Accademico extends Utente implements Serializable {
     @param iscrizione la nuova data di iscrizione
     @throws IllegalArgumentException se la data è futura.
     */
+    /*@
+      @ public normal_behavior
+      @ assignable this.iscrizione;
+      @ ensures this.iscrizione == iscrizione;
+      @*/
     public void setIscrizione(LocalDate iscrizione) {
         this.iscrizione = iscrizione;
     }
@@ -119,7 +169,12 @@ public class Accademico extends Utente implements Serializable {
      *
      * @return l'oggetto {@link CorsoLaurea}.
      * */
-    public CorsoLaurea getCorsoLaurea() {
+    /*@
+      @ public normal_behavior
+      @ assignable \nothing;
+      @ ensures \result == corsoLaurea;
+      @*/
+    public /*@ nullable */ CorsoLaurea getCorsoLaurea() {
         return corsoLaurea;
     }
 
@@ -127,6 +182,11 @@ public class Accademico extends Utente implements Serializable {
      *
      * @param corsoLaurea il nuovo corso di laurea.
      * */
+    /*@
+      @ public normal_behavior
+      @ assignable this.corsoLaurea;
+      @ ensures this.corsoLaurea == corsoLaurea;
+      @*/
     public void setCorsoLaurea(CorsoLaurea corsoLaurea) {
         this.corsoLaurea = corsoLaurea;
     }
@@ -136,7 +196,12 @@ public class Accademico extends Utente implements Serializable {
      *
      * @return la matricola, come {@link String}.
      * */
-    public String getMatricola() {
+    /*@
+      @ public normal_behavior
+      @ assignable \nothing;
+      @ ensures \result == matricola;
+      @*/
+    public /*@ nullable */ String getMatricola() {
         return matricola;
     }
 
@@ -148,6 +213,11 @@ public class Accademico extends Utente implements Serializable {
      * @exception IllegalArgumentException
      *               Thrown to indicate that a method has been passed an illegal or inappropriate argument.
      * */
+    /*@
+      @ public normal_behavior
+      @ assignable this.matricola;
+      @ ensures this.matricola == matricola;
+      @*/
     public void setMatricola(String matricola) {
         this.matricola = matricola;
     }
@@ -158,7 +228,12 @@ public class Accademico extends Utente implements Serializable {
      *
      * @return un {@link Set} di {@link Messaggio}.
      * */
-    public Set<Messaggio> getMessaggiInviati() {
+    /*@
+      @ public normal_behavior
+      @ assignable \nothing;
+      @ ensures \result == messaggiInviati;
+      @*/
+    public /*@ nullable */ Set<Messaggio> getMessaggiInviati() {
         return messaggiInviati;
     }
 
@@ -167,6 +242,11 @@ public class Accademico extends Utente implements Serializable {
      *
      * @param messaggiInviati il nuovo set di messaggi inviati.
      * */
+    /*@
+      @ public normal_behavior
+      @ assignable this.messaggiInviati;
+      @ ensures this.messaggiInviati == messaggiInviati;
+      @*/
     public void setMessaggiInviati(Set<Messaggio> messaggiInviati) {
         this.messaggiInviati = messaggiInviati;
     }
@@ -175,7 +255,12 @@ public class Accademico extends Utente implements Serializable {
      *
      * @return un {@link Set} di {@link Messaggio}.
      * */
-    public Set<Messaggio> getMessaggiRicevuti() {
+    /*@
+      @ public normal_behavior
+      @ assignable \nothing;
+      @ ensures \result == messaggiRicevuti;
+      @*/
+    public /*@ nullable */ Set<Messaggio> getMessaggiRicevuti() {
         return messaggiRicevuti;
     }
 
@@ -184,6 +269,11 @@ public class Accademico extends Utente implements Serializable {
      *
      * @param messaggiRicevuti il nuovo set di messaggi ricevuti.
      * */
+    /*@
+      @ public normal_behavior
+      @ assignable this.messaggiRicevuti;
+      @ ensures this.messaggiRicevuti == messaggiRicevuti;
+      @*/
     public void setMessaggiRicevuti(Set<Messaggio> messaggiRicevuti) {
         this.messaggiRicevuti = messaggiRicevuti;
     }

@@ -17,9 +17,9 @@ import static it.unisa.uniclass.orari.model.CorsoLaurea.*;
 @Entity
 @Access(AccessType.FIELD)
 @NamedQueries({
-        @NamedQuery(name = TROVA_CORSOLAUREA, query = "SELECT c FROM CorsoLaurea c WHERE c.id = :id"),
-        @NamedQuery(name = TROVA_TUTTI, query = "SELECT c FROM CorsoLaurea c"),
-        @NamedQuery(name = TROVA_CORSOLAUREA_NOME, query = "SELECT c FROM CorsoLaurea c WHERE c.nome = :nome")
+        @NamedQuery(name = "CorsoLaurea.trovaCorsoLaurea", query = "SELECT c FROM CorsoLaurea c WHERE c.id = :id"),
+        @NamedQuery(name = "CorsoLaurea.trovaTutti", query = "SELECT c FROM CorsoLaurea c"),
+        @NamedQuery(name = "CorsoLaurea.trovaCorsoLaureaNome", query = "SELECT c FROM CorsoLaurea c WHERE c.nome = :nome")
 })
 public class CorsoLaurea implements Serializable {
 
@@ -40,24 +40,32 @@ public class CorsoLaurea implements Serializable {
      * Identificativo unico del corso di laurea.
      * */
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
+    //@ spec_public
+    //@ nullable
     private Long id;
 
     /**
      * Lista dei corsi associati a questo corso di laurea
      * */
     @OneToMany(mappedBy = "corsoLaurea", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    //@ spec_public
+    //@ nullable
     private List<Corso> corsi = new ArrayList<>();
 
-    @Column(nullable = false, unique = true)
     /**
      * Nome del corso di laurea
      * */
+    @Column(nullable = false, unique = true)
+    //@ spec_public
+    //@ nullable
     private String nome;
 
     /**
      * Lista dei resti associati al corso di laurea
      * */
     @OneToMany(mappedBy = "corsoLaurea", cascade = CascadeType.ALL)
+    //@ spec_public
+    //@ nullable
     private List<Resto> resti = new ArrayList<>(); // I resti associati al corso di laurea
 
     /**
@@ -69,12 +77,16 @@ public class CorsoLaurea implements Serializable {
             joinColumns = @JoinColumn(name = "corso_laurea_id"),
             inverseJoinColumns = @JoinColumn(name = "anno_didattico_id")
     )
+    //@ spec_public
+    //@ nullable
     private List<AnnoDidattico> anniDidattici = new ArrayList<>();
 
     /**
      * Lista degli studenti iscritti al corso di laurea.
      */
     @OneToMany(mappedBy = "corsoLaurea", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    //@ spec_public
+    //@ nullable
     private List<Studente> studenti = new ArrayList<>();
 
     /**
@@ -82,6 +94,11 @@ public class CorsoLaurea implements Serializable {
      *
      * @param nome Nome del corso di laurea
      * */
+    /*@ public normal_behavior
+      @ assignable \everything;
+      @ ensures this.nome == nome;
+      @ ensures true;
+      @*/
     public CorsoLaurea(String nome) {
         this.nome = nome;
         this.corsi = new ArrayList<Corso>();
@@ -94,6 +111,12 @@ public class CorsoLaurea implements Serializable {
      * @param resti Lista dei resti associati
      * @param anniDidattici Lista degli anni didattici associati.
      * */
+    /*@ public normal_behavior
+      @ assignable \everything;
+      @ ensures this.nome == nome;
+      @ ensures this.resti == resti;
+      @ ensures this.anniDidattici == anniDidattici;
+      @*/
     public CorsoLaurea(String nome, List<Resto> resti, List<AnnoDidattico> anniDidattici) {
         this.nome = nome;
         this.corsi = new ArrayList<Corso>();
@@ -105,6 +128,10 @@ public class CorsoLaurea implements Serializable {
      * Costruttore di default.
      * Inizializza liste vuote e il nome a null.
      * */
+    /*@ public normal_behavior
+      @ assignable \nothing;
+      @ ensures true;
+      @*/
     public CorsoLaurea() {
         this.corsi = new ArrayList<>();
         this.nome = null;
@@ -116,7 +143,11 @@ public class CorsoLaurea implements Serializable {
      *
      * @return Lista dei resti.
      * */
-    public List<Resto> getResti() {
+    /*@ public normal_behavior
+      @ assignable \nothing;
+      @ ensures \result == resti;
+      @*/
+    public /*@ nullable */ List<Resto> getResti() {
         return resti;
     }
 
@@ -124,6 +155,10 @@ public class CorsoLaurea implements Serializable {
      *
      * @param resti Lista dei resti da associare.
      * */
+    /*@ public normal_behavior
+      @ assignable this.resti;
+      @ ensures this.resti == resti;
+      @*/
     public void setResti(List<Resto> resti) {
         this.resti = resti;
     }
@@ -133,7 +168,11 @@ public class CorsoLaurea implements Serializable {
      *
      * @return Lista degli anni didattici.
      */
-    public List<AnnoDidattico> getAnniDidattici() {
+    /*@ public normal_behavior
+      @ assignable \nothing;
+      @ ensures \result == anniDidattici;
+      @*/
+    public /*@ nullable */ List<AnnoDidattico> getAnniDidattici() {
         return anniDidattici;
     }
 
@@ -142,6 +181,10 @@ public class CorsoLaurea implements Serializable {
      *
      * @param anniDidattici Lista degli anni didattici da associare.
      */
+    /*@ public normal_behavior
+      @ assignable this.anniDidattici;
+      @ ensures this.anniDidattici == anniDidattici;
+      @*/
     public void setAnniDidattici(List<AnnoDidattico> anniDidattici) {
         this.anniDidattici = anniDidattici;
     }
@@ -151,7 +194,11 @@ public class CorsoLaurea implements Serializable {
      *
      * @return ID del corso di laurea.
      * */
-    public Long getId() {
+    /*@ public normal_behavior
+      @ assignable \nothing;
+      @ ensures \result == id;
+      @*/
+    public /*@ nullable */ Long getId() {
         return id;
     }
 
@@ -160,7 +207,11 @@ public class CorsoLaurea implements Serializable {
      *
      * @return Lista dei corsi.
      * */
-    public List<Corso> getCorsi() {
+    /*@ public normal_behavior
+      @ assignable \nothing;
+      @ ensures \result == corsi;
+      @*/
+    public /*@ nullable */ List<Corso> getCorsi() {
         return corsi;
     }
 
@@ -169,7 +220,11 @@ public class CorsoLaurea implements Serializable {
      *
      * @return Nome del corso di laurea.
      */
-    public String getNome() {
+    /*@ public normal_behavior
+      @ assignable \nothing;
+      @ ensures \result == nome;
+      @*/
+    public /*@ nullable */ String getNome() {
         return nome;
     }
 
@@ -178,6 +233,10 @@ public class CorsoLaurea implements Serializable {
      *
      * @param nome Nome del corso di laurea da impostare.
      */
+    /*@ public normal_behavior
+      @ assignable this.nome;
+      @ ensures this.nome == nome;
+      @*/
     public void setNome(String nome) {
         this.nome = nome;
     }
@@ -187,21 +246,12 @@ public class CorsoLaurea implements Serializable {
      *
      * @param corsi Lista dei corsi da associare.
      */
+    /*@ public normal_behavior
+      @ assignable this.corsi;
+      @ ensures this.corsi == corsi;
+      @*/
     public void setCorsi(List<Corso> corsi) {
         this.corsi = corsi;
-    }
-
-    /**
-     * Rappresentazione testuale dell'oggetto CorsoLaurea.
-     *
-     * @return Stringa che descrive il corso di luarea.
-     * */
-    @Override
-    public String toString() {
-        return "CorsoLaurea{" +
-                "id=" + id +
-                ", nome='" + nome + '\'' +
-                '}';
     }
 
     /**
@@ -209,7 +259,11 @@ public class CorsoLaurea implements Serializable {
      *
      * @return Lista degli studenti.
      */
-    public Collection<Studente> getStudenti() {
+    /*@ public normal_behavior
+      @ assignable \nothing;
+      @ ensures \result == studenti;
+      @*/
+    public /*@ nullable */ Collection<Studente> getStudenti() {
         return studenti;
     }
 
@@ -218,7 +272,25 @@ public class CorsoLaurea implements Serializable {
      *
      * @param studenti Lista degli studenti da associare.
      */
+    /*@ public normal_behavior
+      @ assignable this.studenti;
+      @ ensures this.studenti == studenti;
+      @*/
     public void setStudenti(List<Studente> studenti) {
         this.studenti = studenti;
+    }
+
+    /**
+     * Rappresentazione testuale dell'oggetto CorsoLaurea.
+     *
+     * @return Stringa che descrive il corso di luarea.
+     * */
+    //@ skipesc
+    @Override
+    public String toString() {
+        return "CorsoLaurea{" +
+                "id=" + id +
+                ", nome='" + nome + '\'' +
+                '}';
     }
 }

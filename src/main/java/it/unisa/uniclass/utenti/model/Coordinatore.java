@@ -24,10 +24,10 @@ import static it.unisa.uniclass.utenti.model.Coordinatore.*;
 @Access(AccessType.FIELD)
 @Table(name = "coordinatori")
 @NamedQueries({
-        @NamedQuery(name = TROVA_COORDINATORE, query = "SELECT c FROM Coordinatore c WHERE c.matricola = :matricola"),
-        @NamedQuery(name = TROVA_COORDINATORE_CORSOLAUREA, query = "SELECT c FROM Coordinatore c WHERE c.corsoLaurea.nome = :nomeCorsoLaurea"),
-        @NamedQuery(name = TROVA_TUTTI, query = "SELECT c FROM Coordinatore c"),
-        @NamedQuery(name = TROVA_EMAIL, query = "SELECT c FROM Coordinatore c WHERE c.email = :email")
+        @NamedQuery(name = "Coordinatore.trovaCoordinatore", query = "SELECT c FROM Coordinatore c WHERE c.matricola = :matricola"),
+        @NamedQuery(name = "Coordinatore.trovaCoordinatoreCorsoLaurea", query = "SELECT c FROM Coordinatore c WHERE c.corsoLaurea.nome = :nomeCorsoLaurea"),
+        @NamedQuery(name = "Coordinatore.trovaTutti", query = "SELECT c FROM Coordinatore c"),
+        @NamedQuery(name = "Coordinatore.trovaEmail", query = "SELECT c FROM Coordinatore c WHERE c.email = :email")
 })
 public class Coordinatore extends Docente implements Serializable {
     /**
@@ -50,11 +50,13 @@ public class Coordinatore extends Docente implements Serializable {
     /**
      * Costruttore di default. Inizializza il tipo a {@link Tipo#Coordinatore}.
      * */
+    //@ skipesc
     public Coordinatore() {super(); tipo = Tipo.Coordinatore;}
 
     /**
      * Costruttore parametrico della classe Coordinatore
      * */
+    //@ skipesc
     public Coordinatore(String nome, String cognome, LocalDate dataNascita, String email, String password, String matricola, LocalDate iscrizione, CorsoLaurea corsoLaurea, String dipartimento) {
         tipo = Tipo.Coordinatore;
         corsi = new ArrayList<Corso>();
