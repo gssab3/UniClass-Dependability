@@ -16,11 +16,11 @@ import static it.unisa.uniclass.orari.model.AnnoDidattico.*;
 @Access(AccessType.FIELD)
 @Table(name = "anni")
 @NamedQueries({
-        @NamedQuery(name = TROVA_ANNO, query = "SELECT a FROM AnnoDidattico a WHERE a.anno = :anno"),
-        @NamedQuery(name = TROVA_ID, query = "SELECT a FROM AnnoDidattico a WHERE a.id = :id"),
-        @NamedQuery(name = TROVA_TUTTI, query = "SELECT a FROM AnnoDidattico a"),
-        @NamedQuery(name = TROVA_ANNI_CORSOLAUREA, query = "SELECT a FROM AnnoDidattico a JOIN a.corsiLaurea c WHERE c.id = :corsoId"),
-        @NamedQuery(name = TROVA_ANNI_CORSOLAUREA_NOME, query = "SELECT a FROM AnnoDidattico a JOIN a.corsiLaurea c WHERE c.id = :corsoId AND a.anno = :anno")
+        @NamedQuery(name = "AnnoDidattico.trovaAnno", query = "SELECT a FROM AnnoDidattico a WHERE a.anno = :anno"),
+        @NamedQuery(name = "AnnoDidattico.trovaId", query = "SELECT a FROM AnnoDidattico a WHERE a.id = :id"),
+        @NamedQuery(name = "AnnoDidattico.trovaTutti", query = "SELECT a FROM AnnoDidattico a"),
+        @NamedQuery(name = "AnnoDidattico.trovaAnniCorsoLaurea", query = "SELECT a FROM AnnoDidattico a JOIN a.corsiLaurea c WHERE c.id = :corsoId"),
+        @NamedQuery(name = "AnnoDidattico.trovaAnniCorsoLaureaNome", query = "SELECT a FROM AnnoDidattico a JOIN a.corsiLaurea c WHERE c.id = :corsoId AND a.anno = :anno")
 })
 public class AnnoDidattico implements Serializable {
 
@@ -50,11 +50,14 @@ public class AnnoDidattico implements Serializable {
      * Identificativo unico del'anno didattico
      * */
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
+    //@ spec_public
     private int id;
 
     /**
      * Nome o descrizione dell'anno didattico (es. "Anno 1", "Anno 2").
      * */
+    //@ spec_public
+    //@ nullable
     private String anno; //Esempio: "Anno 1", "Anno 2", ecc..
 
     /**
@@ -62,6 +65,8 @@ public class AnnoDidattico implements Serializable {
      * La relazioni è mappata come bidirezionale.
      * */
     @ManyToMany(mappedBy = "anniDidattici")
+    //@ spec_public
+    //@ nullable
     private List<CorsoLaurea> corsiLaurea = new ArrayList<>();
 
     /**
@@ -71,6 +76,8 @@ public class AnnoDidattico implements Serializable {
      * a causa della configurazione della cascata {@code CascadeType.ALL}.
      */
     @OneToMany(mappedBy = "annoDidattico", cascade = CascadeType.ALL)
+    //@ spec_public
+    //@ nullable
     private List<Corso> corsi = new ArrayList<>();
 
     /**
@@ -78,7 +85,11 @@ public class AnnoDidattico implements Serializable {
      *
      * @return Una lista di oggetti {@link Corso}.
      */
-    public List<Corso> getCorsi() {
+    /*@ public normal_behavior
+      @ assignable \nothing;
+      @ ensures \result == corsi;
+      @*/
+    public /*@ nullable */ List<Corso> getCorsi() {
         return corsi;
     }
 
@@ -87,6 +98,10 @@ public class AnnoDidattico implements Serializable {
      *
      * @param corsi La lista di oggetti {@link Corso} da associare.
      */
+    /*@ public normal_behavior
+      @ assignable this.corsi;
+      @ ensures this.corsi == corsi;
+      @*/
     public void setCorsi(List<Corso> corsi) {
         this.corsi = corsi;
     }
@@ -96,6 +111,11 @@ public class AnnoDidattico implements Serializable {
      *
      * @param anno Nome o descrizione dell'anno didattico.
      * */
+    /*@ public normal_behavior
+      @ assignable \everything;
+      @ ensures this.anno == anno;
+      @ ensures true;
+      @*/
     public AnnoDidattico(String anno){
         this.anno = anno;
     }
@@ -103,6 +123,10 @@ public class AnnoDidattico implements Serializable {
     /**
      * Costruttore di default.
      * */
+    /*@ public normal_behavior
+      @ assignable \nothing;
+      @ ensures true;
+      @*/
     public AnnoDidattico(){}
 
     /**
@@ -110,7 +134,11 @@ public class AnnoDidattico implements Serializable {
      *
      * @return Il valore del campo {@code anno}
      * */
-    public String getAnno() {
+    /*@ public normal_behavior
+      @ assignable \nothing;
+      @ ensures \result == anno;
+      @*/
+    public /*@ nullable */ String getAnno() {
         return anno;
     }
 
@@ -119,6 +147,10 @@ public class AnnoDidattico implements Serializable {
      *
      * @param anno Nome o descrizione dell'anno didattico.
      * */
+    /*@ public normal_behavior
+      @ assignable this.anno;
+      @ ensures this.anno == anno;
+      @*/
     public void setAnno(String anno) {
         this.anno = anno;
     }
@@ -128,6 +160,10 @@ public class AnnoDidattico implements Serializable {
      *
      * @return Il valore del campo {@code id}.
      * */
+    /*@ public normal_behavior
+      @ assignable \nothing;
+      @ ensures \result == id;
+      @*/
     public int getId() {
         return id;
     }
@@ -137,7 +173,11 @@ public class AnnoDidattico implements Serializable {
      *
      * @return Una lista di oggetti {@code CorsoLaurea}
      * */
-    public List<CorsoLaurea> getCorsiLaurea() {
+    /*@ public normal_behavior
+      @ assignable \nothing;
+      @ ensures \result == corsiLaurea;
+      @*/
+    public /*@ nullable */ List<CorsoLaurea> getCorsiLaurea() {
         return corsiLaurea;
     }
 
@@ -146,6 +186,10 @@ public class AnnoDidattico implements Serializable {
      *
      * @param corsiLaurea Una lista di oggetti {@code CorsoLaurea}
      * */
+    /*@ public normal_behavior
+      @ assignable this.corsiLaurea;
+      @ ensures this.corsiLaurea == corsiLaurea;
+      @*/
     public void setCorsiLaurea(List<CorsoLaurea> corsiLaurea) {
         this.corsiLaurea = corsiLaurea;
     }
@@ -157,6 +201,7 @@ public class AnnoDidattico implements Serializable {
      *
      * @return Una strinag che rappresenta l'oggetto {@code AnnoDidattico}
      * */
+    //@ skipesc
     @Override
     public String toString() {
         return "AnnoDidattico{" +

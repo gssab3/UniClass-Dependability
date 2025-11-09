@@ -16,15 +16,15 @@ import static it.unisa.uniclass.conversazioni.model.Messaggio.*;
 @Access(AccessType.FIELD)
 @Table(name = "messaggi")
 @NamedQueries({
-        @NamedQuery(name = TROVA_MESSAGGIO, query = "SELECT m FROM Messaggio m WHERE m.id = :id"),
-        @NamedQuery(name = TROVA_MESSAGGI_INVIATI, query = "SELECT m FROM Messaggio m WHERE m.autore.matricola = :matricola"),
-        @NamedQuery(name = TROVA_MESSAGGI_RICEVUTI, query = "SELECT m FROM Messaggio m WHERE m.destinatario.matricola = :matricola"),
-        @NamedQuery(name = TROVA_MESSAGGI_MESSAGGERI, query = "SELECT m FROM Messaggio m WHERE ((m.autore.matricola = :autore) AND (m.destinatario.matricola = :destinatario)) OR ((m.autore.matricola = :destinatario) AND (m.destinatario.matricola = :autore))"),
-        @NamedQuery(name = TROVA_TUTTI, query = "SELECT m FROM Messaggio m"),
-        @NamedQuery(name = TROVA_AVVISI, query = "SELECT m FROM Messaggio m WHERE m.topic <> null"),
-        @NamedQuery(name = TROVA_AVVISI_AUTORE, query = "SELECT m FROM Messaggio m WHERE m.topic <> null AND m.autore.matricola = :autore"),
-        @NamedQuery(name = TROVA_MESSAGGI_DATA, query = "SELECT m FROM Messaggio m WHERE m.dateTime = :dateTime"),
-        @NamedQuery(name = TROVA_TOPIC, query = "SELECT m FROM Messaggio m WHERE m.topic = :topic")
+        @NamedQuery(name = "Messaggio.trovaMessaggio", query = "SELECT m FROM Messaggio m WHERE m.id = :id"),
+        @NamedQuery(name = "Messaggio.trovaMessaggiInviati", query = "SELECT m FROM Messaggio m WHERE m.autore.matricola = :matricola"),
+        @NamedQuery(name = "Messaggio.trovaMessaggiRicevuti", query = "SELECT m FROM Messaggio m WHERE m.destinatario.matricola = :matricola"),
+        @NamedQuery(name = "Messaggio.trovaMessaggiMessaggeri", query = "SELECT m FROM Messaggio m WHERE ((m.autore.matricola = :autore) AND (m.destinatario.matricola = :destinatario)) OR ((m.autore.matricola = :destinatario) AND (m.destinatario.matricola = :autore))"),
+        @NamedQuery(name = "Messaggio.trovaTutti", query = "SELECT m FROM Messaggio m"),
+        @NamedQuery(name = "Messaggio.trovaAvvisi", query = "SELECT m FROM Messaggio m WHERE m.topic <> null"),
+        @NamedQuery(name = "Messaggio.trovaAvvisiAutore", query = "SELECT m FROM Messaggio m WHERE m.topic <> null AND m.autore.matricola = :autore"),
+        @NamedQuery(name = "Messaggio.trovaMessaggiData", query = "SELECT m FROM Messaggio m WHERE m.dateTime = :dateTime"),
+        @NamedQuery(name = "Messaggio.trovaTopic", query = "SELECT m FROM Messaggio m WHERE m.topic = :topic")
 })
 public class Messaggio implements Serializable {
 
@@ -68,17 +68,23 @@ public class Messaggio implements Serializable {
     public static final String TROVA_TOPIC = "Messaggio.trovaTopic";
 
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
+    //@ spec_public
+    //@ nullable
     private Long id;
 
     /**
      * Data e ore di creazione del messaggio.
-     * */
+     */
+    //@ spec_public
+    //@ nullable
     private LocalDateTime dateTime;
 
     /**
      * Corpo del messaggio. Non può essere null.
      * */
     @Column(nullable = false)
+    //@ spec_public
+    //@ nullable
     private String body;
 
     /**
@@ -86,6 +92,8 @@ public class Messaggio implements Serializable {
      * */
     @ManyToOne
     @JoinColumn(name = "autore")
+    //@ spec_public
+    //@ nullable
     private Accademico autore;
 
     /**
@@ -93,6 +101,8 @@ public class Messaggio implements Serializable {
      * */
     @ManyToOne
     @JoinColumn(name = "destinatario")
+    //@ spec_public
+    //@ nullable
     private Accademico destinatario;
 
     /**
@@ -101,6 +111,8 @@ public class Messaggio implements Serializable {
 
     @ManyToOne(cascade = CascadeType.PERSIST)
     @JoinColumn(name = "topic")
+    //@ spec_public
+    //@ nullable
     private Topic topic;
 
     //Getter e Setter con Javadoc
@@ -109,7 +121,11 @@ public class Messaggio implements Serializable {
      *
      * @return Il destinatario
      * */
-    public Accademico getDestinatario() {
+    /*@ public normal_behavior
+      @ assignable \nothing;
+      @ ensures \result == destinatario;
+      @*/
+    public /*@ nullable */ Accademico getDestinatario() {
         return destinatario;
     }
 
@@ -118,6 +134,10 @@ public class Messaggio implements Serializable {
      *
      * @param destinatario Il destinatario da impostare.
      * */
+    /*@ public normal_behavior
+      @ assignable this.destinatario;
+      @ ensures this.destinatario == destinatario;
+      @*/
     public void setDestinatario(Accademico destinatario) {
         this.destinatario = destinatario;
     }
@@ -127,7 +147,12 @@ public class Messaggio implements Serializable {
      *
      * @return L'autore.
      * */
-    public Accademico getAutore() {
+    /*@
+      @ public normal_behavior
+      @ assignable \nothing;
+      @ ensures \result == autore;
+      @*/
+    public /*@ nullable */ Accademico getAutore() {
         return autore;
     }
 
@@ -136,6 +161,10 @@ public class Messaggio implements Serializable {
      *
      * @param autore L'autore da impostare.
      * */
+    /*@ public normal_behavior
+      @ assignable this.autore;
+      @ ensures this.autore == autore;
+      @*/
     public void setAutore(Accademico autore) {
         this.autore = autore;
     }
@@ -143,6 +172,10 @@ public class Messaggio implements Serializable {
     /**
      * Costruttore vuoto necessario per JPA.
      * */
+    /*@ public normal_behavior
+      @ assignable \nothing;
+      @ ensures true;
+      @*/
     public Messaggio() {}
 
     /**
@@ -154,6 +187,14 @@ public class Messaggio implements Serializable {
      * @param body  Il corpo del Messaggio
      * @param dateTime  La data e ora di creazione
      * */
+    /*@ public normal_behavior
+      @ assignable \everything;
+      @ ensures this.autore == autore;
+      @ ensures this.destinatario == destinatario;
+      @ ensures this.topic == topic;
+      @ ensures this.body == body;
+      @ ensures this.dateTime == dateTime;
+      @*/
     public Messaggio(Accademico autore, Accademico destinatario, Topic topic, String body, LocalDateTime dateTime) {
         this.autore = autore;
         this.destinatario = destinatario;
@@ -162,13 +203,18 @@ public class Messaggio implements Serializable {
         this.dateTime = dateTime;
     }
 
+
     /**
      * Restituisce la data e ora di creazione del messaggio.
      *
      * @return La data e ora.
      *
      * */
-    public LocalDateTime getDateTime() {
+    /*@ public normal_behavior
+      @ assignable \nothing;
+      @ ensures \result == dateTime;
+      @*/
+    public /*@ nullable */ LocalDateTime getDateTime() {
         return dateTime;
     }
 
@@ -177,6 +223,10 @@ public class Messaggio implements Serializable {
      *
      * @param dateTime La data e ora da impostare.
      * */
+    /*@ public normal_behavior
+      @ assignable this.dateTime;
+      @ ensures this.dateTime == dateTime;
+      @*/
     public void setDateTime(LocalDateTime dateTime) {
         this.dateTime = dateTime;
     }
@@ -186,7 +236,11 @@ public class Messaggio implements Serializable {
      *
      * @return Il corpo.
      * */
-    public String getBody() {
+    /*@ public normal_behavior
+      @ assignable \nothing;
+      @ ensures \result == body;
+      @*/
+    public /*@ nullable */ String getBody() {
         return body;
     }
 
@@ -195,6 +249,10 @@ public class Messaggio implements Serializable {
      *
      * @param body Il corpo da impostare.
      * */
+    /*@ public normal_behavior
+      @ assignable this.body;
+      @ ensures this.body == body;
+      @*/
     public void setBody(String body) {
         this.body = body;
     }
@@ -204,7 +262,11 @@ public class Messaggio implements Serializable {
      *
      * @return Il topic.
      * */
-    public Topic getTopic() {
+    /*@ public normal_behavior
+      @ assignable \nothing;
+      @ ensures \result == topic;
+      @*/
+    public /*@ nullable */ Topic getTopic() {
         return topic;
     }
 
@@ -213,6 +275,10 @@ public class Messaggio implements Serializable {
      *
      * @param topic Il topic da impostare.
      * */
+    /*@ public normal_behavior
+      @ assignable this.topic;
+      @ ensures this.topic == topic;
+      @*/
     public void setTopic(Topic topic) {
         this.topic = topic;
     }
@@ -222,7 +288,11 @@ public class Messaggio implements Serializable {
      *
      * @return L'id
      */
-    public Long getId() {
+    /*@ public normal_behavior
+      @ assignable \nothing;
+      @ ensures \result == id;
+      @*/
+    public /*@ nullable */ Long getId() {
         return id;
     }
 
@@ -231,6 +301,7 @@ public class Messaggio implements Serializable {
      *
      * @return Una stringa che descrive il messaggio.
      * */
+    //@ skipesc
     @Override
     public String toString() {
         return "Messaggio{" +

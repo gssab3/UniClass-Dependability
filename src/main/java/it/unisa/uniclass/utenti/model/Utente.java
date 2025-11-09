@@ -17,17 +17,57 @@ import java.time.LocalDate;
 @Access(AccessType.FIELD)
 public class Utente implements Serializable {
 
+    /**
+     * Nome dell'utente
+     */
+    //@ spec_public
+    //@ nullable
     protected String nome;
+
+    /**
+     * Cognome dell'utente
+     */
+    //@ spec_public
+    //@ nullable
     protected String cognome;
+
+    /**
+     * Data di nascita dell'utente
+     */
+    //@ spec_public
+    //@ nullable
     protected LocalDate dataNascita;
+
+    /**
+     * Indirizzo email dell'utente
+     */
+    //@ spec_public
+    //@ nullable
     protected String email;
+
+    /**
+     * Password dell'utente
+     */
+    //@ spec_public
+    //@ nullable
     protected String password;
+
+    /**
+     * Tipo di utente
+     */
+    //@ spec_public
+    //@ nullable
     protected Tipo tipo;
 
     /**
      * Costruttore di default.
      * Inizializza un'istanza vuota di Utente.
      * */
+    /*@
+      @ public normal_behavior
+      @ assignable \nothing;
+      @ ensures true;
+      @*/
     public Utente() {}
 
     /**
@@ -35,7 +75,12 @@ public class Utente implements Serializable {
      *
      * @return il nome dell'utente
      * */
-    public String getNome() {
+    /*@
+      @ public normal_behavior
+      @ assignable \nothing;
+      @ ensures \result == nome;
+      @*/
+    public /*@ nullable */ String getNome() {
         return nome;
     }
 
@@ -44,6 +89,11 @@ public class Utente implements Serializable {
      *
      * @param nome il nuovo nome dell'utente
      * */
+    /*@
+      @ public normal_behavior
+      @ assignable this.nome;
+      @ ensures this.nome == nome;
+      @*/
     public void setNome(String nome) {
         this.nome = nome;
     }
@@ -53,7 +103,12 @@ public class Utente implements Serializable {
      *
      * @return il cognome dell'utente
      * */
-    public String getCognome() {
+    /*@
+      @ public normal_behavior
+      @ assignable \nothing;
+      @ ensures \result == cognome;
+      @*/
+    public /*@ nullable */ String getCognome() {
         return cognome;
     }
 
@@ -62,6 +117,11 @@ public class Utente implements Serializable {
      *
      * @param cognome il nuovo cognome dell'utente
      * */
+    /*@
+      @ public normal_behavior
+      @ assignable this.cognome;
+      @ ensures this.cognome == cognome;
+      @*/
     public void setCognome(String cognome) {
         this.cognome = cognome;
     }
@@ -71,7 +131,12 @@ public class Utente implements Serializable {
      *
      * @return la data di nascita dell'Utente
      * */
-    public LocalDate getDataNascita() {
+    /*@
+      @ public normal_behavior
+      @ assignable \nothing;
+      @ ensures \result == dataNascita;
+      @*/
+    public /*@ nullable */ LocalDate getDataNascita() {
         return dataNascita;
     }
 
@@ -80,6 +145,11 @@ public class Utente implements Serializable {
      *
      * @param dataNascita la nuova data di nascita dell'utente
      * */
+    /*@
+      @ public normal_behavior
+      @ assignable this.dataNascita;
+      @ ensures this.dataNascita == dataNascita;
+      @*/
     public void setDataNascita(LocalDate dataNascita) {
         this.dataNascita = dataNascita;
     }
@@ -89,7 +159,12 @@ public class Utente implements Serializable {
      *
      * @return l'email dell'utente
      * */
-    public String getEmail() {
+    /*@
+      @ public normal_behavior
+      @ assignable \nothing;
+      @ ensures \result == email;
+      @*/
+    public /*@ nullable */ String getEmail() {
         return email;
     }
 
@@ -98,6 +173,11 @@ public class Utente implements Serializable {
      *
      * @param email il nuovo indirizzo email dell'utente
      * */
+    /*@
+      @ public normal_behavior
+      @ assignable this.email;
+      @ ensures this.email == email;
+      @*/
     public void setEmail(String email) {
         this.email = email;
     }
@@ -107,7 +187,12 @@ public class Utente implements Serializable {
      *
      * @return la password dell'utente
      * */
-    public String getPassword() {
+    /*@
+      @ public normal_behavior
+      @ assignable \nothing;
+      @ ensures \result == password;
+      @*/
+    public /*@ nullable */ String getPassword() {
         return password;
     }
 
@@ -116,6 +201,11 @@ public class Utente implements Serializable {
      *
      * @param password la nuova password dell'utente
      * */
+    /*@
+      @ public normal_behavior
+      @ assignable this.password;
+      @ ensures this.password == password;
+      @*/
     public void setPassword(String password) {
         this.password = password;
     }
@@ -125,7 +215,12 @@ public class Utente implements Serializable {
      *
      * @return il tipo di utente
      * */
-    public Tipo getTipo() {
+    /*@
+      @ public normal_behavior
+      @ assignable \nothing;
+      @ ensures \result == tipo;
+      @*/
+    public /*@ nullable */ Tipo getTipo() {
         return tipo;
     }
 
@@ -134,6 +229,11 @@ public class Utente implements Serializable {
      *
      * @param tipo il nuovo tipo di utente
      * */
+    /*@
+      @ public normal_behavior
+      @ assignable this.tipo;
+      @ ensures this.tipo == tipo;
+      @*/
     public void setTipo(Tipo tipo) {
         this.tipo = tipo;
     }
@@ -143,6 +243,7 @@ public class Utente implements Serializable {
      *
      * @return una stringa contenente le informazioni dell'Utente
      * */
+    //@ skipesc
     @Override
     public String toString() {
         return "Utente{" +

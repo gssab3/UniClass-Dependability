@@ -16,11 +16,11 @@ import static it.unisa.uniclass.conversazioni.model.Topic.*;
 @Access(AccessType.FIELD)
 @Table(name = "topics")
 @NamedQueries({
-        @NamedQuery(name = TROVA_ID, query = "SELECT t FROM Topic t WHERE t.id = :id"),
-        @NamedQuery(name = TROVA_NOME, query = "SELECT t FROM Topic t WHERE t.nome = :nome"),
-        @NamedQuery(name = TROVA_CORSOLAUREA, query = "SELECT t FROM Topic t WHERE t.corsoLaurea.nome = :nome"),
-        @NamedQuery(name = TROVA_CORSO, query = "SELECT t FROM Topic t WHERE t.corso.nome = :nome"),
-        @NamedQuery(name = TROVA_TUTTI, query = "SELECT t FROM Topic t")
+        @NamedQuery(name = "Topic.trovaId", query = "SELECT t FROM Topic t WHERE t.id = :id"),
+        @NamedQuery(name = "Topic.trovaNome", query = "SELECT t FROM Topic t WHERE t.nome = :nome"),
+        @NamedQuery(name = "Topic.trovaCorsoLaurea", query = "SELECT t FROM Topic t WHERE t.corsoLaurea.nome = :nome"),
+        @NamedQuery(name = "Topic.trovaCorso", query = "SELECT t FROM Topic t WHERE t.corso.nome = :nome"),
+        @NamedQuery(name = "Topic.trovaTutti", query = "SELECT t FROM Topic t")
 })
 public class Topic implements Serializable {
 
@@ -38,9 +38,13 @@ public class Topic implements Serializable {
     /** Identificatore univoco del topic. */
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    //@ spec_public
+    //@ nullable
     private Long id;
 
     /** Nome del topic, ad esempio "Informatica" o "Programmazione Distribuita". */
+    //@ spec_public
+    //@ nullable
     private String nome;
 
     /**
@@ -48,6 +52,8 @@ public class Topic implements Serializable {
      */
     @ManyToOne
     @JoinColumn(name = "corso_laurea_id", nullable = true)
+    //@ spec_public
+    //@ nullable
     private CorsoLaurea corsoLaurea;
 
     /**
@@ -55,10 +61,14 @@ public class Topic implements Serializable {
      */
     @ManyToOne
     @JoinColumn(name = "corso_id", nullable = true)
+    //@ spec_public
+    //@ nullable
     private Corso corso;
 
     /** Lista dei messaggi associati al topic. */
     @OneToMany(mappedBy = "topic", cascade = CascadeType.ALL)
+    //@ spec_public
+    //@ nullable
     private List<Messaggio> messaggi;
 
     /**
@@ -66,7 +76,11 @@ public class Topic implements Serializable {
      *
      * @return il nome del topic
      */
-    public String getNome() {
+    /*@ public normal_behavior
+      @ assignable \nothing;
+      @ ensures \result == nome;
+      @*/
+    public /*@ nullable */ String getNome() {
         return nome;
     }
 
@@ -75,6 +89,11 @@ public class Topic implements Serializable {
      *
      * @param nome il nome del topic
      */
+    /*@
+        @ public normal_behavior
+        @ assignable this.nome;
+        @ ensures this.nome == nome;
+      @*/
     public void setNome(String nome) {
         this.nome = nome;
     }
@@ -84,7 +103,12 @@ public class Topic implements Serializable {
      *
      * @return il corso di laurea associato
      */
-    public CorsoLaurea getCorsoLaurea() {
+    /*@
+      @ public normal_behavior
+      @ assignable \nothing;
+      @ ensures \result == corsoLaurea;
+      @*/
+    public /*@ nullable */ CorsoLaurea getCorsoLaurea() {
         return corsoLaurea;
     }
 
@@ -93,6 +117,11 @@ public class Topic implements Serializable {
      *
      * @param corsoLaurea il corso di laurea da associare
      */
+    /*@
+      @ public normal_behavior
+      @ assignable this.corsoLaurea;
+      @ ensures this.corsoLaurea == corsoLaurea;
+      @*/
     public void setCorsoLaurea(CorsoLaurea corsoLaurea) {
         this.corsoLaurea = corsoLaurea;
     }
@@ -102,7 +131,12 @@ public class Topic implements Serializable {
      *
      * @return il corso associato
      */
-    public Corso getCorso() {
+    /*@
+      @ public normal_behavior
+      @ assignable \nothing;
+      @ ensures \result == corso;
+      @*/
+    public /*@ nullable */ Corso getCorso() {
         return corso;
     }
 
@@ -111,6 +145,11 @@ public class Topic implements Serializable {
      *
      * @param corso il corso da associare
      */
+    /*@
+      @ public normal_behavior
+      @ assignable this.corso;
+      @ ensures this.corso == corso;
+      @*/
     public void setCorso(Corso corso) {
         this.corso = corso;
     }
@@ -120,7 +159,12 @@ public class Topic implements Serializable {
      *
      * @return l'ID del topic
      */
-    public Long getId() {
+    /*@
+      @ public normal_behavior
+      @ assignable \nothing;
+      @ ensures \result == id;
+      @*/
+    public /*@ nullable */ Long getId() {
         return id;
     }
 
@@ -129,13 +173,17 @@ public class Topic implements Serializable {
      *
      * @return stringa rappresentativa del topic
      */
+    //@ skipesc
     @Override
     public String toString() {
         return "Topic{" +
-                "id=" + id +
-                ", nome='" + nome + '\'' +
-                ", corsoLaurea=" + corsoLaurea +
-                ", corso=" + corso +
+                "id=" + (id != null ? id : "null") +
+                ", nome='" + (nome != null ? nome : "null") + '\'' +
+                ", corsoLaurea=" + (corsoLaurea != null ? corsoLaurea : "null") +
+                ", corso=" + (corso != null ? corso : "null") +
                 '}';
     }
+
+
+
 }
