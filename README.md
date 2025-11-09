@@ -17,7 +17,6 @@ UniClass è costruita con una serie di moduli separati che coprono le diverse fu
 
 1. **Gestione Orari**:
     - Permette di visualizzare, aggiungere e aggiornare gli orari delle lezioni.
-      
     - Supporta la visualizzazione per giorno, settimana o mese.
 
 2. **Gestione Aule**:
