@@ -2,9 +2,20 @@ name: Java CI con Maven
 
 on:
   push:
-    branches: [ main, develop ]
+    # Si avvia su push per feedback immediato E dopo un merge nei branch principali
+    branches: 
+      - main
+      - develop
+      - lucagen  
+      - prototype
   pull_request:
-    branches: [ main, develop ]
+    types: [opened, synchronize, reopened]
+    # Si avvia solo quando si cerca di unire il codice in questi branch
+    branches: 
+      - main
+      - develop
+      - prototype
+      - lucagen
 
 jobs:
   build:
