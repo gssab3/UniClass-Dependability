@@ -48,4 +48,4 @@ jobs:
          
           SONAR_PROJECT_KEY: JakartaDependent_UniClass-Dependability
           
-          SONAR_ORGANIZATION: JakartaDependent
+          SONAR_ORGANIZATION: jakartadependent
