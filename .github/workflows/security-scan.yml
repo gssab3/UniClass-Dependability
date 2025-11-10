@@ -45,7 +45,7 @@ jobs:
           args: --all-projects --severity-threshold=high
 
       # 2. SCAN SECRET HARDCODED (con GitGuardian)
-      - name: GitGuardian: Scansione Secret
+      - name: GitGuardian  Scansione Secret
         # Sostituisce l'azione Snyk fallita. Copre il requisito del corso.
         uses: GitGuardian/ggshield-action@master
         env:
