@@ -11,6 +11,8 @@
     <packaging>war</packaging>
 
     <properties>
+        <sonar.organization>jakartadependent</sonar.organization>
+        <sonar.projectKey>JakartaDependent_UniClass-Dependability</sonar.projectKey>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <maven.compiler.target>21</maven.compiler.target>
         <maven.compiler.source>21</maven.compiler.source>
