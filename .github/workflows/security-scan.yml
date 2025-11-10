@@ -1,11 +1,19 @@
-name: Scansione Sicurezza Snyk
+name: Security Scan Snyk
 
 on:
   push:
-    branches: [ main, develop, lucagen ]
+    # Trigger su push per controllo immediato
+    branches: 
+      - main
+      - develop
+      - lucagen
   pull_request:
     types: [opened, synchronize, reopened]
-    branches: [ main, develop, prototype ]
+    # Trigger su pull request per bloccare merge non sicuri
+    branches: 
+      - main
+      - develop
+      - prototype
 
 jobs:
   snyk_security_check:
@@ -30,9 +38,10 @@ jobs:
         # Analizza il pom.xml per trovare CVE nelle librerie usate.
         uses: snyk/actions/maven@master
         env:
-          SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }} # Recupera il Token dal Secret
+          # Recupera il Token dal Secret (Deve esistere il Secret SNYK_TOKEN)
+          SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }} 
         with:
-          # Fallisce se vengono trovate vulnerabilità ALTE o CRITICHE (copre requisito 'no vulnerabilities')
+          # Analizza tutti i progetti Maven e fallisce se trova un problema di gravità ALTA o CRITICA.
           args: --all-projects --severity-threshold=high
           
       - name: Snyk: Scansione Secret (Credenziali Hardcoded)
