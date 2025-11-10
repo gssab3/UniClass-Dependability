@@ -46,7 +46,7 @@ jobs:
           
       - name: Snyk Scansione Secret (Credenziali Hardcoded)
         # Cerca chiavi e credenziali nel codice sorgente (security analysis).
-        uses: snyk/actions/detect-secrets@master
+        uses: snyk/actions/git-secrets@master
         env:
           SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
         with:
