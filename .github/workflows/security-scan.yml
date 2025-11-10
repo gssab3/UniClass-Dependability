@@ -34,7 +34,7 @@ jobs:
         # Necessario affinché Snyk possa trovare e analizzare il pom.xml e le dipendenze
         run: mvn install -DskipTests -Dmaven.main.skip=true
           
-      - name: Snyk: Scansione Vulnerabilità Dipendenze
+      - name: Synk Scansione Vulnerabilità Dipendenze
         # Analizza il pom.xml per trovare CVE nelle librerie usate.
         uses: snyk/actions/maven@master
         env:
