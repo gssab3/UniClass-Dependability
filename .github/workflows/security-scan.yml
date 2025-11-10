@@ -44,7 +44,7 @@ jobs:
           # Analizza tutti i progetti Maven e fallisce se trova un problema di gravità ALTA o CRITICA.
           args: --all-projects --severity-threshold=high
           
-      - name: Snyk: Scansione Secret (Credenziali Hardcoded)
+      - name: Snyk Scansione Secret (Credenziali Hardcoded)
         # Cerca chiavi e credenziali nel codice sorgente (security analysis).
         uses: snyk/actions/detect-secrets@master
         env:
