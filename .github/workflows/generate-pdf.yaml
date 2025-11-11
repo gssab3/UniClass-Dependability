@@ -18,8 +18,10 @@ jobs:
       - name: Install Pandoc and TeX dependencies
         run: |
           sudo apt-get update
-          sudo apt-get install -y pandoc texlive-latex-base texlive-fonts-recommended texlive-fonts-extra texlive-latex-extra texlive-xetex
-          
+          # Accetta automaticamente la licenza EULA per i font Microsoft
+          echo "ttf-mscorefonts-installer msttcorefonts/accepted-mscorefonts-eula select true" | sudo debconf-set-selections
+          # Installa tutto: i pacchetti di prima + xetex + i font
+          sudo apt-get install -y pandoc texlive-latex-base texlive-fonts-recommended texlive-fonts-extra texlive-latex-extra texlive-xetex ttf-mscorefonts-installer  
       - name: Generate PDF
         run: |
           cd Report/md-thesis
