@@ -1,7 +1,7 @@
 name: Generate and Commit PDF
 
 on:
-  workflow_dispatch:   # può essere lanciato manualmente
+  workflow_dispatch:   
   push:
     paths:
       - 'Report/md-thesis/**.md'
@@ -18,8 +18,8 @@ jobs:
       - name: Install Pandoc and TeX dependencies
         run: |
           sudo apt-get update
-          sudo apt-get install -y pandoc texlive-latex-base texlive-fonts-recommended texlive-fonts-extra texlive-latex-extra
-
+          sudo apt-get install -y pandoc texlive-latex-base texlive-fonts-recommended texlive-fonts-extra texlive-latex-extra texlive-xetex
+          
       - name: Generate PDF
         run: |
           cd Report/md-thesis
