@@ -1,8 +1,5 @@
-## ⚙️ `metadata.yaml`
-
-```yaml
 title: "Software Dependability Report – UniClass"
-author: 
+author:
   - "Choaib Goumri"
   - "Giuseppe Sabetta"
   - "Luca Generoso"
@@ -12,3 +9,4 @@ fontsize: 11pt
 mainfont: Times New Roman
 toc: true
 toc-depth: 2
+
