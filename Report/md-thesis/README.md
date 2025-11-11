@@ -32,9 +32,6 @@ Per modificare il report, segui queste procedure.
 
 1.  Aggiungi la tua immagine (es. `schema.png`) alla cartella `Images/`.
 2.  Nel tuo file `.md`, inseriscila usando la sintassi Markdown relativa:
-    ```markdown
-    ![Descrizione dello schema](Images/schema.png)
-    ```
 3.  Fai un `commit` e un `push`.
 
 ---
@@ -49,4 +46,5 @@ Il PDF finale **si trova direttamente in questo progetto**. Non c'è bisogno di 
 Ricorda solo di eseguire un `git pull` prima di aprirlo, per assicurarti di avere l'ultima versione che è stata compilata automaticamente.
 
 ```bash
+
 git pull
