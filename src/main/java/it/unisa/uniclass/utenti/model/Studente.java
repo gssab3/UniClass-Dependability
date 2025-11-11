@@ -64,16 +64,7 @@ public class Studente extends Accademico implements Serializable {
     //@ nullable
     private Resto resto;
 
-    /**
-     * Corso di laurea associato allo studente.
-     * Relazione molti-a-uno.
-     * */
-    @ManyToOne
-    @JoinColumn(name = "corso_laurea_id", nullable = false) // Colonna FK per CorsoLaurea
-    //@ spec_public
-    //@ nullable
-    private CorsoLaurea corsoLaurea;
-
+   
 
     /**
      * Costruttore con parametri.
@@ -91,7 +82,7 @@ public class Studente extends Accademico implements Serializable {
         super.setTipo(Tipo.Studente);
         super.setMatricola(matricola);
         this.resto = resto;
-        this.corsoLaurea = corsoLaurea;
+        super.setCorsoLaurea(corsoLaurea); //modifica per (java:S2387)
     }
 
     /**
@@ -106,38 +97,6 @@ public class Studente extends Accademico implements Serializable {
       @*/
     public /*@ nullable */ Resto getResto() {
         return resto;
-    }
-
-    /**
-     * Restituisce il corso di laurea associato allo studente.
-     *
-     * @return Oggetto {@link CorsoLaurea}.
-     * */
-    /*@
-      @ also
-      @ public normal_behavior
-      @ assignable \nothing;
-      @ ensures \result == corsoLaurea;
-      @*/
-    @Override
-    public /*@ nullable */ CorsoLaurea getCorsoLaurea() {
-        return corsoLaurea;
-    }
-
-    /**
-     * Imposta il corso di laurea associato allo Studente.
-     *
-     * @param corsoLaurea Oggetto {@link CorsoLaurea} da associare.
-     * */
-    /*@
-      @ also
-      @ public normal_behavior
-      @ assignable this.corsoLaurea;
-      @ ensures this.corsoLaurea == corsoLaurea;
-      @*/
-    @Override
-    public void setCorsoLaurea(CorsoLaurea corsoLaurea) {
-        this.corsoLaurea = corsoLaurea;
     }
 
     /**
@@ -170,7 +129,7 @@ public class Studente extends Accademico implements Serializable {
                 ", tipo=" + tipo +
                 ", matricola='" + matricola + '\'' +
                 ", iscrizione=" + iscrizione +
-                ", corsoLaurea=" + corsoLaurea +
+                ", corsoLaurea=" + getCorsoLaurea() +
                 '}';
     }
 }
