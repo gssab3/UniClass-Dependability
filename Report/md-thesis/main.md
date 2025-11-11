@@ -1,13 +1,14 @@
-```{include} chapters/frontespizio.md
-```{include} chapters/introduzione.md
-```{include} chapters/software-quality.md
-```{include} chapters/docker.md
-```{include} chapters/openjml.md
-```{include} chapters/code-coverage.md
-```{include} chapters/energy-testing.md
-```{include} chapters/performance.md
-```{include} chapters/test-cases.md
-```{include} chapters/vulnerabilities.md
-```{include} chapters/conclusioni.md
+```{include} frontespizio.md
+```{include} introduzione.md
+```{include} software-quality.md
+```{include} docker.md
+```{include} openjml.md
+```{include} code-coverage.md
+```{include} energy-testing.md
+```{include} performance.md
+```{include} test-cases.md
+```{include} vulnerabilities.md
+```{include} conclusioni.md
+
 
 
