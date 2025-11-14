@@ -29,7 +29,7 @@ public class LoginTest {
   }
   @Test
   public void tC1ValidLogin() {
-    driver.get("http://localhost:8080/UniClass/Home");
+    driver.get("http://localhost:8080/UniClass-Dependability/Home");
     driver.findElement(By.cssSelector("span > a > img")).click();
     driver.findElement(By.id("email")).click();
     driver.findElement(By.id("email")).sendKeys("giacomoporetti@unisa.it");
@@ -38,7 +38,7 @@ public class LoginTest {
   }
   @Test
   public void tC2NotPresentPassword() {
-    driver.get("http://localhost:8080/UniClass/Home");
+    driver.get("http://localhost:8080/UniClass-Dependability/Home");
     driver.findElement(By.cssSelector("span > a > img")).click();
     driver.findElement(By.id("email")).click();
     driver.findElement(By.id("email")).sendKeys("giacomoporetti@unisa.it");
@@ -47,7 +47,7 @@ public class LoginTest {
   }
   @Test
   public void tC3NotValidPassword() {
-    driver.get("http://localhost:8080/UniClass/Home");
+    driver.get("http://localhost:8080/UniClass-Dependability/Home");
     driver.findElement(By.cssSelector("span > a > img")).click();
     driver.findElement(By.id("email")).click();
     driver.findElement(By.id("email")).sendKeys("giacomoporetti@unisa.it");
@@ -57,7 +57,7 @@ public class LoginTest {
   }
   @Test
   public void tC4NotPresentEmail() {
-    driver.get("http://localhost:8080/UniClass/Home");
+    driver.get("http://localhost:8080/UniClass-Dependability/Home");
     driver.findElement(By.cssSelector("span > a > img")).click();
     driver.findElement(By.id("email")).click();
     driver.findElement(By.id("email")).sendKeys("giacomporetti@unisa.it");
@@ -67,7 +67,7 @@ public class LoginTest {
   }
   @Test
   public void tC5formatEmailOnlyValid() {
-    driver.get("http://localhost:8080/UniClass/Home");
+    driver.get("http://localhost:8080/UniClass-Dependability/Home");
     driver.findElement(By.cssSelector("span > a > img")).click();
     driver.findElement(By.id("email")).click();
     driver.findElement(By.id("email")).sendKeys("giacomo@unisa.it");
@@ -78,7 +78,7 @@ public class LoginTest {
   }
   @Test
   public void tC6formatPasswordOnlyValid() {
-    driver.get("http://localhost:8080/UniClass/Home");
+    driver.get("http://localhost:8080/UniClass-Dependability/Home");
     driver.findElement(By.cssSelector("span > a > img")).click();
     driver.findElement(By.id("email")).click();
     driver.findElement(By.id("email")).sendKeys("giacunsa.it");
@@ -88,7 +88,7 @@ public class LoginTest {
   }
   @Test
   public void tC7NothingValid() {
-    driver.get("http://localhost:8080/UniClass/Home");
+    driver.get("http://localhost:8080/UniClass-Dependability/Home");
     driver.findElement(By.cssSelector("span > a > img")).click();
     driver.findElement(By.id("email")).click();
     driver.findElement(By.id("email")).sendKeys("giacunsa.it");

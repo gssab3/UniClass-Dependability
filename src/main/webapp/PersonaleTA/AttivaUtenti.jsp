@@ -30,7 +30,7 @@
 
 <head>
     <title>UniClass</title>
-    <script src="/UniClass/scripts/sidebar.js" type="text/javascript"></script>
+    <script src="${pageContext.request.contextPath}/scripts/sidebar.js" type="text/javascript"></script>
     <link type="text/css" rel="stylesheet" href="../styles/headerStyle.css"/>
     <link type="text/css" rel="stylesheet" href="../styles/barraNavigazioneStyle.css" />
     <link type="text/css" rel="stylesheet" href="../styles/uniClassAdd.css" />
