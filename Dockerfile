@@ -1,5 +1,6 @@
 # Parto da jdk21
-FROM openjdk:21
+FROM eclipse-temurin:21-jdk
+
 
 # Non essendoci delle build predefinite con TomEE 10, ne prendiamo una noi online
 RUN curl -L https://downloads.apache.org/tomee/tomee-10.1.2/apache-tomee-10.1.2-microprofile.tar.gz -o /tmp/tomee.tar.gz \
