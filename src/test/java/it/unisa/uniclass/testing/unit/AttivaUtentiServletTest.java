@@ -125,7 +125,7 @@ class AttivaUtentiServletTest {
         when(request.getParameter("email")).thenReturn("s.davanzo5@studenti.unisa.it");
         when(request.getParameter("matricola")).thenReturn("0512118330");
         when(request.getParameter("tipo")).thenReturn("Studente");
-        when(request.getContextPath()).thenReturn("/UniClass");
+        when(request.getContextPath()).thenReturn("/UniClass-Dependability");
 
         //Studente reale
         Studente studente = new Studente();
@@ -193,8 +193,8 @@ class AttivaUtentiServletTest {
                         acc.isAttivato() // Controlla che attivato sia true
         ));
 
-        verify(response).sendRedirect("/UniClass/PersonaleTA/AttivaUtenti.jsp");
-        System.out.println("URL : /UniClass/PersonaleTA/AttivaUtenti.jsp");
+        verify(response).sendRedirect("/UniClass-Dependability/PersonaleTA/AttivaUtenti.jsp");
+        System.out.println("URL : /UniClass-Dependability/PersonaleTA/AttivaUtenti.jsp");
     }
 
     @Test
@@ -206,7 +206,7 @@ class AttivaUtentiServletTest {
         when(request.getParameter("email")).thenReturn("s.davanzo5@studenti.unisa.it");
         when(request.getParameter("matricola")).thenReturn("0512118330");
         when(request.getParameter("tipo")).thenReturn("Studente");
-        when(request.getContextPath()).thenReturn("/UniClass");
+        when(request.getContextPath()).thenReturn("/UniClass-Dependability");
 
         //Studente reale
         Studente studente = new Studente();
@@ -270,8 +270,8 @@ class AttivaUtentiServletTest {
         // Verifica che NON venga chiamato `aggiungiAccademico` (perché l'attivazione non deve avvenire)
         verify(accademicoService, never()).aggiungiAccademico(any());
 
-        verify(response).sendRedirect("/UniClass/PersonaleTA/AttivaUtenti.jsp?action=error");
-        System.out.println("URL : /UniClass/PersonaleTA/AttivaUtenti.jsp?action=error");
+        verify(response).sendRedirect("/UniClass-Dependability/PersonaleTA/AttivaUtenti.jsp?action=error");
+        System.out.println("URL : /UniClass-Dependability/PersonaleTA/AttivaUtenti.jsp?action=error");
     }
 
     @Test
@@ -283,7 +283,7 @@ class AttivaUtentiServletTest {
         when(request.getParameter("email")).thenReturn("s.davanzo@studenti.unisa.it");
         when(request.getParameter("matricola")).thenReturn("0512118330");
         when(request.getParameter("tipo")).thenReturn("Studente");
-        when(request.getContextPath()).thenReturn("/UniClass");
+        when(request.getContextPath()).thenReturn("/UniClass-Dependability");
 
         //Studente reale
         Studente studente = new Studente();
@@ -350,8 +350,8 @@ class AttivaUtentiServletTest {
         // Verifica che NON venga chiamato `aggiungiAccademico` (perché l'attivazione non deve avvenire)
         verify(accademicoService, never()).aggiungiAccademico(any());
 
-        verify(response).sendRedirect("/UniClass/PersonaleTA/AttivaUtenti.jsp?action=error");
-        System.out.println("URL : /UniClass/PersonaleTA/AttivaUtenti.jsp?action=error");
+        verify(response).sendRedirect("/UniClass-Dependability/PersonaleTA/AttivaUtenti.jsp?action=error");
+        System.out.println("URL : /UniClass-Dependability/PersonaleTA/AttivaUtenti.jsp?action=error");
     }
 
     @Test
@@ -363,7 +363,7 @@ class AttivaUtentiServletTest {
         when(request.getParameter("email")).thenReturn("s.davanzostudenti@uni");
         when(request.getParameter("matricola")).thenReturn("0512118330");
         when(request.getParameter("tipo")).thenReturn("Studente");
-        when(request.getContextPath()).thenReturn("/UniClass");
+        when(request.getContextPath()).thenReturn("/UniClass-Dependability");
 
         //Studente reale
         Studente studente = new Studente();
@@ -430,8 +430,8 @@ class AttivaUtentiServletTest {
         // Verifica che NON venga chiamato `aggiungiAccademico` (perché l'attivazione non deve avvenire)
         verify(accademicoService, never()).aggiungiAccademico(any());
 
-        verify(response).sendRedirect("/UniClass/PersonaleTA/AttivaUtenti.jsp?action=error");
-        System.out.println("URL : /UniClass/PersonaleTA/AttivaUtenti.jsp?action=error");
+        verify(response).sendRedirect("/UniClass-Dependability/PersonaleTA/AttivaUtenti.jsp?action=error");
+        System.out.println("URL : /UniClass-Dependability/PersonaleTA/AttivaUtenti.jsp?action=error");
     }
 
     @Test
@@ -444,7 +444,7 @@ class AttivaUtentiServletTest {
         when(request.getParameter("email")).thenReturn("s.davanzo@studenti.unisa.it");
         when(request.getParameter("matricola")).thenReturn("0512117895");
         when(request.getParameter("tipo")).thenReturn("Studente");
-        when(request.getContextPath()).thenReturn("/UniClass");
+        when(request.getContextPath()).thenReturn("/UniClass-Dependability");
 
         //Studente reale
         Studente studente = new Studente();
@@ -511,8 +511,8 @@ class AttivaUtentiServletTest {
         // Verifica che NON venga chiamato `aggiungiAccademico` (perché l'attivazione non deve avvenire)
         verify(accademicoService, never()).aggiungiAccademico(any());
 
-        verify(response).sendRedirect("/UniClass/PersonaleTA/AttivaUtenti.jsp?action=error");
-        System.out.println("URL : /UniClass/PersonaleTA/AttivaUtenti.jsp?action=error");
+        verify(response).sendRedirect("/UniClass-Dependability/PersonaleTA/AttivaUtenti.jsp?action=error");
+        System.out.println("URL : /UniClass-Dependability/PersonaleTA/AttivaUtenti.jsp?action=error");
     }
 
     @Test
@@ -526,7 +526,7 @@ class AttivaUtentiServletTest {
         when(request.getParameter("email")).thenReturn("s.davanzostudenti@uni");
         when(request.getParameter("matricola")).thenReturn("0512117895");
         when(request.getParameter("tipo")).thenReturn("Studente");
-        when(request.getContextPath()).thenReturn("/UniClass");
+        when(request.getContextPath()).thenReturn("/UniClass-Dependability");
 
         //Studente reale
         Studente studente = new Studente();
@@ -593,8 +593,8 @@ class AttivaUtentiServletTest {
         // Verifica che NON venga chiamato `aggiungiAccademico` (perché l'attivazione non deve avvenire)
         verify(accademicoService, never()).aggiungiAccademico(any());
 
-        verify(response).sendRedirect("/UniClass/PersonaleTA/AttivaUtenti.jsp?action=error");
-        System.out.println("URL : /UniClass/PersonaleTA/AttivaUtenti.jsp?action=error");
+        verify(response).sendRedirect("/UniClass-Dependability/PersonaleTA/AttivaUtenti.jsp?action=error");
+        System.out.println("URL : /UniClass-Dependability/PersonaleTA/AttivaUtenti.jsp?action=error");
     }
 
     @Test
@@ -608,7 +608,7 @@ class AttivaUtentiServletTest {
         when(request.getParameter("email")).thenReturn("s.davanzo@studenti.unisa.it");
         when(request.getParameter("matricola")).thenReturn("aaaaa?");
         when(request.getParameter("tipo")).thenReturn("Studente");
-        when(request.getContextPath()).thenReturn("/UniClass");
+        when(request.getContextPath()).thenReturn("/UniClass-Dependability");
 
         //Studente reale
         Studente studente = new Studente();
@@ -675,8 +675,8 @@ class AttivaUtentiServletTest {
         // Verifica che NON venga chiamato `aggiungiAccademico` (perché l'attivazione non deve avvenire)
         verify(accademicoService, never()).aggiungiAccademico(any());
 
-        verify(response).sendRedirect("/UniClass/PersonaleTA/AttivaUtenti.jsp?action=error");
-        System.out.println("URL : /UniClass/PersonaleTA/AttivaUtenti.jsp?action=error");
+        verify(response).sendRedirect("/UniClass-Dependability/PersonaleTA/AttivaUtenti.jsp?action=error");
+        System.out.println("URL : /UniClass-Dependability/PersonaleTA/AttivaUtenti.jsp?action=error");
     }
 
     @Test
@@ -690,7 +690,7 @@ class AttivaUtentiServletTest {
         when(request.getParameter("email")).thenReturn("s.davanzostudenti@uni");
         when(request.getParameter("matricola")).thenReturn("aaaaa");
         when(request.getParameter("tipo")).thenReturn("Studente");
-        when(request.getContextPath()).thenReturn("/UniClass");
+        when(request.getContextPath()).thenReturn("/UniClass-Dependability");
 
         //Studente reale
         Studente studente = new Studente();
@@ -757,7 +757,7 @@ class AttivaUtentiServletTest {
         // Verifica che NON venga chiamato `aggiungiAccademico` (perché l'attivazione non deve avvenire)
         verify(accademicoService, never()).aggiungiAccademico(any());
 
-        verify(response).sendRedirect("/UniClass/PersonaleTA/AttivaUtenti.jsp?action=error");
-        System.out.println("URL : /UniClass/PersonaleTA/AttivaUtenti.jsp?action=error");
+        verify(response).sendRedirect("/UniClass-Dependability/PersonaleTA/AttivaUtenti.jsp?action=error");
+        System.out.println("URL : /UniClass-Dependability/PersonaleTA/AttivaUtenti.jsp?action=error");
     }
 }
