@@ -30,7 +30,14 @@ public class AccademicoService {
             throw new RuntimeException("Errore durante il lookup di AccademicoDAO", e);
         }
     }
-
+    
+    /**
+     * Costruttore per i Test.
+     * @param dao Il DAO mockato.
+     */
+    public AccademicoService(AccademicoRemote dao){
+        this.accademicoDao = dao;
+    }
     /**
      * Costruttore che accetta un'istanza di AccademicoRemote.
      * Se l'istanza è null, esegue il lookup JNDI del DAO.
