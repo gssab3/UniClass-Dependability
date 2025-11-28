@@ -35,6 +35,12 @@ public class DocenteService {
     }
 
     /**
+     * Costruttore per i Test (Dependency Injection).
+     */
+    public DocenteService(DocenteRemote dao) {
+        this.docenteDao = dao;
+    }
+    /**
      * Trova un docente nel database utilizzando la sua matricola.
      *
      * @param matricola La matricola del docente da cercare.
