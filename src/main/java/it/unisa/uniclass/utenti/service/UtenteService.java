@@ -16,6 +16,36 @@ import jakarta.persistence.NoResultException;
 @Stateless
 public class UtenteService {
 
+    // Campi per il supporto ai test (Lazy Loading Pattern)
+    private PersonaleTAService personaleTAService;
+    private AccademicoService accademicoService;
+
+    // Setter per Dependency Injection (usati SOLO dai Test per iniettare i Mock)
+    public void setPersonaleTAService(PersonaleTAService personaleTAService) {
+        this.personaleTAService = personaleTAService;
+    }
+
+    public void setAccademicoService(AccademicoService accademicoService) {
+        this.accademicoService = accademicoService;
+    }
+
+    // Metodi Getter Helper con logica Lazy Loading
+    // Se il service è nullo (produzione), lo istanzia col costruttore reale (JNDI).
+    // Se è già settato (test), restituisce il mock.
+    protected PersonaleTAService getPersonaleTAService() {
+        if (personaleTAService == null) {
+            personaleTAService = new PersonaleTAService();
+        }
+        return personaleTAService;
+    }
+
+    protected AccademicoService getAccademicoService() {
+        if (accademicoService == null) {
+            accademicoService = new AccademicoService();
+        }
+        return accademicoService;
+    }
+
     /**
      * Recupera un utente dal database utilizzando la sua email e password.
      *
@@ -26,10 +56,10 @@ public class UtenteService {
      */
     public Utente retrieveByUserAndPassword(String email, String password) {
         try {
-            PersonaleTAService personaleTAService = new PersonaleTAService();
-            AccademicoService accademicoService = new AccademicoService();
-            PersonaleTA personaleTA = (PersonaleTA) personaleTAService.trovaEmail(email);
-            Accademico accademico = (Accademico) accademicoService.trovaEmailUniClass(email);
+            // MODIFICA: Utilizzo dei metodi getter helper invece di 'new' diretto
+            PersonaleTA personaleTA = (PersonaleTA) getPersonaleTAService().trovaEmail(email);
+            Accademico accademico = (Accademico) getAccademicoService().trovaEmailUniClass(email);
+            
             if (personaleTA != null) {
                 if (personaleTA.getPassword().equals(password)) {
                     return personaleTA;
@@ -56,10 +86,10 @@ public class UtenteService {
      * @return L'oggetto Utente corrispondente all'email.
      */
     public Utente retrieveByEmail(String email) {
-        PersonaleTAService personaleTAService = new PersonaleTAService();
-        AccademicoService accademicoService = new AccademicoService();
-        PersonaleTA personaleTA = (PersonaleTA) personaleTAService.trovaEmail(email);
-        Accademico accademico = (Accademico) accademicoService.trovaEmailUniClass(email);
+        // MODIFICA: Utilizzo dei metodi getter helper invece di 'new' diretto
+        PersonaleTA personaleTA = (PersonaleTA) getPersonaleTAService().trovaEmail(email);
+        Accademico accademico = (Accademico) getAccademicoService().trovaEmailUniClass(email);
+        
         if (personaleTA != null) {
             return personaleTA;
         } else if (accademico != null) {
