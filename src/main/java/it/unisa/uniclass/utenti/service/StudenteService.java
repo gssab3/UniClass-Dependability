@@ -36,6 +36,14 @@ public class StudenteService {
     }
 
     /**
+     * Costruttore per i Test.
+     * @param dao Il DAO mockato.
+     */
+    public StudenteService(StudenteRemote dao) {
+        this.studenteDao = dao;
+    }
+
+    /**
      * Trova uno studente nel database utilizzando la sua matricola.
      *
      * @param matricola La matricola dello studente da cercare.
