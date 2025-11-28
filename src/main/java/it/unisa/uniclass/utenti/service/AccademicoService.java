@@ -38,24 +38,7 @@ public class AccademicoService {
     public AccademicoService(AccademicoRemote dao){
         this.accademicoDao = dao;
     }
-    /**
-     * Costruttore che accetta un'istanza di AccademicoRemote.
-     * Se l'istanza è null, esegue il lookup JNDI del DAO.
-     *
-     * @param academicDao L'istanza di AccademicoRemote.
-     */
-    public AccademicoService(AccademicoRemote academicDao) {
-        if (academicDao == null) {
-            try {
-                InitialContext ctx = new InitialContext();
-                this.accademicoDao = (AccademicoRemote) ctx.lookup("java:global/UniClass-Dependability/AcademicDAO");
-            } catch (NamingException e) {
-                throw new RuntimeException("Error during AcademicDAO lookup", e);
-            }
-        } else {
-            this.accademicoDao = academicDao;
-        }
-    }
+    
 
     /**
      * Trova un accademico nel database utilizzando la sua matricola.
