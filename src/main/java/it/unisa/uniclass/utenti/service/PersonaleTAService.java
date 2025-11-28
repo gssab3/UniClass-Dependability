@@ -32,6 +32,14 @@ public class PersonaleTAService {
     }
 
     /**
+     * Costruttore per i Test (Dependency Injection).
+     * Permette di passare un DAO mockato.
+     * @param dao Il DAO da utilizzare.
+     */
+    public PersonaleTAService(PersonaleTARemote dao) {
+        this.personaleTAdao = dao;
+    }
+    /**
      * Trova un membro del personale tecnico-amministrativo nel database utilizzando il suo ID.
      *
      * @param id L'ID del personale da cercare.
