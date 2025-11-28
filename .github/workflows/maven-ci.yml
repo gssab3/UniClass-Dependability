@@ -42,3 +42,11 @@ jobs:
         name: uni-class-build
         # Verifica questo path. Adattalo se necessario (es. solo target/*.jar)
         path: target/UniClass-Dependability.war
+
+    - name: Upload Report Coverage (JaCoCo)
+      uses: actions/upload-artifact@v4
+      if: always() # Esegui anche se i test falliscono
+      with:
+        name: coverage-report
+        path: target/site/jacoco/
+        retention-days: 1
