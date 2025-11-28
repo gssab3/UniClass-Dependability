@@ -35,6 +35,13 @@ public class CoordinatoreService {
     }
 
     /**
+     * Costruttore per i Test (Dependency Injection).
+     */
+    public CoordinatoreService(CoordinatoreRemote dao) {
+        this.coordinatoreDao = dao;
+    }
+
+    /**
      * Trova un coordinatore nel database utilizzando la sua matricola.
      *
      * @param matricola La matricola del coordinatore da cercare.
