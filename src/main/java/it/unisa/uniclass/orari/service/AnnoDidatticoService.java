@@ -22,7 +22,7 @@ import java.util.List;
 @Stateless
 public class AnnoDidatticoService {
 
-    private AnnoDidatticoRemote annoDidatticoDao;
+    public AnnoDidatticoRemote annoDidatticoDao;
 
     /**
      * Costruttore di default che esegue il lookup JNDI del DAO.
