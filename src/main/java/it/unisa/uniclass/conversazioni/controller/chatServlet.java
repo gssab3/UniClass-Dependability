@@ -20,10 +20,49 @@ import java.util.List;
 public class chatServlet extends HttpServlet {
 
     @EJB
+    //@ spec_public
+    //@ nullable
     private MessaggioService messaggioService;
 
+    @EJB
+    //@ spec_public
+    //@ nullable
+    private AccademicoService accademicoService;
+
+    /**
+     * Setter per iniettare il MessaggioService (utile per i test).
+     * @param messaggioService il service da iniettare
+     */
+    //@ requires messaggioService != null;
+    //@ ensures this.messaggioService == messaggioService;
+    public void setMessaggioService(MessaggioService messaggioService) {
+        this.messaggioService = messaggioService;
+    }
+
+    /**
+     * Setter per iniettare l'AccademicoService (utile per i test).
+     * @param accademicoService il service da iniettare
+     */
+    //@ requires accademicoService != null;
+    //@ ensures this.accademicoService == accademicoService;
+    public void setAccademicoService(AccademicoService accademicoService) {
+        this.accademicoService = accademicoService;
+    }
+
+    /**
+     * Gestisce le richieste GET per la chat.
+     * Carica i messaggi e gli accademici coinvolti nella conversazione.
+     * @param req la richiesta HTTP
+     * @param resp la risposta HTTP
+     * @throws ServletException se si verifica un errore nella servlet
+     * @throws IOException se si verifica un errore di I/O
+     */
+    //@ requires req != null;
+    //@ requires resp != null;
+    //@ requires req.getParameter("accademico") != null;
+    //@ requires req.getParameter("accademicoSelf") != null;
     @Override
-    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+    public void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 
         //da rivedere
         HttpSession session = req.getSession();
@@ -33,16 +72,12 @@ public class chatServlet extends HttpServlet {
         System.out.println("CHAT SERVLET email"+email);
         String emailSelf =  req.getParameter("accademicoSelf");
         System.out.println("CHAT SERVLET mia email"+email);
-
-        AccademicoService accademicoService = new AccademicoService();
         Accademico accademico = accademicoService.trovaEmailUniClass(email);
         System.out.println("accademico altro: "+ accademico);
         Accademico accademicoSelf = accademicoService.trovaEmailUniClass(emailSelf);
         System.out.println("accademico self : "+ accademicoSelf);
-
         List<Messaggio> messaggigi = messaggioService.trovaTutti();
         System.out.println("tutti i messaggi: " + messaggigi);
-
         //List<Messaggio> messaggi = messaggioService.trovaMessaggi(email, emailSelf);
         //System.out.println("soli messaggi: " + messaggi);
 
@@ -73,7 +108,16 @@ public class chatServlet extends HttpServlet {
         resp.sendRedirect(req.getContextPath() + "/chat.jsp");
     }
 
-    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+    /**
+     * Gestisce le richieste POST delegando al metodo doGet.
+     * @param req la richiesta HTTP
+     * @param resp la risposta HTTP
+     * @throws ServletException se si verifica un errore nella servlet
+     * @throws IOException se si verifica un errore di I/O
+     */
+    //@ requires req != null;
+    //@ requires resp != null;
+    public void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         doGet(req, resp);
     }
 }

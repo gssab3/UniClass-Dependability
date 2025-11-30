@@ -2,7 +2,6 @@ package it.unisa.uniclass.conversazioni.controller;
 import it.unisa.uniclass.conversazioni.model.Messaggio;
 import it.unisa.uniclass.conversazioni.model.Topic;
 import it.unisa.uniclass.conversazioni.service.MessaggioService;
-import it.unisa.uniclass.conversazioni.service.dao.MessaggioDAO;
 import it.unisa.uniclass.utenti.model.Accademico;
 import it.unisa.uniclass.utenti.service.AccademicoService;
 import jakarta.ejb.EJB;
@@ -15,22 +14,52 @@ import jakarta.servlet.http.HttpSession;
 
 import java.io.IOException;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 @WebServlet(name = "invioMessaggio", value = "/invioMessaggioServlet")
 public class invioMessaggioServlet extends HttpServlet {
 
     @EJB
+    //@ spec_public
+    //@ nullable
     private MessaggioService messaggioService;
 
     @EJB
+    //@ spec_public
+    //@ nullable
     private AccademicoService accademicoService;
 
+    /**
+     * Setter per iniettare il MessaggioService (utile per i test).
+     * @param messaggioService il service da iniettare
+     */
+    //@ requires messaggioService != null;
+    //@ ensures this.messaggioService == messaggioService;
+    public void setMessaggioService(MessaggioService messaggioService) {
+        this.messaggioService = messaggioService;
+    }
+
+    /**
+     * Setter per iniettare l'AccademicoService (utile per i test).
+     * @param accademicoService il service da iniettare
+     */
+    //@ requires accademicoService != null;
+    //@ ensures this.accademicoService == accademicoService;
+    public void setAccademicoService(AccademicoService accademicoService) {
+        this.accademicoService = accademicoService;
+    }
+
+    /**
+     * Gestisce le richieste GET per inviare un messaggio o un avviso.
+     * @param request la richiesta HTTP
+     * @param response la risposta HTTP
+     * @throws ServletException se si verifica un errore nella servlet
+     * @throws IOException se si verifica un errore di I/O
+     */
+    //@ requires request != null;
+    //@ requires response != null;
     @Override
-    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    public void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         HttpSession session = request.getSession();
 
         //Email attuale (autore del messaggio)
@@ -43,7 +72,7 @@ public class invioMessaggioServlet extends HttpServlet {
         String messaggio = request.getParameter("testo");
 
         //Topic da inviare quando ci si trova nel lato Docente/Coordinatore e c'è un topic inviato
-        String topic = (String) request.getParameter("topic");
+        String topic = request.getParameter("topic");
 
         System.out.println(topic);
 
@@ -67,8 +96,8 @@ public class invioMessaggioServlet extends HttpServlet {
             messaggio1.setTopic(top);
         }
         Messaggio test = messaggioService.aggiungiMessaggio(messaggio1);
-        test.getId();
-        System.out.println(test + "\n\n nella servlet");
+        Long messageId = test.getId();
+        System.out.println("Messaggio ID: " + messageId + " - " + test + "\n\n nella servlet");
         List<Messaggio> messaggi = messaggioService.trovaTutti();
         System.out.println(messaggi);
 
@@ -79,8 +108,17 @@ public class invioMessaggioServlet extends HttpServlet {
 
     }
 
+    /**
+     * Gestisce le richieste POST delegando al metodo doGet.
+     * @param request la richiesta HTTP
+     * @param response la risposta HTTP
+     * @throws ServletException se si verifica un errore nella servlet
+     * @throws IOException se si verifica un errore di I/O
+     */
+    //@ requires request != null;
+    //@ requires response != null;
     @Override
-    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    public void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         doGet(request, response);
     }
 }

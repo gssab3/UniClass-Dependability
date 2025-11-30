@@ -2,12 +2,8 @@ package it.unisa.uniclass.conversazioni.controller;
 
 import it.unisa.uniclass.conversazioni.model.Messaggio;
 import it.unisa.uniclass.conversazioni.service.MessaggioService;
-import it.unisa.uniclass.orari.model.CorsoLaurea;
-import it.unisa.uniclass.orari.service.CorsoLaureaService;
 import it.unisa.uniclass.utenti.model.Accademico;
-import it.unisa.uniclass.utenti.model.Utente;
 import it.unisa.uniclass.utenti.service.AccademicoService;
-import it.unisa.uniclass.utenti.service.UtenteService;
 import jakarta.ejb.EJB;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
@@ -18,21 +14,53 @@ import jakarta.servlet.http.HttpSession;
 
 import java.io.IOException;
 import java.util.List;
-import java.util.Set;
 
 @WebServlet(name = "ConversazioniServlet", value = "/Conversazioni")
 public class ConversazioniServlet extends HttpServlet {
 
     @EJB
+    //@ spec_public
+    //@ nullable
     private MessaggioService messaggioService;
 
+    /**
+     * Setter per iniettare il MessaggioService (utile per i test).
+     * @param messaggioService il service da iniettare
+     */
+    //@ requires messaggioService != null;
+    //@ ensures this.messaggioService == messaggioService;
+    public void setMessaggioService(MessaggioService messaggioService) {
+        this.messaggioService = messaggioService;
+    }
+
+    /**
+     * Gestisce le richieste GET delegando al metodo doPost.
+     * @param request la richiesta HTTP
+     * @param response la risposta HTTP
+     * @throws ServletException se si verifica un errore nella servlet
+     * @throws IOException se si verifica un errore di I/O
+     */
+    //@ requires request != null;
+    //@ requires response != null;
     @Override
-    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    public void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         doPost(request, response);
     }
 
-     @Override
-     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    /**
+     * Gestisce le richieste POST per visualizzare le conversazioni.
+     * Recupera i messaggi inviati, ricevuti e gli avvisi per l'utente corrente.
+     * @param request la richiesta HTTP
+     * @param response la risposta HTTP
+     * @throws ServletException se si verifica un errore nella servlet
+     * @throws IOException se si verifica un errore di I/O
+     */
+    //@ requires request != null;
+    //@ requires response != null;
+    //@ requires request.getSession() != null;
+    //@ requires request.getSession().getAttribute("utenteEmail") != null;
+    @Override
+    public void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
          HttpSession session = request.getSession();
          String email = session.getAttribute("utenteEmail").toString();
 

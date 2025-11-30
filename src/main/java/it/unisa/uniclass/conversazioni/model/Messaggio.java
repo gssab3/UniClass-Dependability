@@ -6,7 +6,6 @@ import jakarta.persistence.*;
 import java.io.Serializable;
 import java.time.LocalDateTime;
 
-import static it.unisa.uniclass.conversazioni.model.Messaggio.*;
 
 /**
  * Rappresenta un messaggio scambiato tra utenti in una conversazione.

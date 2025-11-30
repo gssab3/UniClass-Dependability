@@ -7,7 +7,6 @@ import jakarta.persistence.*;
 import java.io.Serializable;
 import java.util.List;
 
-import static it.unisa.uniclass.conversazioni.model.Topic.*;
 
 /**
  * Rappresenta un topic di discussione associato a un corso di laurea o a un corso specifico.
