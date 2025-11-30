@@ -32,6 +32,15 @@ public class RestoService {
     }
 
     /**
+     * Costruttore per uso interno e test.
+     * Permette l'iniezione diretta del DAO senza lookup JNDI.
+     * @param restoDao il DAO da usare
+     */
+    public RestoService(RestoRemote restoDao) {
+        this.restoDao = restoDao;
+    }
+
+    /**
      * Trova i resti nel database associati a un corso di laurea.
      *
      * @param corsoLaurea Il corso di laurea di cui trovare i resti.

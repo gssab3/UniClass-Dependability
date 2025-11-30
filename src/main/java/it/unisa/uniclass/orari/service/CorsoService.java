@@ -33,6 +33,15 @@ public class CorsoService {
     }
 
     /**
+     * Costruttore per uso interno e test.
+     * Permette l'iniezione diretta del DAO senza lookup JNDI.
+     * @param corsoDao il DAO da usare
+     */
+    public CorsoService(CorsoRemote corsoDao) {
+        this.corsoDao = corsoDao;
+    }
+
+    /**
      * Trova un corso nel database utilizzando il suo ID.
      *
      * @param id L'ID del corso da cercare.

@@ -16,6 +16,7 @@ import java.util.List;
 public class MessaggioDAO implements MessaggioRemote {
 
     @PersistenceContext(unitName = "DBUniClassPU")
+    //@ spec_public
     private EntityManager emUniClass;
 
     /**
@@ -25,6 +26,7 @@ public class MessaggioDAO implements MessaggioRemote {
      */
     @Override
     public Messaggio trovaMessaggio(long id) {
+        //@ assume emUniClass != null;
         TypedQuery<Messaggio> query = emUniClass.createNamedQuery(Messaggio.TROVA_MESSAGGIO, Messaggio.class);
         query.setParameter("id", id);
         return query.getSingleResult();

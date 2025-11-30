@@ -37,6 +37,15 @@ public class AnnoDidatticoService {
     }
 
     /**
+     * Costruttore per uso interno e test.
+     * Permette l'iniezione diretta del DAO senza lookup JNDI.
+     * @param annoDidatticoDao il DAO da usare
+     */
+    public AnnoDidatticoService(AnnoDidatticoRemote annoDidatticoDao) {
+        this.annoDidatticoDao = annoDidatticoDao;
+    }
+
+    /**
      * Trova gli anni didattici nel database utilizzando l'anno.
      *
      * @param anno L'anno didattico da cercare.

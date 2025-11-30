@@ -38,6 +38,15 @@ public class LezioneService {
     }
 
     /**
+     * Costruttore per uso interno e test.
+     * Permette l'iniezione diretta del DAO senza lookup JNDI.
+     * @param lezioneDao il DAO da usare
+     */
+    public LezioneService(LezioneRemote lezioneDao) {
+        this.lezioneDao = lezioneDao;
+    }
+
+    /**
      * Trova una lezione nel database utilizzando il suo ID.
      *
      * @param id L'ID della lezione da cercare.
