@@ -6,6 +6,7 @@ import jakarta.persistence.*;
 
 import java.util.List;
 
+
 /**
  * Classe DAO per la gestione delle entità AnnoDidattico nel database.
  * Fornisce metodi per recuperare, aggiungere e rimuovere anni didattici.
@@ -14,7 +15,7 @@ import java.util.List;
 public class AnnoDidatticoDAO implements AnnoDidatticoRemote {
 
     @PersistenceContext(unitName = "DBUniClassPU")
-    private EntityManager emUniClass;
+    public EntityManager emUniClass;
 
     /**
      * Trova un anno didattico nel database utilizzando l'anno specificato.
@@ -22,8 +23,14 @@ public class AnnoDidatticoDAO implements AnnoDidatticoRemote {
      * @param anno L'anno da cercare.
      * @return Una lista di oggetti AnnoDidattico corrispondenti all'anno specificato.
      */
+    /*@ also
+      @   public normal_behavior
+      @   requires anno != null && !anno.isEmpty();
+      @   ensures (\forall AnnoDidattico a; \result.contains(a); a.getAnno().equals(anno));
+      @*/
     @Override
     public List<AnnoDidattico> trovaAnno(String anno) {
+        //@   assume emUniClass != null;
         TypedQuery<AnnoDidattico> query = emUniClass.createNamedQuery(AnnoDidattico.TROVA_ANNO, AnnoDidattico.class);
         query.setParameter("anno", anno);
         return query.getResultList();
@@ -35,8 +42,14 @@ public class AnnoDidatticoDAO implements AnnoDidatticoRemote {
      * @param id L'ID dell'anno didattico da cercare.
      * @return L'oggetto AnnoDidattico corrispondente all'ID specificato.
      */
+    /*@ also
+      @   public normal_behavior
+      @   requires id > 0;
+      @   ensures true;
+      @*/
     @Override
     public AnnoDidattico trovaId(int id) {
+        //@   assume emUniClass != null;
         TypedQuery<AnnoDidattico> query = emUniClass.createNamedQuery(AnnoDidattico.TROVA_ID, AnnoDidattico.class);
         query.setParameter("id", id);
         return query.getSingleResult();
@@ -47,8 +60,15 @@ public class AnnoDidatticoDAO implements AnnoDidatticoRemote {
      *
      * @return Una lista di tutti gli anni didattici.
      */
+    /*@
+        also
+        public normal_behavior
+        requires true;
+        ensures true;
+      @*/
     @Override
     public List<AnnoDidattico> trovaTutti() {
+        //@   assume emUniClass != null;
         TypedQuery<AnnoDidattico> query = emUniClass.createNamedQuery(AnnoDidattico.TROVA_TUTTI, AnnoDidattico.class);
         return query.getResultList();
     }
@@ -59,8 +79,15 @@ public class AnnoDidatticoDAO implements AnnoDidatticoRemote {
      * @param id L'ID del corso di laurea.
      * @return Una lista di anni didattici associati al corso di laurea specificato.
      */
+    /*@
+      @ also
+      @ public normal_behavior
+      @ requires id > 0;
+      @ ensures true;
+      @*/
     @Override
     public List<AnnoDidattico> trovaTuttiCorsoLaurea(long id) {
+        //@   assume emUniClass != null;
         TypedQuery<AnnoDidattico> query = emUniClass.createNamedQuery(AnnoDidattico.TROVA_ANNI_CORSOLAUREA, AnnoDidattico.class);
         query.setParameter("corsoId", id);
         return query.getResultList();
@@ -73,8 +100,15 @@ public class AnnoDidatticoDAO implements AnnoDidatticoRemote {
      * @param anno L'anno didattico da cercare.
      * @return L'oggetto AnnoDidattico corrispondente ai parametri specificati.
      */
+    /*@
+      @ also
+      @ public normal_behavior
+      @ requires id > 0 && anno != null && !anno.isEmpty();
+      @ ensures true;
+     */
     @Override
     public AnnoDidattico trovaCorsoLaureaNome(long id, String anno) {
+        //@   assume emUniClass != null;
         TypedQuery<AnnoDidattico> query = emUniClass.createNamedQuery(AnnoDidattico.TROVA_ANNI_CORSOLAUREA_NOME, AnnoDidattico.class);
         query.setParameter("corsoId", id);
         query.setParameter("anno", anno);
@@ -86,8 +120,15 @@ public class AnnoDidatticoDAO implements AnnoDidatticoRemote {
      *
      * @param annoDidattico L'anno didattico da aggiungere o aggiornare.
      */
+    /*@
+      @ also
+      @ public normal_behavior
+      @ requires annoDidattico != null;
+      @ ensures true;
+      @*/
     @Override
     public void aggiungiAnno(AnnoDidattico annoDidattico) {
+        //@   assume emUniClass != null;
         emUniClass.merge(annoDidattico);
     }
 
@@ -96,8 +137,15 @@ public class AnnoDidatticoDAO implements AnnoDidatticoRemote {
      *
      * @param annoDidattico L'anno didattico da rimuovere.
      */
+    /*@
+      @ also
+      @ public normal_behavior
+      @ requires annoDidattico != null;
+      @ ensures true;
+      @*/
     @Override
     public void rimuoviAnno(AnnoDidattico annoDidattico) {
+        //@   assume emUniClass != null;
         emUniClass.remove(annoDidattico);
     }
 }

@@ -6,8 +6,6 @@ import it.unisa.uniclass.conversazioni.service.MessaggioService;
 import it.unisa.uniclass.utenti.model.Accademico;
 import it.unisa.uniclass.utenti.service.AccademicoService;
 import jakarta.ejb.EJB;
-import jakarta.json.Json;
-import jakarta.json.JsonObject;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
@@ -16,7 +14,6 @@ import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 
 import java.io.IOException;
-import java.io.PrintWriter;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -24,13 +21,46 @@ import java.util.List;
 public class inviaMessaggioChatServlet extends HttpServlet {
 
     @EJB
+    //@ spec_public
+    //@ nullable
     private MessaggioService messaggioService;
 
     @EJB
+    //@ spec_public
+    //@ nullable
     private AccademicoService accademicoService;
 
+    /**
+     * Setter per iniettare il MessaggioService (utile per i test).
+     * @param messaggioService il service da iniettare
+     */
+    //@ requires messaggioService != null;
+    //@ ensures this.messaggioService == messaggioService;
+    public void setMessaggioService(MessaggioService messaggioService) {
+        this.messaggioService = messaggioService;
+    }
+
+    /**
+     * Setter per iniettare l'AccademicoService (utile per i test).
+     * @param accademicoService il service da iniettare
+     */
+    //@ requires accademicoService != null;
+    //@ ensures this.accademicoService == accademicoService;
+    public void setAccademicoService(AccademicoService accademicoService) {
+        this.accademicoService = accademicoService;
+    }
+
+    /**
+     * Gestisce le richieste GET per inviare un messaggio in chat.
+     * @param request la richiesta HTTP
+     * @param response la risposta HTTP
+     * @throws ServletException se si verifica un errore nella servlet
+     * @throws IOException se si verifica un errore di I/O
+     */
+    //@ requires request != null;
+    //@ requires response != null;
     @Override
-    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    public void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         HttpSession session = request.getSession();
 
         // Email attuale (autore del messaggio)
@@ -64,12 +94,7 @@ public class inviaMessaggioChatServlet extends HttpServlet {
 
 
         // Salva il messaggio
-        Messaggio test = messaggioService.aggiungiMessaggio(messaggio1);
-
-        // Recupera il messaggio appena creato per inviarlo come risposta
-        String messaggioRisposta = test.getBody(); // Usa il corpo del messaggio appena creato
-        String autoreRisposta = test.getAutore().getNome(); // Usa il nome dell'autore del messaggio
-        String dataRisposta = test.getDateTime().toString(); // Usa la data del messaggio
+        messaggioService.aggiungiMessaggio(messaggio1);
 
 
         List<Messaggio> messaggi = messaggioService.trovaTutti();
@@ -80,8 +105,17 @@ public class inviaMessaggioChatServlet extends HttpServlet {
 
     }
 
+    /**
+     * Gestisce le richieste POST delegando al metodo doGet.
+     * @param request la richiesta HTTP
+     * @param response la risposta HTTP
+     * @throws ServletException se si verifica un errore nella servlet
+     * @throws IOException se si verifica un errore di I/O
+     */
+    //@ requires request != null;
+    //@ requires response != null;
     @Override
-    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    public void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         doGet(request, response);
     }
 }

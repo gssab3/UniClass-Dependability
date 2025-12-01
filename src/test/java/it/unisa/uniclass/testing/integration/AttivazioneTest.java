@@ -36,7 +36,7 @@ public class AttivazioneTest {
   }
 
   private void login() {
-    driver.get("http://localhost:8080/UniClass/Home");
+    driver.get("http://localhost:8080/UniClass-Dependability/Home");
     driver.findElement(By.cssSelector("span > a > img")).click();
     driver.findElement(By.id("email")).sendKeys("giannisereni@unisa.it");
     driver.findElement(By.id("password")).sendKeys("3201$wEr");
@@ -58,7 +58,7 @@ public class AttivazioneTest {
   }
   @Test
   public void tC1AllValid() {
-    driver.get("http://localhost:8080/UniClass/PersonaleTA/AttivaUtenti.jsp");
+    driver.get("http://localhost:8080/UniClass-Dependability/PersonaleTA/AttivaUtenti.jsp");
     driver.findElement(By.id("matricola")).click();
     driver.findElement(By.id("matricola")).sendKeys("0512118330");
     driver.findElement(By.id("email")).click();
@@ -67,7 +67,7 @@ public class AttivazioneTest {
   }
   @Test
   public void tC2associazioneErrata() {
-    driver.get("http://localhost:8080/UniClass/PersonaleTA/AttivaUtenti.jsp");
+    driver.get("http://localhost:8080/UniClass-Dependability/PersonaleTA/AttivaUtenti.jsp");
     driver.findElement(By.id("matricola")).click();
     driver.findElement(By.id("matricola")).sendKeys("0512118330");
     driver.findElement(By.id("email")).click();
@@ -81,7 +81,7 @@ public class AttivazioneTest {
   }
   @Test
   public void tC3mailNotPresentDB() {
-    driver.get("http://localhost:8080/UniClass/PersonaleTA/AttivaUtenti.jsp");
+    driver.get("http://localhost:8080/UniClass-Dependability/PersonaleTA/AttivaUtenti.jsp");
     driver.findElement(By.id("matricola")).click();
     driver.findElement(By.id("matricola")).sendKeys("0512118330");
 
@@ -108,7 +108,7 @@ public class AttivazioneTest {
   }
   @Test
   public void tC4emailNotFormatted() {
-    driver.get("http://localhost:8080/UniClass/PersonaleTA/AttivaUtenti.jsp");
+    driver.get("http://localhost:8080/UniClass-Dependability/PersonaleTA/AttivaUtenti.jsp");
     driver.findElement(By.id("email")).sendKeys("s.davanzostudenti@uni");
     driver.findElement(By.id("matricola")).click();
     driver.findElement(By.id("matricola")).click();
@@ -119,7 +119,7 @@ public class AttivazioneTest {
   }
   @Test
   public void tC5notPresentBothInfo() {
-    driver.get("http://localhost:8080/UniClass/PersonaleTA/AttivaUtenti.jsp");
+    driver.get("http://localhost:8080/UniClass-Dependability/PersonaleTA/AttivaUtenti.jsp");
     driver.findElement(By.id("email")).click();
     driver.findElement(By.id("email")).sendKeys("s.davanzo@studenti.unisa.it");
     driver.findElement(By.id("matricola")).click();
@@ -128,7 +128,7 @@ public class AttivazioneTest {
   }
   @Test
   public void tC6notPresentBothAndNotFormattedEmail() {
-    driver.get("http://localhost:8080/UniClass/PersonaleTA/AttivaUtenti.jsp");
+    driver.get("http://localhost:8080/UniClass-Dependability/PersonaleTA/AttivaUtenti.jsp");
     driver.findElement(By.id("email")).click();
     driver.findElement(By.id("email")).sendKeys("s.davanzostudenti@uni");
     driver.findElement(By.id("matricola")).click();
@@ -137,7 +137,7 @@ public class AttivazioneTest {
   }
   @Test
   public void tC7notPresentBothNotFormattedMatricola() {
-    driver.get("http://localhost:8080/UniClass/PersonaleTA/AttivaUtenti.jsp");
+    driver.get("http://localhost:8080/UniClass-Dependability/PersonaleTA/AttivaUtenti.jsp");
     driver.findElement(By.id("matricola")).click();
     driver.findElement(By.id("email")).click();
     driver.findElement(By.id("email")).sendKeys("s.davanzo@studenti.unisa.it");
@@ -148,7 +148,7 @@ public class AttivazioneTest {
   }
   @Test
   public void tC8nothingGood() {
-    driver.get("http://localhost:8080/UniClass/PersonaleTA/AttivaUtenti.jsp");
+    driver.get("http://localhost:8080/UniClass-Dependability/PersonaleTA/AttivaUtenti.jsp");
     driver.findElement(By.id("email")).click();
     driver.findElement(By.id("email")).sendKeys("s.davanzostudenti@uni");
     driver.findElement(By.id("matricola")).click();

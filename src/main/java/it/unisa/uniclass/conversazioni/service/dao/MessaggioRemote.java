@@ -8,6 +8,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 @Remote
+//@ skipesc
 public interface MessaggioRemote {
 
     public Messaggio trovaMessaggio(long id);

@@ -22,7 +22,7 @@ import java.util.List;
 @Stateless
 public class AnnoDidatticoService {
 
-    private AnnoDidatticoRemote annoDidatticoDao;
+    public AnnoDidatticoRemote annoDidatticoDao;
 
     /**
      * Costruttore di default che esegue il lookup JNDI del DAO.
@@ -34,6 +34,15 @@ public class AnnoDidatticoService {
         } catch (NamingException e) {
             throw new RuntimeException("Errore durante il lookup di AnnoDidatticoDAO.", e);
         }
+    }
+
+    /**
+     * Costruttore per uso interno e test.
+     * Permette l'iniezione diretta del DAO senza lookup JNDI.
+     * @param annoDidatticoDao il DAO da usare
+     */
+    public AnnoDidatticoService(AnnoDidatticoRemote annoDidatticoDao) {
+        this.annoDidatticoDao = annoDidatticoDao;
     }
 
     /**

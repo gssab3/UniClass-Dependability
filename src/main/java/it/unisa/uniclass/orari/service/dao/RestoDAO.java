@@ -15,7 +15,7 @@ import java.util.List;
 public class RestoDAO implements RestoRemote {
 
     @PersistenceContext(unitName = "DBUniClassPU")
-    private EntityManager emUniClass;
+    public EntityManager emUniClass;
 
     /**
      * Trova i resti nel database associati a un corso di laurea.

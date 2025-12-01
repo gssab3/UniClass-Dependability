@@ -35,6 +35,15 @@ public class CorsoLaureaService {
     }
 
     /**
+     * Costruttore per uso interno e test.
+     * Permette l'iniezione diretta del DAO senza lookup JNDI.
+     * @param corsoLaureaDAO il DAO da usare
+     */
+    public CorsoLaureaService(CorsoLaureaRemote corsoLaureaDAO) {
+        this.corsoLaureaDAO = corsoLaureaDAO;
+    }
+
+    /**
      * Trova un corso di laurea nel database utilizzando il suo ID.
      *
      * @param id L'ID del corso di laurea da cercare.

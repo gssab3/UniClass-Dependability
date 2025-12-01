@@ -33,6 +33,15 @@ public class AulaService {
     }
 
     /**
+     * Costruttore per uso interno e test.
+     * Permette l'iniezione diretta del DAO senza lookup JNDI.
+     * @param aulaDao il DAO da usare
+     */
+    public AulaService(AulaRemote aulaDao) {
+        this.aulaDao = aulaDao;
+    }
+
+    /**
      * Trova un'aula nel database utilizzando il suo ID.
      *
      * @param id L'ID dell'aula da cercare.

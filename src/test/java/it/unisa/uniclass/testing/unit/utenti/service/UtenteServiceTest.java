@@ -1,4 +1,4 @@
-package it.unisa.uniclass.testing.unit;
+package it.unisa.uniclass.testing.unit.utenti.service;
 
 import it.unisa.uniclass.common.exceptions.AuthenticationException;
 import it.unisa.uniclass.utenti.model.Accademico;

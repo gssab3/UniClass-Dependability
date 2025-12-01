@@ -14,7 +14,7 @@ import java.util.List;
 public class CorsoDAO implements CorsoRemote {
 
     @PersistenceContext(unitName = "DBUniClassPU")
-    private EntityManager emUniClass;
+    public EntityManager emUniClass;
 
     /**
      * Trova un corso nel database utilizzando il suo ID.

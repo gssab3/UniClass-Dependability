@@ -15,7 +15,7 @@ import java.util.List;
 public class LezioneDAO implements LezioneRemote {
 
     @PersistenceContext(unitName = "DBUniClassPU")
-    private EntityManager emUniClass;
+    public EntityManager emUniClass;
 
     /**
      * Trova una lezione nel database utilizzando il suo ID.
