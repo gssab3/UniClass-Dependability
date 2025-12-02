@@ -33,6 +33,20 @@ public class DocenteService {
             throw new RuntimeException("Errore durante il lookup di DocenteDAO", e);
         }
     }
+    private AccademicoService accademicoService; // Campo DI per test
+
+    // Setter DI per i test
+    public void setAccademicoService(AccademicoService service) {
+        this.accademicoService = service;
+    }
+
+    // Helper per ottenere AccademicoService
+    protected AccademicoService getAccademicoService() {
+        if (accademicoService == null) {
+            accademicoService = new AccademicoService();
+        }
+        return accademicoService;
+    }
 
     /**
      * Costruttore per i Test (Dependency Injection).
@@ -113,12 +127,13 @@ public class DocenteService {
      */
     public void rimuoviDocente(Docente docente) throws NotFoundUserException {
         if (trovaDocenteUniClass(docente.getMatricola()) != null) {
-            AccademicoService accademicoService = new AccademicoService();
-            Accademico accademico = accademicoService.trovaAccademicoUniClass(docente.getMatricola());
+            AccademicoService service = getAccademicoService(); // usa helper
+            Accademico accademico = service.trovaAccademicoUniClass(docente.getMatricola());
             docenteDao.rimuoviDocente(docente);
-            accademicoService.rimuoviAccademico(accademico);
+            service.rimuoviAccademico(accademico);
         } else {
             throw new NotFoundUserException("Il docente inserito non è presente nel Database universitario");
         }
     }
+
 }

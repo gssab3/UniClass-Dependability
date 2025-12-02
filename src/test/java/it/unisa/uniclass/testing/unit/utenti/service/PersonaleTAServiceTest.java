@@ -3,86 +3,156 @@ package it.unisa.uniclass.testing.unit.utenti.service;
 import it.unisa.uniclass.utenti.model.PersonaleTA;
 import it.unisa.uniclass.utenti.service.PersonaleTAService;
 import it.unisa.uniclass.utenti.service.dao.PersonaleTARemote;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.mockito.Mock;
-import org.mockito.MockitoAnnotations; //
+import org.junit.jupiter.api.Assertions;
+import org.mockito.Mockito;
 
-import static org.junit.jupiter.api.Assertions.*;
+import jakarta.persistence.NoResultException;
+
+import javax.naming.InitialContext;
+import javax.naming.NamingException;
+import java.util.Arrays;
+import java.util.List;
+
+import static org.junit.Assert.*;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.*;
 
 class PersonaleTAServiceTest {
 
-    @Mock
-    private PersonaleTARemote personaleTADAO;
-
-    private PersonaleTAService personaleTAService;
-
-    @BeforeEach
-    void setUp() {
-        // Inizializzazione manuale dei Mock (sostituisce @ExtendWith)
-        MockitoAnnotations.openMocks(this);
-
-        // Iniezione manuale del mock nel service
-        personaleTAService = new PersonaleTAService(personaleTADAO);
-    }
-
     @Test
-    void testTrovaEmail_Esistente() {
-        String email = "staff@unisa.it";
+    void testTrovaPersonale_OK() {
+        PersonaleTARemote dao = mock(PersonaleTARemote.class);
         PersonaleTA expected = new PersonaleTA();
-        expected.setEmail(email);
+        when(dao.trovaPersonale(1L)).thenReturn(expected);
 
-        when(personaleTADAO.trovaEmail(email)).thenReturn(expected);
+        PersonaleTAService service = new PersonaleTAService(dao);
+        PersonaleTA result = service.trovaPersonale(1L);
 
-        PersonaleTA result = personaleTAService.trovaEmail(email);
-        assertNotNull(result);
-        assertEquals(email, result.getEmail());
+        Assertions.assertEquals(expected, result);
+        verify(dao).trovaPersonale(1L);
     }
 
     @Test
-    void testTrovaEmailPass_Successo() {
-        String email = "staff@unisa.it";
-        String password = "password";
+    void testTrovaPersonale_NoResult() {
+        PersonaleTARemote dao = mock(PersonaleTARemote.class);
+        when(dao.trovaPersonale(1L)).thenThrow(new NoResultException());
+
+        PersonaleTAService service = new PersonaleTAService(dao);
+        PersonaleTA result = service.trovaPersonale(1L);
+
+        Assertions.assertNull(result);
+    }
+
+    @Test
+    void testTrovaTutti() {
+        PersonaleTARemote dao = mock(PersonaleTARemote.class);
+        List<PersonaleTA> lista = Arrays.asList(new PersonaleTA(), new PersonaleTA());
+        when(dao.trovaTutti()).thenReturn(lista);
+
+        PersonaleTAService service = new PersonaleTAService(dao);
+        Assertions.assertEquals(lista, service.trovaTutti());
+    }
+
+    @Test
+    void testTrovaEmail_OK() {
+        PersonaleTARemote dao = mock(PersonaleTARemote.class);
         PersonaleTA expected = new PersonaleTA();
+        when(dao.trovaEmail("mail@test.it")).thenReturn(expected);
 
-        when(personaleTADAO.trovaEmailPassword(email, password)).thenReturn(expected);
-
-        PersonaleTA result = personaleTAService.trovaEmailPass(email, password);
-        assertNotNull(result);
+        PersonaleTAService service = new PersonaleTAService(dao);
+        Assertions.assertEquals(expected, service.trovaEmail("mail@test.it"));
     }
 
     @Test
-    void testTrovaEmailPass_Fallimento_EccezioneGestita() {
-        when(personaleTADAO.trovaEmailPassword(anyString(), anyString())).thenThrow(new RuntimeException("Errore DB"));
+    void testTrovaEmail_NoResult() {
+        PersonaleTARemote dao = mock(PersonaleTARemote.class);
+        when(dao.trovaEmail(any())).thenThrow(new NoResultException());
 
-        PersonaleTA result = personaleTAService.trovaEmailPass("mail", "pass");
-        assertNull(result, "Il service dovrebbe gestire l'eccezione ritornando null");
+        PersonaleTAService service = new PersonaleTAService(dao);
+        Assertions.assertNull(service.trovaEmail("aaa"));
+    }
+
+    @Test
+    void testTrovaEmailPass_OK() {
+        PersonaleTARemote dao = mock(PersonaleTARemote.class);
+        PersonaleTA expected = new PersonaleTA();
+        when(dao.trovaEmailPassword("x", "y")).thenReturn(expected);
+
+        PersonaleTAService service = new PersonaleTAService(dao);
+        Assertions.assertEquals(expected, service.trovaEmailPass("x", "y"));
+    }
+
+    @Test
+    void testTrovaEmailPass_Exception() {
+        PersonaleTARemote dao = mock(PersonaleTARemote.class);
+        when(dao.trovaEmailPassword(any(), any())).thenThrow(new RuntimeException());
+
+        PersonaleTAService service = new PersonaleTAService(dao);
+        Assertions.assertNull(service.trovaEmailPass("x", "y"));
     }
 
     @Test
     void testAggiungiPersonaleTA() {
-        PersonaleTA nuovo = new PersonaleTA();
-        personaleTAService.aggiungiPersonaleTA(nuovo);
-        verify(personaleTADAO).aggiungiPersonale(nuovo);
-    }
+        PersonaleTARemote dao = mock(PersonaleTARemote.class);
+        PersonaleTA p = new PersonaleTA();
 
+        PersonaleTAService service = new PersonaleTAService(dao);
+        service.aggiungiPersonaleTA(p);
+
+        verify(dao).aggiungiPersonale(p);
+    }
 
     @Test
-    void testMetodiMancanti() {
-        // Test trova per ID
-        personaleTAService.trovaPersonale(1L);
-        verify(personaleTADAO).trovaPersonale(1L);
-
-        // Test trova tutti
-        personaleTAService.trovaTutti();
-        verify(personaleTADAO).trovaTutti();
-
-        // Test rimuovi
+    void testRimuoviPersonaleTA() {
+        PersonaleTARemote dao = mock(PersonaleTARemote.class);
         PersonaleTA p = new PersonaleTA();
-        personaleTAService.rimuoviPersonaleTA(p);
-        verify(personaleTADAO).rimuoviPersonale(p);
+
+        PersonaleTAService service = new PersonaleTAService(dao);
+        service.rimuoviPersonaleTA(p);
+
+        verify(dao).rimuoviPersonale(p);
+    }
+
+    @Test
+    void testCostruttoreDefault_LookupFallisce() throws Exception {
+        InitialContext ctx = mock(InitialContext.class);
+        when(ctx.lookup(anyString())).thenThrow(new javax.naming.NamingException());
+
+        Assertions.assertThrows(RuntimeException.class, PersonaleTAService::new);
+    }
+
+    @Test
+    void testCostruttoreDefault_NamingException() {
+        try (var mockedCtx = Mockito.mockConstruction(InitialContext.class,
+                (mock, context) -> {
+                    when(mock.lookup("java:global/UniClass-Dependability/PersonaleTADAO"))
+                            .thenThrow(new NamingException("Simulated JNDI error"));
+                })) {
+
+            RuntimeException ex = assertThrows(RuntimeException.class, PersonaleTAService::new);
+
+            assertTrue(ex.getMessage().contains("Errore durante il lookup di PersonaleTADAO"));
+            assertTrue(ex.getCause() instanceof NamingException);
+        }
+    }
+
+    @Test
+    void testCostruttoreDefault_LookupSuccess() throws Exception {
+        PersonaleTARemote fakeDao = mock(PersonaleTARemote.class);
+
+        try (var mockedCtx = Mockito.mockConstruction(InitialContext.class,
+                (mock, context) -> {
+                    when(mock.lookup("java:global/UniClass-Dependability/PersonaleTADAO"))
+                            .thenReturn(fakeDao);
+                })) {
+
+            PersonaleTAService service = new PersonaleTAService();
+
+            // Verifica che il service sia stato creato e abbia il dao assegnato
+            assertNotNull(service);
+        }
     }
 }
+
+

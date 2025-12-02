@@ -16,6 +16,8 @@ import java.util.List;
 @WebServlet(name = "GetAttivati", value = "/GetAttivati")
 public class GetAttivati extends HttpServlet {
 
+
+
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 
@@ -41,6 +43,6 @@ public class GetAttivati extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        super.doPost(req, resp);
+
     }
 }

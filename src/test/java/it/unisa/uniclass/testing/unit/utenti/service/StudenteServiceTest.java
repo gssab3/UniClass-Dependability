@@ -13,7 +13,11 @@ import org.mockito.Mock;
 import org.mockito.MockedConstruction;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations; // <--- Fondamentale
-
+import jakarta.persistence.NoResultException;
+import javax.naming.InitialContext;
+import javax.naming.NamingException;
+import org.mockito.MockedConstruction;
+import org.mockito.MockedStatic;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
@@ -33,7 +37,39 @@ class StudenteServiceTest {
         // Creazione del service con il mock
         studenteService = new StudenteService(studenteDao);
     }
+    @Test
+    void testCostruttoreDefault() throws Exception {
+        // Mock del lookup JNDI
+        try (MockedConstruction<InitialContext> mockedCtx = Mockito.mockConstruction(InitialContext.class,
+                (mock, context) -> {
+                    when(mock.lookup("java:global/UniClass-Dependability/StudenteDAO"))
+                            .thenReturn(studenteDao);
+                })) {
 
+            StudenteService service = new StudenteService(); // dovrebbe usare il mock
+            assertNotNull(service); // semplice verifica che sia stato creato
+        }
+    }
+
+    @Test
+    void testTrovaStudenteUniClass_NoResult() {
+        // Simula NoResultException lanciata dal DAO
+        when(studenteDao.trovaStudenteUniClass(anyString())).thenThrow(new NoResultException());
+
+        // Il metodo dovrebbe restituire null
+        Studente s = studenteService.trovaStudenteUniClass("fantasma");
+        assertNull(s);
+    }
+
+    @Test
+    void testTrovaStudenteEmailUniClass_NoResult() {
+        // Simula NoResultException lanciata dal DAO
+        when(studenteDao.trovaStudenteEmailUniClass(anyString())).thenThrow(new NoResultException());
+
+        // Il metodo dovrebbe restituire null
+        Studente s = studenteService.trovaStudenteEmailUniClass("fantasma@unisa.it");
+        assertNull(s);
+    }
     @Test
     void testAggiungiStudente_Nuovo_Successo() throws Exception {
         Studente s = new Studente();
@@ -147,4 +183,20 @@ class StudenteServiceTest {
            Altrimenti, per ora accontentati della coverage attuale su questo metodo.
         */
     }
+    @Test
+    void testCostruttoreDefault_NamingException() {
+        try (MockedConstruction<InitialContext> mockedCtx = Mockito.mockConstruction(InitialContext.class,
+                (mock, context) -> {
+                    when(mock.lookup("java:global/UniClass-Dependability/StudenteDAO"))
+                            .thenThrow(new NamingException("Simulated JNDI error"));
+                })) {
+
+            // Quando invochi il costruttore di default, scatterà il catch
+            RuntimeException ex = assertThrows(RuntimeException.class, StudenteService::new);
+
+            assertTrue(ex.getMessage().contains("Errore durante il lookup di StudenteDAO"));
+            assertTrue(ex.getCause() instanceof NamingException);
+        }
+    }
+
 }
