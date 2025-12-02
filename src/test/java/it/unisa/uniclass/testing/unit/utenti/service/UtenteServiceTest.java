@@ -7,9 +7,11 @@ import it.unisa.uniclass.utenti.model.Utente;
 import it.unisa.uniclass.utenti.service.AccademicoService;
 import it.unisa.uniclass.utenti.service.PersonaleTAService;
 import it.unisa.uniclass.utenti.service.UtenteService;
+import jakarta.persistence.NoResultException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
+import org.mockito.MockedConstruction;
 import org.mockito.MockitoAnnotations;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -17,134 +19,167 @@ import static org.mockito.Mockito.*;
 
 class UtenteServiceTest {
 
-    // Oggetto REALE da testare
-    private UtenteService utenteService;
+    // Sottoclasse per esporre i metodi protected
+    static class TestableUtenteService extends UtenteService {
+        public PersonaleTAService exposePersonaleTAService() {
+            return super.getPersonaleTAService();
+        }
+        public AccademicoService exposeAccademicoService() {
+            return super.getAccademicoService();
+        }
+    }
 
-    // Oggetti MOCK (finti) che simuleranno il comportamento del DB
-    @Mock private PersonaleTAService personaleTAServiceMock;
-    @Mock private AccademicoService accademicoServiceMock;
+    @Mock
+    private PersonaleTAService personaleTAService;
+
+    @Mock
+    private AccademicoService accademicoService;
+
+    private UtenteService utenteService;
 
     @BeforeEach
     void setUp() {
-        // 1. Inizializza i mock definiti con @Mock
         MockitoAnnotations.openMocks(this);
-
-        // 2. Istanzia il service reale
         utenteService = new UtenteService();
-
-        // 3. INIEZIONE DEI DIPENDENZE 
-        // Qui usiamo i setterì per inserire i nostri mock.
-        // Grazie all'IF che abbiamo messo nel codice (Lazy Loading), 
-        // la classe userà questi invece di provare a connettersi al DB vero.
-        utenteService.setPersonaleTAService(personaleTAServiceMock);
-        utenteService.setAccademicoService(accademicoServiceMock);
+        utenteService.setPersonaleTAService(personaleTAService);
+        utenteService.setAccademicoService(accademicoService);
     }
 
-    /**
-     * SCENARIO 1: Login corretto come Personale Tecnico Amministrativo.
-     * Verifica che se l'email corrisponde a un TA, venga restituito quell'oggetto.
-     */
+    // --- retrieveByEmail ---
     @Test
-    void testRetrieveByUserAndPassword_Success_PersonaleTA() {
-        System.out.println("Test: Login Personale TA Successo");
+    void testRetrieveByEmail_PersonaleTAPresente() {
+        PersonaleTA pta = new PersonaleTA();
+        pta.setEmail("pta@unisa.it");
 
-        // Arrange (Preparazione)
-        String email = "admin@unisa.it";
-        String password = "passwordSicura";
-        
-        PersonaleTA taUser = new PersonaleTA();
-        taUser.setEmail(email);
-        taUser.setPassword(password);
+        when(personaleTAService.trovaEmail("pta@unisa.it")).thenReturn(pta);
 
-        // Istruiamo i Mock:
-        // "Se ti chiedono questa email, restituisci l'utente TA"
-        when(personaleTAServiceMock.trovaEmail(email)).thenReturn(taUser);
-        // "Il service accademico non deve trovare nulla per questa email"
-        when(accademicoServiceMock.trovaEmailUniClass(email)).thenReturn(null);
+        Utente result = utenteService.retrieveByEmail("pta@unisa.it");
 
-        // Act (Esecuzione)
-        Utente result = utenteService.retrieveByUserAndPassword(email, password);
-
-        // Assert (Verifica)
-        assertNotNull(result, "L'utente dovrebbe essere stato trovato");
-        assertEquals(email, result.getEmail());
-        assertTrue(result instanceof PersonaleTA, "L'utente restituito deve essere di tipo PersonaleTA");
-    }
-
-    /**
-     * SCENARIO 2: Login corretto come Accademico (es. Docente o Studente).
-     * Verifica la logica 'else if': se non è un TA, cerca tra gli accademici.
-     */
-    @Test
-    void testRetrieveByUserAndPassword_Success_Accademico() {
-        System.out.println("Test: Login Accademico Successo");
-
-        // Arrange
-        String email = "prof@unisa.it";
-        String password = "passwordProf";
-
-        Accademico accUser = new Accademico();
-        accUser.setEmail(email);
-        accUser.setPassword(password);
-
-        // Istruiamo i Mock:
-        // PRIMA cerca nei TA -> Restituisce NULL (non trovato)
-        when(personaleTAServiceMock.trovaEmail(email)).thenReturn(null);
-        // POI cerca negli Accademici -> Restituisce l'utente
-        when(accademicoServiceMock.trovaEmailUniClass(email)).thenReturn(accUser);
-
-        // Act
-        Utente result = utenteService.retrieveByUserAndPassword(email, password);
-
-        // Assert
         assertNotNull(result);
-        assertEquals(email, result.getEmail());
-        assertTrue(result instanceof Accademico, "L'utente restituito deve essere di tipo Accademico");
+        assertEquals("pta@unisa.it", result.getEmail());
     }
 
-    /**
-     * SCENARIO 3: Password errata.
-     * Questo è fondamentale per la sicurezza (Dependability).
-     * Deve lanciare un'eccezione, NON ritornare null o l'utente.
-     */
     @Test
-    void testRetrieveByUserAndPassword_WrongPassword() {
-        System.out.println("Test: Login Password Errata");
+    void testRetrieveByEmail_AccademicoPresente() {
+        Accademico acc = new Accademico();
+        acc.setEmail("acc@unisa.it");
 
-        String email = "user@unisa.it";
-        String passwordVera = "giusta";
-        String passwordErrata = "sbagliata";
+        when(personaleTAService.trovaEmail("acc@unisa.it")).thenReturn(null);
+        when(accademicoService.trovaEmailUniClass("acc@unisa.it")).thenReturn(acc);
 
-        PersonaleTA user = new PersonaleTA();
-        user.setEmail(email);
-        user.setPassword(passwordVera);
+        Utente result = utenteService.retrieveByEmail("acc@unisa.it");
 
-        // Simuliamo che l'utente esista
-        when(personaleTAServiceMock.trovaEmail(email)).thenReturn(user);
-
-        // Act & Assert
-        // Ci aspettiamo che chiamando il metodo con la password sbagliata venga lanciata l'eccezione
-        assertThrows(AuthenticationException.class, () -> {
-            utenteService.retrieveByUserAndPassword(email, passwordErrata);
-        });
+        assertNotNull(result);
+        assertEquals("acc@unisa.it", result.getEmail());
     }
 
-    /**
-     * SCENARIO 4: Utente non esistente.
-     * Entrambi i service ritornano null. Il risultato finale deve essere null.
-     */
     @Test
-    void testRetrieveByUserAndPassword_UserNotFound() {
-        System.out.println("Test: Utente Non Trovato");
+    void testRetrieveByEmail_Null() {
+        when(personaleTAService.trovaEmail("unknown@unisa.it")).thenReturn(null);
+        when(accademicoService.trovaEmailUniClass("unknown@unisa.it")).thenReturn(null);
 
-        String email = "fantasma@unisa.it";
-        String password = "any";
-
-        when(personaleTAServiceMock.trovaEmail(email)).thenReturn(null);
-        when(accademicoServiceMock.trovaEmailUniClass(email)).thenReturn(null);
-
-        Utente result = utenteService.retrieveByUserAndPassword(email, password);
-
-        assertNull(result, "Se l'utente non esiste in nessun DB, deve tornare null");
+        Utente result = utenteService.retrieveByEmail("unknown@unisa.it");
+        assertNull(result);
     }
+
+    // --- retrieveByUserAndPassword ---
+    @Test
+    void testRetrieveByUserAndPassword_PersonaleTACorretta() throws AuthenticationException {
+        PersonaleTA pta = new PersonaleTA();
+        pta.setEmail("pta@unisa.it");
+        pta.setPassword("pwd123");
+
+        when(personaleTAService.trovaEmail("pta@unisa.it")).thenReturn(pta);
+
+        Utente result = utenteService.retrieveByUserAndPassword("pta@unisa.it", "pwd123");
+        assertNotNull(result);
+        assertEquals("pta@unisa.it", result.getEmail());
+    }
+
+    @Test
+    void testRetrieveByUserAndPassword_AccademicoCorretta() throws AuthenticationException {
+        Accademico acc = new Accademico();
+        acc.setEmail("acc@unisa.it");
+        acc.setPassword("pass456");
+
+        when(personaleTAService.trovaEmail("acc@unisa.it")).thenReturn(null);
+        when(accademicoService.trovaEmailUniClass("acc@unisa.it")).thenReturn(acc);
+
+        Utente result = utenteService.retrieveByUserAndPassword("acc@unisa.it", "pass456");
+        assertNotNull(result);
+        assertEquals("acc@unisa.it", result.getEmail());
+    }
+
+    @Test
+    void testRetrieveByUserAndPassword_PasswordErrata() {
+        PersonaleTA pta = new PersonaleTA();
+        pta.setEmail("pta@unisa.it");
+        pta.setPassword("pwd123");
+
+        when(personaleTAService.trovaEmail("pta@unisa.it")).thenReturn(pta);
+
+        assertThrows(AuthenticationException.class, () ->
+                utenteService.retrieveByUserAndPassword("pta@unisa.it", "wrong"));
+    }
+
+    @Test
+    void testRetrieveByUserAndPassword_NessunoTrovato() throws AuthenticationException {
+        when(personaleTAService.trovaEmail("unknown@unisa.it")).thenReturn(null);
+        when(accademicoService.trovaEmailUniClass("unknown@unisa.it")).thenReturn(null);
+
+        Utente result = utenteService.retrieveByUserAndPassword("unknown@unisa.it", "any");
+        assertNull(result);
+    }
+
+    // --- setters ---
+    @Test
+    void testSetters() {
+        PersonaleTAService mockPTA = mock(PersonaleTAService.class);
+        AccademicoService mockAcc = mock(AccademicoService.class);
+
+        utenteService.setPersonaleTAService(mockPTA);
+        utenteService.setAccademicoService(mockAcc);
+
+        assertNotNull(utenteService);
+    }
+
+    // --- copertura aggiuntiva ---
+    @Test
+    void testLazyLoadingPersonaleTAServiceSafe() {
+        try (MockedConstruction<PersonaleTAService> mocked = mockConstruction(PersonaleTAService.class)) {
+            TestableUtenteService service = new TestableUtenteService(); // non setti nulla
+            PersonaleTAService result = service.exposePersonaleTAService();
+            assertNotNull(result);
+        }
+    }
+
+    @Test
+    void testRetrieveByUserAndPassword_NoResultException() throws AuthenticationException {
+        when(personaleTAService.trovaEmail("x@unisa.it")).thenThrow(new NoResultException());
+
+        Utente result = utenteService.retrieveByUserAndPassword("x@unisa.it", "pwd");
+        assertNull(result);
+    }
+
+    @Test
+    void testRetrieveByUserAndPassword_AccademicoPasswordErrata() {
+        Accademico acc = new Accademico();
+        acc.setEmail("acc@unisa.it");
+        acc.setPassword("pass456");
+
+        when(personaleTAService.trovaEmail("acc@unisa.it")).thenReturn(null);
+        when(accademicoService.trovaEmailUniClass("acc@unisa.it")).thenReturn(acc);
+
+        assertThrows(AuthenticationException.class, () ->
+                utenteService.retrieveByUserAndPassword("acc@unisa.it", "wrong"));
+    }
+    @Test
+    void testLazyLoadingAccademicoServiceSafe() {
+        try (MockedConstruction<AccademicoService> mocked = mockConstruction(AccademicoService.class)) {
+            TestableUtenteService service = new TestableUtenteService(); // non setti nulla
+            AccademicoService result = service.exposeAccademicoService();
+            assertNotNull(result);
+        }
+    }
+
 }

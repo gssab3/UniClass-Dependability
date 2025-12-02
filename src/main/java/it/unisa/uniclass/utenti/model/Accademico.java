@@ -107,6 +107,15 @@ public class Accademico extends Utente implements Serializable {
     //@ skipesc
     public Accademico() {}
 
+    public Accademico(String nome, String cognome, LocalDate dataNascita, String email, String password, Tipo tipo) {
+        super();
+        this.nome = nome;
+        this.cognome = cognome;
+        this.dataNascita = dataNascita;
+        this.email = email;
+        this.password = password;
+        this.tipo = tipo;
+    }
 
     /**
      * Restituisce il valore d'attivazione dell'account
