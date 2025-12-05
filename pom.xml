@@ -221,6 +221,9 @@
                 <version>0.8.14</version>
                 <configuration>
                     <haltOnFailure>false</haltOnFailure>
+                    <excludes>
+                        <exclude>it/unisa/uniclass/common/config/database/**</exclude>
+                    </excludes>
                 </configuration>
                 <executions>
                     <execution>
@@ -256,6 +259,13 @@
                     <targetTests>
                         <param>it.unisa.uniclass.*</param>
                     </targetTests>
+                    <excludedClasses>
+                        <param>it.unisa.uniclass.common.config.database.DatabasePopulator</param>
+                        <param>it.unisa.uniclass.common.config.database.DatabaseProducer</param>
+                    </excludedClasses>
+                    <excludedTestClasses>
+                        <param>it.unisa.uniclass.testing.unit.common.config.database.*</param>
+                    </excludedTestClasses>
                     <mutators>
                         <mutator>DEFAULTS</mutator>
                     </mutators>
