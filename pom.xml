@@ -23,6 +23,19 @@
 
     <dependencies>
         <dependency>
+            <groupId>org.openjdk.jmh</groupId>
+            <artifactId>jmh-core</artifactId>
+            <version>1.37</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.openjdk.jmh</groupId>
+            <artifactId>jmh-generator-annprocess</artifactId>
+            <version>1.37</version>
+            <scope>test</scope>
+        </dependency>
+
+        <dependency>
             <groupId>jakarta.platform</groupId>
             <artifactId>jakarta.jakartaee-web-api</artifactId>
             <version>11.0.0-M4</version>
@@ -221,6 +234,9 @@
                 <version>0.8.14</version>
                 <configuration>
                     <haltOnFailure>false</haltOnFailure>
+                    <excludes>
+                        <exclude>it/unisa/uniclass/common/config/database/**</exclude>
+                    </excludes>
                 </configuration>
                 <executions>
                     <execution>
@@ -256,6 +272,13 @@
                     <targetTests>
                         <param>it.unisa.uniclass.*</param>
                     </targetTests>
+                    <excludedClasses>
+                        <param>it.unisa.uniclass.common.config.database.DatabasePopulator</param>
+                        <param>it.unisa.uniclass.common.config.database.DatabaseProducer</param>
+                    </excludedClasses>
+                    <excludedTestClasses>
+                        <param>it.unisa.uniclass.testing.unit.common.config.database.*</param>
+                    </excludedTestClasses>
                     <mutators>
                         <mutator>DEFAULTS</mutator>
                     </mutators>
