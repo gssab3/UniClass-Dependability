@@ -1,4 +1,4 @@
-package it.unisa.uniclass.testing.benchmarksConversazioni;
+package it.unisa.uniclass.testing.benchmark.conversazioni;
 
 import it.unisa.uniclass.conversazioni.model.Topic;
 import it.unisa.uniclass.conversazioni.service.TopicService;
