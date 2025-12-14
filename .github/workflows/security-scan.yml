@@ -31,7 +31,7 @@ jobs:
       - name: Compilazione e Installazione (Senza Esecuzione Test)
         # CORREZIONE: Rimosso -Dmaven.main.skip=true. 
         # Ora compila correttamente src/main/java rendendo le classi visibili.
-        # -DskipTests evita di eseguire i test (risparmia tempo), ma li compila.
+        # -DskipTests evita di eseguire i test, ma li compila.
         run: mvn -B install -DskipTests
 
       # 1. SCAN VULNERABILITÀ (DAST/SAST con Snyk)
