@@ -1,22 +1,20 @@
-name: Sicurezza Snyk + GitGuardian
+name: 🛡️ Sicurezza Snyk + GitGuardian
 
 on:
   push:
-    # Trigger su push per controllo immediato
     branches:
       - main
       - develop
       - lucagen
   pull_request:
     types: [opened, synchronize, reopened]
-    # Trigger su pull request per bloccare merge non sicuri
     branches:
       - main
       - develop
       - prototype
 
 jobs:
-  snyk_security_check:
+  security_check:
     runs-on: ubuntu-latest
 
     steps:
@@ -30,13 +28,14 @@ jobs:
           distribution: 'temurin'
           cache: 'maven'
 
-      - name: Installazione delle Dipendenze Maven (Pre-scan)
-        # Necessario affinché Snyk possa trovare e analizzare il pom.xml e le dipendenze
-        run: mvn install -DskipTests -Dmaven.main.skip=true
+      - name: Compilazione e Installazione (Senza Esecuzione Test)
+        # CORREZIONE: Rimosso -Dmaven.main.skip=true. 
+        # Ora compila correttamente src/main/java rendendo le classi visibili.
+        # -DskipTests evita di eseguire i test (risparmia tempo), ma li compila.
+        run: mvn -B install -DskipTests
 
       # 1. SCAN VULNERABILITÀ (DAST/SAST con Snyk)
       - name: Snyk Scansione Vulnerabilità Dipendenze
-        # Analizza il pom.xml per trovare CVE nelle librerie usate.
         uses: snyk/actions/maven@master
         env:
           SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
@@ -45,9 +44,7 @@ jobs:
           args: --all-projects --severity-threshold=high
 
       # 2. SCAN SECRET HARDCODED (con GitGuardian)
-      - name: GitGuardian  Scansione Secret
-        # Sostituisce l'azione Snyk fallita. Copre il requisito del corso.
+      - name: GitGuardian Scansione Secret
         uses: GitGuardian/ggshield-action@master
         env:
-          # Necessita del Secret GG_API_KEY per l'autenticazione.
           GG_API_KEY: ${{ secrets.GG_API_KEY }}
