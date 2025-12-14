@@ -57,6 +57,8 @@ jobs:
 
       # 2. SCAN SECRET HARDCODED (con GitGuardian)
       - name: GitGuardian Scansione Secret
+        if: github.event_name == 'push'
         uses: GitGuardian/ggshield-action@master
         env:
           GG_API_KEY: ${{ secrets.GG_API_KEY }}
+
