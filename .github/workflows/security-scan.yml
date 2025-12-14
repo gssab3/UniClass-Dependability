@@ -1,4 +1,4 @@
-name: 🛡️ Sicurezza Snyk + GitGuardian
+name: Sicurezza Snyk + GitGuardian
 
 on:
   push:
