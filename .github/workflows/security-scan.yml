@@ -60,5 +60,5 @@ jobs:
         if: github.event_name == 'push'
         uses: GitGuardian/ggshield-action@master
         env:
-          GG_API_KEY: ${{ secrets.GG_API_KEY }}
+          GITGUARDIAN_API_KEY: ${{ secrets.GG_API_KEY }}
 
