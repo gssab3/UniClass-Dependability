@@ -87,7 +87,7 @@ class UtenteServiceTest {
     void testRetrieveByUserAndPassword_PersonaleTACorretta() throws AuthenticationException {
         PersonaleTA pta = new PersonaleTA();
         pta.setEmail("pta@unisa.it");
-        pta.setPassword("pwd123");
+        pta.setPassword("pwd123"); // ggignore
 
         when(personaleTAService.trovaEmail("pta@unisa.it")).thenReturn(pta);
 
@@ -100,7 +100,7 @@ class UtenteServiceTest {
     void testRetrieveByUserAndPassword_AccademicoCorretta() throws AuthenticationException {
         Accademico acc = new Accademico();
         acc.setEmail("acc@unisa.it");
-        acc.setPassword("pass456");
+        acc.setPassword("pass456"); // ggignore
 
         when(personaleTAService.trovaEmail("acc@unisa.it")).thenReturn(null);
         when(accademicoService.trovaEmailUniClass("acc@unisa.it")).thenReturn(acc);
@@ -114,7 +114,7 @@ class UtenteServiceTest {
     void testRetrieveByUserAndPassword_PasswordErrata() {
         PersonaleTA pta = new PersonaleTA();
         pta.setEmail("pta@unisa.it");
-        pta.setPassword("pwd123");
+        pta.setPassword("pwd123"); // ggignore
 
         when(personaleTAService.trovaEmail("pta@unisa.it")).thenReturn(pta);
 
@@ -165,7 +165,7 @@ class UtenteServiceTest {
     void testRetrieveByUserAndPassword_AccademicoPasswordErrata() {
         Accademico acc = new Accademico();
         acc.setEmail("acc@unisa.it");
-        acc.setPassword("pass456");
+        acc.setPassword("pass456"); // ggignore
 
         when(personaleTAService.trovaEmail("acc@unisa.it")).thenReturn(null);
         when(accademicoService.trovaEmailUniClass("acc@unisa.it")).thenReturn(acc);

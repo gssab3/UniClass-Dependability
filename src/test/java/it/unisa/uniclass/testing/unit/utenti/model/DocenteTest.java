@@ -24,7 +24,7 @@ class DocenteTest {
 
         // Costruttore parametrico
         Docente docente = new Docente("Mario", "Rossi", dataNascita, "m.rossi@example.com",
-                "password", "MAT123", iscrizione, corsoLaurea, "Informatica");
+                "password", "MAT123", iscrizione, corsoLaurea, "Informatica"); // ggignore
 
         // Verifica campi tramite getter
         assertEquals("Mario", docente.getNome());
