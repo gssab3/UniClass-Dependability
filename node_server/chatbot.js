@@ -1,4 +1,4 @@
-// Importa i moduli necessari
+require('dotenv').config(); // Carica le variabili dal file .env
 const express = require('express');
 const { CharacterAI } = require("node_characterai");
 const dotenv = require('dotenv');
@@ -19,8 +19,8 @@ app.use(express.json());
 
 // Configura Character.AI
 const characterAI = new CharacterAI();
-const ACCESS_TOKEN = "0df96170b58381d7d1b4197705d040369a6a4d22"; // Usa il token da una variabile d'ambiente
-const CHARACTER_ID = "7XlLZV-XjfWXaMfNU7Ck57yWFGVCD_2zDojN8hf6vmQ"; // Usa l'ID del personaggio da una variabile d'ambiente
+const ACCESS_TOKEN = process.env.CHARACTER_AI_TOKEN;
+const CHARACTER_ID = process.env.CHARACTER_AI_ID;
 
 let character; // Variabile per il personaggio
 
