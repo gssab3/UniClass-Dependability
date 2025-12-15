@@ -47,13 +47,20 @@ jobs:
         run: mvn -B install -DskipTests
 
       # 1. SCAN VULNERABILITÀ (DAST/SAST con Snyk)
+      # Installa la CLI di Snyk sul runner (dove Java 21 è già presente)
+      - name: Install Snyk CLI
+        uses: snyk/actions/setup@master
+
+      # Esegui il test usando la CLI
       - name: Snyk Scansione Vulnerabilità Dipendenze
-        uses: snyk/actions/maven@master
         env:
           SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
-        with:
-          # Fallisce se trova vulnerabilità ALTE o CRITICHE.
-          args: --all-projects --severity-threshold=high
+          JAVA_HOME: ${{ env.JAVA_HOME }} # Assicura che veda Java 21
+        run: |
+           # Rende eseguibile il wrapper per sicurezza
+           chmod +x mvnw 
+           # Lancia la scansione
+           snyk test --all-projects --severity-threshold=high
 
       # 2. SCAN SECRET HARDCODED (con GitGuardian)
       - name: GitGuardian Scansione Secret
