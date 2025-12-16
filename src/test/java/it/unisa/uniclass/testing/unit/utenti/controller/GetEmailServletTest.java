@@ -23,12 +23,12 @@ class GetEmailServletTest {
     // Sottoclasse per rendere pubblici i metodi protetti
     static class TestableGetEmailServlet extends GetEmailServlet {
         @Override
-        public void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        public void doGet(HttpServletRequest req, HttpServletResponse resp) {
             super.doGet(req, resp);
         }
 
         @Override
-        public void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        public void doPost(HttpServletRequest req, HttpServletResponse resp) {
             super.doPost(req, resp);
         }
     }
