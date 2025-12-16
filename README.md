@@ -1,4 +1,4 @@
-# UniClass
+# UniClass  
 
 UniClass è una piattaforma modulare per la gestione dell'ambiente accademico universitario, progettata per fornire servizi come la visione degli orari delle lezioni, la gestione delle aule, e la gestione degli utenti. Il sistema è progettato per essere facilmente estendibile e personalizzabile, offrendo una gestione centralizzata e una facile integrazione con altri strumenti accademici.
 

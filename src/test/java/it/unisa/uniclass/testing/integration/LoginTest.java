@@ -33,8 +33,8 @@ public class LoginTest {
     driver.findElement(By.cssSelector("span > a > img")).click();
     driver.findElement(By.id("email")).click();
     driver.findElement(By.id("email")).sendKeys("giacomoporetti@unisa.it");
-    driver.findElement(By.id("password")).click();
-    driver.findElement(By.id("password")).sendKeys("2222WxY$");
+    driver.findElement(By.id("password")).click(); // ggignore
+    driver.findElement(By.id("password")).sendKeys("2222WxY$"); // ggignore
   }
   @Test
   public void tC2NotPresentPassword() {
@@ -42,8 +42,8 @@ public class LoginTest {
     driver.findElement(By.cssSelector("span > a > img")).click();
     driver.findElement(By.id("email")).click();
     driver.findElement(By.id("email")).sendKeys("giacomoporetti@unisa.it");
-    driver.findElement(By.id("password")).click();
-    driver.findElement(By.id("password")).sendKeys("2222WxY$p");
+    driver.findElement(By.id("password")).click(); // ggignore
+    driver.findElement(By.id("password")).sendKeys("2222WxY$p"); // ggignore
   }
   @Test
   public void tC3NotValidPassword() {
@@ -51,8 +51,8 @@ public class LoginTest {
     driver.findElement(By.cssSelector("span > a > img")).click();
     driver.findElement(By.id("email")).click();
     driver.findElement(By.id("email")).sendKeys("giacomoporetti@unisa.it");
-    driver.findElement(By.id("password")).click();
-    driver.findElement(By.id("password")).sendKeys("2222WxYS");
+    driver.findElement(By.id("password")).click(); // ggignore
+    driver.findElement(By.id("password")).sendKeys("2222WxYS"); // ggignore
     driver.findElement(By.cssSelector(".logreg")).click();
   }
   @Test
@@ -61,8 +61,8 @@ public class LoginTest {
     driver.findElement(By.cssSelector("span > a > img")).click();
     driver.findElement(By.id("email")).click();
     driver.findElement(By.id("email")).sendKeys("giacomporetti@unisa.it");
-    driver.findElement(By.id("password")).click();
-    driver.findElement(By.id("password")).sendKeys("2222WxY$");
+    driver.findElement(By.id("password")).click(); // ggignore
+    driver.findElement(By.id("password")).sendKeys("2222WxY$"); // ggignore
     driver.findElement(By.cssSelector(".logreg")).click();
   }
   @Test
@@ -71,9 +71,9 @@ public class LoginTest {
     driver.findElement(By.cssSelector("span > a > img")).click();
     driver.findElement(By.id("email")).click();
     driver.findElement(By.id("email")).sendKeys("giacomo@unisa.it");
-    driver.findElement(By.id("password")).click();
-    driver.findElement(By.id("password")).click();
-    driver.findElement(By.id("password")).sendKeys("2212");
+    driver.findElement(By.id("password")).click(); // ggignore
+    driver.findElement(By.id("password")).click(); // ggignore
+    driver.findElement(By.id("password")).sendKeys("2212"); // ggignore
     driver.findElement(By.cssSelector(".logreg")).click();
   }
   @Test
@@ -82,8 +82,8 @@ public class LoginTest {
     driver.findElement(By.cssSelector("span > a > img")).click();
     driver.findElement(By.id("email")).click();
     driver.findElement(By.id("email")).sendKeys("giacunsa.it");
-    driver.findElement(By.id("password")).click();
-    driver.findElement(By.id("password")).sendKeys("2212XyA$");
+    driver.findElement(By.id("password")).click(); // ggignore
+    driver.findElement(By.id("password")).sendKeys("2212XyA$"); // ggignore
     driver.findElement(By.cssSelector(".logreg")).click();
   }
   @Test
@@ -92,9 +92,9 @@ public class LoginTest {
     driver.findElement(By.cssSelector("span > a > img")).click();
     driver.findElement(By.id("email")).click();
     driver.findElement(By.id("email")).sendKeys("giacunsa.it");
-    driver.findElement(By.id("password")).click();
-    driver.findElement(By.id("password")).click();
-    driver.findElement(By.id("password")).sendKeys("221");
+    driver.findElement(By.id("password")).click(); // ggignore
+    driver.findElement(By.id("password")).click(); // ggignore
+    driver.findElement(By.id("password")).sendKeys("221"); // ggignore
     driver.findElement(By.cssSelector(".logreg")).click();
   }
 }

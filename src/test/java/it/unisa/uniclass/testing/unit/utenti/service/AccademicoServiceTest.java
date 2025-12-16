@@ -137,7 +137,7 @@ class AccademicoServiceTest {
         String email = "prof@unisa.it";
         Accademico acc = new Accademico();
         acc.setEmail(email);
-        acc.setPassword("giusta"); // Password nel DB
+        acc.setPassword("giusta"); // ggignore
 
         when(accademicoDao.trovaEmailUniClass(email)).thenReturn(acc);
 

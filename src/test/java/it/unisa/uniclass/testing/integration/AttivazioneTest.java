@@ -39,7 +39,7 @@ public class AttivazioneTest {
     driver.get("http://localhost:8080/UniClass-Dependability/Home");
     driver.findElement(By.cssSelector("span > a > img")).click();
     driver.findElement(By.id("email")).sendKeys("giannisereni@unisa.it");
-    driver.findElement(By.id("password")).sendKeys("3201$wEr");
+    driver.findElement(By.id("password")).sendKeys("3201$wEr"); // ggignore
     driver.findElement(By.cssSelector(".logreg")).click();
 
 

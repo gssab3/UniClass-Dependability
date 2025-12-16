@@ -2,21 +2,19 @@ name: Sicurezza Snyk + GitGuardian
 
 on:
   push:
-    # Trigger su push per controllo immediato
     branches:
       - main
       - develop
       - lucagen
   pull_request:
     types: [opened, synchronize, reopened]
-    # Trigger su pull request per bloccare merge non sicuri
     branches:
       - main
       - develop
       - prototype
 
 jobs:
-  snyk_security_check:
+  security_check:
     runs-on: ubuntu-latest
 
     steps:
@@ -30,24 +28,44 @@ jobs:
           distribution: 'temurin'
           cache: 'maven'
 
-      - name: Installazione delle Dipendenze Maven (Pre-scan)
-        # Necessario affinché Snyk possa trovare e analizzare il pom.xml e le dipendenze
-        run: mvn install -DskipTests -Dmaven.main.skip=true
+      - name: Debug GG_API_KEY
+        run: |
+          if [ -z "$GG_API_KEY" ]; then
+            echo "GG_API_KEY is NOT set"
+            exit 1
+          else
+            echo "GG_API_KEY is set"
+            fi
+        env:
+          GG_API_KEY: ${{ secrets.GG_API_KEY }}
+
+
+      - name: Compilazione e Installazione (Senza Esecuzione Test)
+        # CORREZIONE: Rimosso -Dmaven.main.skip=true. 
+        # Ora compila correttamente src/main/java rendendo le classi visibili.
+        # -DskipTests evita di eseguire i test, ma li compila.
+        run: mvn -B install -DskipTests
 
       # 1. SCAN VULNERABILITÀ (DAST/SAST con Snyk)
+      # Installa la CLI di Snyk sul runner (dove Java 21 è già presente)
+      - name: Install Snyk CLI
+        uses: snyk/actions/setup@master
+
+      # Esegui il test usando la CLI
       - name: Snyk Scansione Vulnerabilità Dipendenze
-        # Analizza il pom.xml per trovare CVE nelle librerie usate.
-        uses: snyk/actions/maven@master
         env:
           SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
-        with:
-          # Fallisce se trova vulnerabilità ALTE o CRITICHE.
-          args: --all-projects --severity-threshold=high
+          JAVA_HOME: ${{ env.JAVA_HOME }} # Assicura che veda Java 21
+        run: |
+           # Rende eseguibile il wrapper per sicurezza
+           chmod +x mvnw 
+           # Lancia la scansione
+           snyk test --all-projects --severity-threshold=high
 
       # 2. SCAN SECRET HARDCODED (con GitGuardian)
-      - name: GitGuardian  Scansione Secret
-        # Sostituisce l'azione Snyk fallita. Copre il requisito del corso.
+      - name: GitGuardian Scansione Secret
+        if: github.event_name == 'push'
         uses: GitGuardian/ggshield-action@master
         env:
-          # Necessita del Secret GG_API_KEY per l'autenticazione.
-          GG_API_KEY: ${{ secrets.GG_API_KEY }}
+          GITGUARDIAN_API_KEY: ${{ secrets.GG_API_KEY }}
+

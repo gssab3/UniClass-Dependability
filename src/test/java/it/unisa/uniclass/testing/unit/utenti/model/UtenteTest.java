@@ -31,7 +31,7 @@ class UtenteTest {
         utente.setEmail("mario.rossi@example.com");
         assertEquals("mario.rossi@example.com", utente.getEmail());
 
-        utente.setPassword("pass123");
+        utente.setPassword("pass123"); // ggignore
         assertEquals("pass123", utente.getPassword());
 
 
