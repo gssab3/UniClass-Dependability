@@ -6,15 +6,10 @@ import it.unisa.uniclass.utenti.model.PersonaleTA;
 import it.unisa.uniclass.utenti.model.Utente;
 import it.unisa.uniclass.utenti.service.AccademicoService;
 import it.unisa.uniclass.utenti.service.PersonaleTAService;
-import it.unisa.uniclass.utenti.service.UtenteService;
-import jakarta.ejb.EJB;
-import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.*;
 import jakarta.servlet.http.*;
-import jakarta.servlet.http.HttpSession;
 
 import java.io.IOException;
-import java.util.List;
 
 @WebServlet(name = "loginServlet", value = "/Login")
 public class LoginServlet extends HttpServlet{
@@ -40,14 +35,14 @@ public class LoginServlet extends HttpServlet{
     }
 
 
-    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    @Override
+    protected void doGet(HttpServletRequest request, HttpServletResponse response) {
         doPost(request, response);
     }
 
+    @Override
     public void doPost(HttpServletRequest request, HttpServletResponse response) {
-
         try {
-
             if(accademicoService == null) {
                 accademicoService = new AccademicoService();
             }
@@ -94,7 +89,12 @@ public class LoginServlet extends HttpServlet{
                 return;
             }
         } catch (IOException e) {
-            throw new RuntimeException(e);
+            request.getServletContext().log("Error processing login request", e);
+            try {
+                response.sendRedirect(request.getContextPath() + "/Login.jsp?action=error");
+            } catch (IOException ioException) {
+                request.getServletContext().log("Failed to redirect after error", ioException);
+            }
         }
     }
 }
