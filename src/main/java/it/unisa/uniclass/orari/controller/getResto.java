@@ -1,13 +1,9 @@
 package it.unisa.uniclass.orari.controller;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-import it.unisa.uniclass.orari.model.AnnoDidattico;
 import it.unisa.uniclass.orari.model.CorsoLaurea;
 import it.unisa.uniclass.orari.model.Resto;
-import it.unisa.uniclass.orari.service.AnnoDidatticoService;
 import it.unisa.uniclass.orari.service.CorsoLaureaService;
 import it.unisa.uniclass.orari.service.RestoService;
-import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
@@ -17,44 +13,51 @@ import org.json.JSONObject;
 
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 @WebServlet(name = "getResto", value = "/getResto")
 public class getResto extends HttpServlet {
 
-    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    @Override
+    protected void doGet(HttpServletRequest request, HttpServletResponse response) {
+        try {
+            PrintWriter printWriter = response.getWriter();
 
-        PrintWriter printWriter = response.getWriter();
+            String corsoLaurea = request.getParameter("corsoLaurea");
+            CorsoLaureaService corsoLaureaService = new CorsoLaureaService();
+            CorsoLaurea corsoL = corsoLaureaService.trovaCorsoLaurea(corsoLaurea);
 
-        String corsoLaurea = request.getParameter("corsoLaurea");
-        CorsoLaureaService corsoLaureaService = new CorsoLaureaService();
-        CorsoLaurea corsoL = corsoLaureaService.trovaCorsoLaurea(corsoLaurea);
+            JSONArray jsonArray = new JSONArray();
 
-        JSONArray jsonArray = new JSONArray();
+            RestoService restoService = new RestoService();
 
-        RestoService restoService = new RestoService();
-
-        List<Resto> resti = restoService.trovaRestiCorsoLaurea(corsoL);
+            List<Resto> resti = restoService.trovaRestiCorsoLaurea(corsoL);
 
 
-        for(Resto resto : resti) {
-            JSONObject restoJson = new JSONObject();
-            restoJson.put("id", resto.getId());
-            restoJson.put("nome", resto.getNome());
-            jsonArray.put(restoJson);
+            for(Resto resto : resti) {
+                JSONObject restoJson = new JSONObject();
+                restoJson.put("id", resto.getId());
+                restoJson.put("nome", resto.getNome());
+                jsonArray.put(restoJson);
+            }
+
+
+            response.setContentType("application/json");
+            response.setCharacterEncoding("UTF-8");
+
+            printWriter.println(jsonArray.toString());
+            printWriter.flush();
+        } catch (Exception e) {
+            request.getServletContext().log("Error processing getResto request", e);
+            try {
+                response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "An error occurred processing your request");
+            } catch (IOException ioException) {
+                request.getServletContext().log("Failed to send error response", ioException);
+            }
         }
-
-
-        response.setContentType("application/json");
-        response.setCharacterEncoding("UTF-8");
-
-        printWriter.println(jsonArray.toString());
-        printWriter.flush();
     }
-    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    @Override
+    protected void doPost(HttpServletRequest request, HttpServletResponse response) {
         doGet(request, response);
     }
 

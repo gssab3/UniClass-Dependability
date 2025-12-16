@@ -1,10 +1,7 @@
 package it.unisa.uniclass.orari.controller;
 
 import it.unisa.uniclass.orari.model.Aula;
-import it.unisa.uniclass.orari.model.Lezione;
 import it.unisa.uniclass.orari.service.AulaService;
-import it.unisa.uniclass.orari.service.LezioneService;
-import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
@@ -18,25 +15,36 @@ import java.util.List;
 public class EdificioServlet extends HttpServlet {
 
     @Override
-    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        String edificio = req.getParameter("ed");
-
-        AulaService aulaService = null;
+    protected void doGet(HttpServletRequest req, HttpServletResponse resp) {
         try {
-            aulaService = new AulaService();
-        } catch (NamingException e) {
-            throw new RuntimeException(e);
+            String edificio = req.getParameter("ed");
+
+            AulaService aulaService = null;
+            try {
+                aulaService = new AulaService();
+            } catch (NamingException e) {
+                req.getServletContext().log("Error creating AulaService", e);
+                resp.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "An error occurred processing your request");
+                return;
+            }
+
+            List<Aula> aule = aulaService.trovaAuleEdificio(edificio);
+
+            req.setAttribute("aule", aule);
+            req.setAttribute("ed", edificio);
+            req.getRequestDispatcher("/edificio.jsp").forward(req, resp);
+        } catch (Exception e) {
+            req.getServletContext().log("Error processing edificio request", e);
+            try {
+                resp.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "An error occurred processing your request");
+            } catch (IOException ioException) {
+                req.getServletContext().log("Failed to send error response", ioException);
+            }
         }
-
-        List<Aula> aule = aulaService.trovaAuleEdificio(edificio);
-
-        req.setAttribute("aule", aule);
-        req.setAttribute("ed", edificio);
-        req.getRequestDispatcher("/edificio.jsp").forward(req, resp);
     }
 
     @Override
-    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+    protected void doPost(HttpServletRequest req, HttpServletResponse resp) {
         doGet(req, resp);
     }
 }
