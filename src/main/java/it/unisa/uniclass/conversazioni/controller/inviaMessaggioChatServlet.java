@@ -6,7 +6,6 @@ import it.unisa.uniclass.conversazioni.service.MessaggioService;
 import it.unisa.uniclass.utenti.model.Accademico;
 import it.unisa.uniclass.utenti.service.AccademicoService;
 import jakarta.ejb.EJB;
-import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
@@ -54,68 +53,72 @@ public class inviaMessaggioChatServlet extends HttpServlet {
      * Gestisce le richieste GET per inviare un messaggio in chat.
      * @param request la richiesta HTTP
      * @param response la risposta HTTP
-     * @throws ServletException se si verifica un errore nella servlet
-     * @throws IOException se si verifica un errore di I/O
      */
     //@ requires request != null;
     //@ requires response != null;
     @Override
-    public void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        HttpSession session = request.getSession();
+    public void doGet(HttpServletRequest request, HttpServletResponse response) {
+        try {
+            HttpSession session = request.getSession();
 
-        // Email attuale (autore del messaggio)
-        String emailSession = (String) session.getAttribute("utenteEmail");
+            // Email attuale (autore del messaggio)
+            String emailSession = (String) session.getAttribute("utenteEmail");
 
-        // Email di destinazione
-        String emailDest = request.getParameter("emailInvio");
-        System.out.println("lo sto inviando a :" + emailDest);
+            // Email di destinazione
+            String emailDest = request.getParameter("emailInvio");
+            System.out.println("lo sto inviando a :" + emailDest);
 
-        // Messaggio da inviare
-        String messaggio = request.getParameter("testo");
+            // Messaggio da inviare
+            String messaggio = request.getParameter("testo");
 
-        System.out.println("guarda che mssaggio:" + messaggio);
-
-
-        Accademico accademicoSelf = accademicoService.trovaEmailUniClass(emailSession);
-        Accademico accademicoDest = accademicoService.trovaEmailUniClass(emailDest);
+            System.out.println("guarda che mssaggio:" + messaggio);
 
 
-        Topic top = new Topic();
-        top.setCorsoLaurea(accademicoSelf.getCorsoLaurea());
-        top.setNome("VUOTO");
-
-        // Crea un nuovo messaggio
-        Messaggio messaggio1 = new Messaggio();
-        messaggio1.setAutore(accademicoSelf);
-        messaggio1.setDestinatario(accademicoDest);
-        messaggio1.setBody(messaggio);
-        messaggio1.setDateTime(LocalDateTime.now());
-        messaggio1.setTopic(top);
+            Accademico accademicoSelf = accademicoService.trovaEmailUniClass(emailSession);
+            Accademico accademicoDest = accademicoService.trovaEmailUniClass(emailDest);
 
 
-        // Salva il messaggio
-        messaggioService.aggiungiMessaggio(messaggio1);
+            Topic top = new Topic();
+            top.setCorsoLaurea(accademicoSelf.getCorsoLaurea());
+            top.setNome("VUOTO");
+
+            // Crea un nuovo messaggio
+            Messaggio messaggio1 = new Messaggio();
+            messaggio1.setAutore(accademicoSelf);
+            messaggio1.setDestinatario(accademicoDest);
+            messaggio1.setBody(messaggio);
+            messaggio1.setDateTime(LocalDateTime.now());
+            messaggio1.setTopic(top);
 
 
-        List<Messaggio> messaggi = messaggioService.trovaTutti();
+            // Salva il messaggio
+            messaggioService.aggiungiMessaggio(messaggio1);
 
-        request.setAttribute("messaggi", messaggi);
-        request.setAttribute("accademici", messaggioService.trovaMessaggeriDiUnAccademico(accademicoSelf.getMatricola()));
-        response.sendRedirect("chatServlet?accademico="+accademicoDest.getEmail()+"&accademicoSelf="+accademicoSelf.getEmail());
 
+            List<Messaggio> messaggi = messaggioService.trovaTutti();
+
+            request.setAttribute("messaggi", messaggi);
+            request.setAttribute("accademici", messaggioService.trovaMessaggeriDiUnAccademico(accademicoSelf.getMatricola()));
+            response.sendRedirect("chatServlet?accademico="+accademicoDest.getEmail()+"&accademicoSelf="+accademicoSelf.getEmail());
+        } catch (IOException e) {
+            request.getServletContext().log("Error processing chat message request", e);
+            try {
+                response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "An error occurred processing your request");
+            } catch (IOException ioException) {
+                request.getServletContext().log("Failed to send error response", ioException);
+            }
+        }
     }
 
     /**
      * Gestisce le richieste POST delegando al metodo doGet.
      * @param request la richiesta HTTP
      * @param response la risposta HTTP
-     * @throws ServletException se si verifica un errore nella servlet
-     * @throws IOException se si verifica un errore di I/O
      */
     //@ requires request != null;
     //@ requires response != null;
     @Override
-    public void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    public void doPost(HttpServletRequest request, HttpServletResponse response) {
         doGet(request, response);
     }
 }
