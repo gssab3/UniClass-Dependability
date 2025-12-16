@@ -57,8 +57,20 @@ public class cercaOrario extends HttpServlet {
 
     }
 
-    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+protected void doGet(HttpServletRequest request, HttpServletResponse response) {
+    try {
         doPost(request, response);
+    } catch (ServletException | IOException e) {
+        // Log the exception appropriately
+        request.getServletContext().log("Error processing request", e);
+        // Optionally, set an error attribute and forward to an error page
+        try {
+            response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "An error occurred processing your request");
+        } catch (IOException ioException) {
+            // Last resort logging if sendError fails
+            request.getServletContext().log("Failed to send error response", ioException);
+        }
     }
+}
 
 }
