@@ -66,7 +66,7 @@ class LoginServletTest {
     }
 
     @Test
-    void testNoUserFound() throws IOException {
+    void testNoUserFound() throws IOException, ServletException {
         when(accademicoService.trovaEmailPassUniclass(anyString(), anyString())).thenReturn(null);
         when(personaleTAService.trovaEmailPass(anyString(), anyString())).thenReturn(null);
 
@@ -76,7 +76,7 @@ class LoginServletTest {
     }
 
     @Test
-    void testAccademicoAttivato() throws IOException {
+    void testAccademicoAttivato() throws IOException, ServletException {
         Accademico acc = mock(Accademico.class);
         when(acc.isAttivato()).thenReturn(true);
         when(accademicoService.trovaEmailPassUniclass(anyString(), anyString())).thenReturn(acc);
@@ -89,7 +89,7 @@ class LoginServletTest {
     }
 
     @Test
-    void testAccademicoNonAttivatoPasswordNull() throws IOException {
+    void testAccademicoNonAttivatoPasswordNull() throws IOException, ServletException {
         Accademico acc = mock(Accademico.class);
         when(acc.isAttivato()).thenReturn(false);
         when(acc.getPassword()).thenReturn(null);
@@ -102,7 +102,7 @@ class LoginServletTest {
     }
 
     @Test
-    void testPersonaleTAFound() throws IOException {
+    void testPersonaleTAFound() throws IOException, ServletException {
         PersonaleTA ta = mock(PersonaleTA.class);
         when(accademicoService.trovaEmailPassUniclass(anyString(), anyString())).thenReturn(null);
         when(personaleTAService.trovaEmailPass(anyString(), anyString())).thenReturn(ta);
@@ -159,7 +159,7 @@ class LoginServletTest {
     }
 
     @Test
-    void testAccademicoNonAttivatoPasswordNonNulla() throws IOException {
+    void testAccademicoNonAttivatoPasswordNonNulla() throws IOException, ServletException {
         Accademico acc = mock(Accademico.class);
         when(acc.isAttivato()).thenReturn(false);
         when(acc.getPassword()).thenReturn("hashedpwd");
@@ -173,7 +173,7 @@ class LoginServletTest {
 
 
     @Test
-    void testIstanziaServiziSeNull() throws IOException {
+    void testIstanziaServiziSeNull() throws IOException, ServletException {
         when(request.getContextPath()).thenReturn("/ctx");
         when(request.getSession(true)).thenReturn(session);
         when(request.getParameter("email")).thenReturn("test@unisa.it");
