@@ -4,7 +4,6 @@ import it.unisa.uniclass.utenti.controller.GetNonAttivati;
 import it.unisa.uniclass.utenti.model.Accademico;
 import it.unisa.uniclass.utenti.model.Tipo;
 import it.unisa.uniclass.utenti.service.AccademicoService;
-import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.junit.jupiter.api.BeforeEach;
@@ -25,12 +24,12 @@ class GetNonAttivatiTest {
     // Sottoclasse per rendere pubblici i metodi protetti
     static class TestableGetNonAttivati extends GetNonAttivati {
         @Override
-        public void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        public void doGet(HttpServletRequest req, HttpServletResponse resp) {
             super.doGet(req, resp);
         }
 
         @Override
-        public void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        public void doPost(HttpServletRequest req, HttpServletResponse resp) {
             super.doPost(req, resp);
         }
     }
