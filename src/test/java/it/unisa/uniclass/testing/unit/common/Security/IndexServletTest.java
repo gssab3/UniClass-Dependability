@@ -4,7 +4,6 @@ import it.unisa.uniclass.common.IndexServlet;
 import it.unisa.uniclass.orari.model.CorsoLaurea;
 import it.unisa.uniclass.orari.service.CorsoLaureaService;
 import jakarta.servlet.RequestDispatcher;
-import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.junit.jupiter.api.BeforeEach;
@@ -16,7 +15,6 @@ import javax.naming.InitialContext;
 import javax.naming.NameClassPair;
 import javax.naming.NamingEnumeration;
 import javax.naming.NamingException;
-import java.io.IOException;
 import java.lang.reflect.Method;
 import java.util.List;
 
@@ -27,7 +25,7 @@ class IndexServletTest {
     // Sottoclasse per rendere pubblico il metodo protetto
     static class TestableIndexServlet extends IndexServlet {
         @Override
-        public void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        public void doGet(HttpServletRequest req, HttpServletResponse resp) {
             super.doGet(req, resp);
         }
     }
@@ -83,7 +81,7 @@ class IndexServletTest {
     }
 
     @Test
-    void testDoGetError_withJndiListingCovered() throws NamingException {
+    void testDoGetError_withJndiListingCovered() throws Exception {
         // Copriamo comunque il blocco JNDI, poi facciamo fallire il service
         NamingEnumeration<NameClassPair> rootEnum = mock(NamingEnumeration.class);
         when(rootEnum.hasMore()).thenReturn(false); // niente elementi: loop entra e termina
@@ -96,14 +94,12 @@ class IndexServletTest {
                              (mockService, context) -> when(mockService.trovaTutti())
                                      .thenThrow(new RuntimeException("DB error")))) {
 
-            try {
-                servlet.doGet(request, response);
-            } catch (ServletException e) {
-                // La servlet deve rilanciare una ServletException con il messaggio atteso
-                assert e.getMessage().contains("Errore durante il recupero dei corsi");
-            } catch (IOException e) {
-                throw new RuntimeException(e);
-            }
+            servlet.doGet(request, response);
+
+            // Verifica che sendError sia stato chiamato con errore 500
+            verify(response).sendError(eq(HttpServletResponse.SC_INTERNAL_SERVER_ERROR), anyString());
+            // Il forward non deve essere chiamato in caso di errore
+            verify(dispatcher, never()).forward(request, response);
         }
     }
 
