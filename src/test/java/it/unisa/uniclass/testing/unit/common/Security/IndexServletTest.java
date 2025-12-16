@@ -46,6 +46,7 @@ class IndexServletTest {
 
         when(request.getRequestDispatcher("index.jsp")).thenReturn(dispatcher);
         when(request.getContextPath()).thenReturn("/ctx");
+        when(request.getServletContext()).thenReturn(mock(jakarta.servlet.ServletContext.class));
     }
 
     @Test

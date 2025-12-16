@@ -48,6 +48,7 @@ class GetEmailServletTest {
         stringWriter = new StringWriter();
         printWriter = new PrintWriter(stringWriter);
         when(response.getWriter()).thenReturn(printWriter);
+        when(request.getServletContext()).thenReturn(mock(jakarta.servlet.ServletContext.class));
     }
 
     @Test

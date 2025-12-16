@@ -40,6 +40,7 @@ class LogoutServletTest {
         session = mock(HttpSession.class);
 
         when(request.getContextPath()).thenReturn("/ctx");
+        when(request.getServletContext()).thenReturn(mock(jakarta.servlet.ServletContext.class));
     }
 
     @Test

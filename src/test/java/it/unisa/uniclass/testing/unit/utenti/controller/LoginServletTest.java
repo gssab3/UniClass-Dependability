@@ -63,6 +63,7 @@ class LoginServletTest {
         when(request.getSession(true)).thenReturn(session);
         when(request.getParameter("email")).thenReturn("test@unisa.it");
         when(request.getParameter("password")).thenReturn("pwd");
+        when(request.getServletContext()).thenReturn(mock(jakarta.servlet.ServletContext.class));
     }
 
     @Test

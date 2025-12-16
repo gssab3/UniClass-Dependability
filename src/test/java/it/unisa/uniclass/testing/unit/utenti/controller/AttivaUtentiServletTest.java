@@ -47,6 +47,7 @@ class AttivaUtentiServletTest {
         servlet = new TestableAttivaUtentiServlet(accademicoService);
 
         when(request.getContextPath()).thenReturn("/ctx");
+        when(request.getServletContext()).thenReturn(mock(jakarta.servlet.ServletContext.class));
     }
 
     @Test

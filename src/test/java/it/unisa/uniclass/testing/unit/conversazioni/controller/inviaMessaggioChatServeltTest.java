@@ -62,6 +62,7 @@ public class inviaMessaggioChatServeltTest {
         servlet = new inviaMessaggioChatServlet();
         servlet.setMessaggioService(messaggioService);
         servlet.setAccademicoService(accademicoService);
+        when(request.getServletContext()).thenReturn(mock(jakarta.servlet.ServletContext.class));
 
         // Setup CorsoLaurea
         corsoLaurea = new CorsoLaurea();

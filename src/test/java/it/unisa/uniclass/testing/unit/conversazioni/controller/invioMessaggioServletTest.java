@@ -63,6 +63,7 @@ public class invioMessaggioServletTest {
         servlet = new it.unisa.uniclass.conversazioni.controller.invioMessaggioServlet();
         servlet.setMessaggioService(messaggioService);
         servlet.setAccademicoService(accademicoService);
+        when(request.getServletContext()).thenReturn(mock(jakarta.servlet.ServletContext.class));
 
         // Setup CorsoLaurea
         corsoLaurea = new CorsoLaurea();
