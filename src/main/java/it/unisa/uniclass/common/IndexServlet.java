@@ -2,9 +2,6 @@ package it.unisa.uniclass.common;
 
 import it.unisa.uniclass.orari.model.CorsoLaurea;
 import it.unisa.uniclass.orari.service.CorsoLaureaService;
-import it.unisa.uniclass.orari.service.CorsoService;
-import it.unisa.uniclass.orari.service.RestoService;
-import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
@@ -35,15 +32,14 @@ public class IndexServlet extends HttpServlet {
     }
 
     @Override
-    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-
+    protected void doGet(HttpServletRequest request, HttpServletResponse response) {
         try {
             Context ctx = new InitialContext();
             System.out.println("---- Listing JNDI java:global ----");
             listJNDI(ctx, "java:global");
             System.out.println("---- End JNDI listing ----");
         } catch (Exception e) {
-            e.printStackTrace();
+            request.getServletContext().log("Error listing JNDI resources", e);
         }
 
         try {
@@ -53,7 +49,12 @@ public class IndexServlet extends HttpServlet {
             request.setAttribute("corsi", corsi);
             request.getRequestDispatcher("index.jsp").forward(request, response);
         } catch (Exception e) {
-            throw new ServletException("Errore durante il recupero dei corsi", e);
+            request.getServletContext().log("Error retrieving courses", e);
+            try {
+                response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "An error occurred processing your request");
+            } catch (IOException ioException) {
+                request.getServletContext().log("Failed to send error response", ioException);
+            }
         }
     }
 }
