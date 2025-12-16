@@ -2,7 +2,6 @@ package it.unisa.uniclass.orari.controller;
 
 import it.unisa.uniclass.orari.model.Aula;
 import it.unisa.uniclass.orari.service.AulaService;
-import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
@@ -16,7 +15,7 @@ import java.util.List;
 public class EdificioServlet extends HttpServlet {
 
     @Override
-    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+    protected void doGet(HttpServletRequest req, HttpServletResponse resp) {
         try {
             String edificio = req.getParameter("ed");
 
@@ -45,7 +44,7 @@ public class EdificioServlet extends HttpServlet {
     }
 
     @Override
-    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+    protected void doPost(HttpServletRequest req, HttpServletResponse resp) {
         doGet(req, resp);
     }
 }

@@ -41,7 +41,7 @@ public class ConversazioniServlet extends HttpServlet {
     //@ requires request != null;
     //@ requires response != null;
     @Override
-    public void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    public void doGet(HttpServletRequest request, HttpServletResponse response) {
         doPost(request, response);
     }
 
@@ -56,7 +56,7 @@ public class ConversazioniServlet extends HttpServlet {
     //@ requires request.getSession() != null;
     //@ requires request.getSession().getAttribute("utenteEmail") != null;
     @Override
-    public void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    public void doPost(HttpServletRequest request, HttpServletResponse response) {
         try {
             HttpSession session = request.getSession();
             String email = session.getAttribute("utenteEmail").toString();

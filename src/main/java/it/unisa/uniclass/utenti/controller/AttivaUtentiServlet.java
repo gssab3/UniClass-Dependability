@@ -5,7 +5,6 @@ import it.unisa.uniclass.common.security.PasswordGenerator;
 import it.unisa.uniclass.utenti.model.Accademico;
 import it.unisa.uniclass.utenti.model.Tipo;
 import it.unisa.uniclass.utenti.service.AccademicoService;
-import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
@@ -32,17 +31,17 @@ public class AttivaUtentiServlet extends HttpServlet {
     }
 
     // This method is added for testing purposes
-    public void doPostPublic(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+    public void doPostPublic(HttpServletRequest req, HttpServletResponse resp) {
         doPost(req, resp);
     }
 
     @Override
-    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+    protected void doGet(HttpServletRequest req, HttpServletResponse resp) {
         doPost(req, resp);
     }
 
     @Override
-    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+    protected void doPost(HttpServletRequest req, HttpServletResponse resp) {
         try {
             String param = req.getParameter("param");
 

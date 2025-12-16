@@ -1,7 +1,6 @@
 package it.unisa.uniclass.utenti.controller;
 
 import it.unisa.uniclass.utenti.service.AccademicoService;
-import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
@@ -9,14 +8,13 @@ import jakarta.servlet.http.HttpServletResponse;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
-import java.io.IOException;
 import java.util.List;
 
 @WebServlet(name = "GetEmailServlet", value = "/GetEmailServlet")
 public class GetEmailServlet extends HttpServlet {
 
     @Override
-    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+    protected void doGet(HttpServletRequest req, HttpServletResponse resp) {
         AccademicoService accademicoService = new AccademicoService();
 
         try {
@@ -47,7 +45,7 @@ public class GetEmailServlet extends HttpServlet {
     }
 
     @Override
-    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+    protected void doPost(HttpServletRequest req, HttpServletResponse resp) {
         doGet(req, resp);
     }
 }
