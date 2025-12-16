@@ -1,5 +1,6 @@
 package it.unisa.uniclass.utenti.controller;
 
+import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.*;
 import jakarta.servlet.http.*;
 
