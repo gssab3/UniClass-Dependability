@@ -121,7 +121,7 @@ public class chatServlet extends HttpServlet {
     //@ requires req != null;
     //@ requires resp != null;
     @Override
-    public void doPost(HttpServletRequest req, HttpServletResponse resp) {
+    public void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         doGet(req, resp);
     }
 }

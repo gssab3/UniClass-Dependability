@@ -4,6 +4,7 @@ import it.unisa.uniclass.common.IndexServlet;
 import it.unisa.uniclass.orari.model.CorsoLaurea;
 import it.unisa.uniclass.orari.service.CorsoLaureaService;
 import jakarta.servlet.RequestDispatcher;
+import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.junit.jupiter.api.BeforeEach;
@@ -15,6 +16,7 @@ import javax.naming.InitialContext;
 import javax.naming.NameClassPair;
 import javax.naming.NamingEnumeration;
 import javax.naming.NamingException;
+import java.io.IOException;
 import java.lang.reflect.Method;
 import java.util.List;
 
@@ -25,7 +27,7 @@ class IndexServletTest {
     // Sottoclasse per rendere pubblico il metodo protetto
     static class TestableIndexServlet extends IndexServlet {
         @Override
-        public void doGet(HttpServletRequest req, HttpServletResponse resp) {
+        public void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
             super.doGet(req, resp);
         }
     }
