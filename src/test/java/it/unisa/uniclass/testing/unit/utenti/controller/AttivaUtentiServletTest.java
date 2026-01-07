@@ -4,7 +4,6 @@ import it.unisa.uniclass.utenti.controller.AttivaUtentiServlet;
 import it.unisa.uniclass.utenti.model.Accademico;
 import it.unisa.uniclass.utenti.model.Tipo;
 import it.unisa.uniclass.utenti.service.AccademicoService;
-import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.junit.jupiter.api.BeforeEach;
@@ -12,7 +11,6 @@ import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
 
-import static org.junit.Assert.assertNotNull;
 import static org.mockito.Mockito.*;
 
 class AttivaUtentiServletTest {
@@ -23,11 +21,11 @@ class AttivaUtentiServletTest {
             super(service);
         }
         @Override
-        public void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        public void doGet(HttpServletRequest req, HttpServletResponse resp) {
             super.doGet(req, resp);
         }
         @Override
-        public void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        public void doPost(HttpServletRequest req, HttpServletResponse resp) {
             super.doPost(req, resp);
         }
     }
@@ -38,7 +36,7 @@ class AttivaUtentiServletTest {
     private AccademicoService accademicoService;
 
     @BeforeEach
-    void setUp() {
+    void setUp() throws IOException {
         request = mock(HttpServletRequest.class);
         response = mock(HttpServletResponse.class);
         accademicoService = mock(AccademicoService.class);
@@ -47,10 +45,14 @@ class AttivaUtentiServletTest {
         servlet = new TestableAttivaUtentiServlet(accademicoService);
 
         when(request.getContextPath()).thenReturn("/ctx");
+        when(request.getServletContext()).thenReturn(mock(jakarta.servlet.ServletContext.class));
+
+        // Configure sendRedirect to not throw IOException
+        doNothing().when(response).sendRedirect(anyString());
     }
 
     @Test
-    void testAddSuccess() throws Exception {
+    void testAddSuccess() throws IOException {
         when(request.getParameter("param")).thenReturn("add");
         when(request.getParameter("email")).thenReturn("test@unisa.it");
         when(request.getParameter("matricola")).thenReturn("12345");
@@ -72,7 +74,7 @@ class AttivaUtentiServletTest {
     }
 
     @Test
-    void testAddErrorTipoDiverso() throws Exception {
+    void testAddErrorTipoDiverso() throws IOException {
         when(request.getParameter("param")).thenReturn("add");
         when(request.getParameter("email")).thenReturn("test@unisa.it");
         when(request.getParameter("matricola")).thenReturn("12345");
@@ -92,7 +94,7 @@ class AttivaUtentiServletTest {
     }
 
     @Test
-    void testAddErrorAccademicoNull() throws Exception {
+    void testAddErrorAccademicoNull() throws IOException {
         when(request.getParameter("param")).thenReturn("add");
         when(request.getParameter("email")).thenReturn("test@unisa.it");
         when(request.getParameter("matricola")).thenReturn("12345");
@@ -107,7 +109,7 @@ class AttivaUtentiServletTest {
     }
 
     @Test
-    void testRemoveSuccess() throws Exception {
+    void testRemoveSuccess() throws IOException {
         when(request.getParameter("param")).thenReturn("remove");
         when(request.getParameter("email-remove")).thenReturn("test@unisa.it");
 
@@ -121,7 +123,7 @@ class AttivaUtentiServletTest {
     }
 
     @Test
-    void testRemoveAccademicoNull() throws Exception {
+    void testRemoveAccademicoNull() throws IOException {
         when(request.getParameter("param")).thenReturn("remove");
         when(request.getParameter("email-remove")).thenReturn("test@unisa.it");
 
@@ -133,7 +135,7 @@ class AttivaUtentiServletTest {
     }
 
     @Test
-    void testDoGetDelegatesToDoPost() throws Exception {
+    void testDoGetDelegatesToDoPost() throws IOException {
         when(request.getParameter("param")).thenReturn("remove");
         when(request.getParameter("email-remove")).thenReturn("test@unisa.it");
 
@@ -143,7 +145,7 @@ class AttivaUtentiServletTest {
     }
 
     @Test
-    void testDoPostPublicDelegatesToDoPost() throws Exception {
+    void testDoPostPublicDelegatesToDoPost() throws IOException {
         when(request.getParameter("param")).thenReturn("remove");
         when(request.getParameter("email-remove")).thenReturn("test@unisa.it");
 
@@ -153,7 +155,7 @@ class AttivaUtentiServletTest {
     }
 
     @Test
-    void testDoPostWithUnknownParam() throws Exception {
+    void testDoPostWithUnknownParam() {
         when(request.getParameter("param")).thenReturn("altro");
 
         servlet.doPost(request, response);

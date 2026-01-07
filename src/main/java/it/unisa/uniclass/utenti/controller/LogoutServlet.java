@@ -1,20 +1,9 @@
 package it.unisa.uniclass.utenti.controller;
 
-import it.unisa.uniclass.common.security.CredentialSecurity;
-import it.unisa.uniclass.utenti.model.Accademico;
-import it.unisa.uniclass.utenti.model.PersonaleTA;
-import it.unisa.uniclass.utenti.model.Utente;
-import it.unisa.uniclass.utenti.service.AccademicoService;
-import it.unisa.uniclass.utenti.service.PersonaleTAService;
-import it.unisa.uniclass.utenti.service.UtenteService;
-import jakarta.ejb.EJB;
-import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.*;
 import jakarta.servlet.http.*;
-import jakarta.servlet.http.HttpSession;
 
 import java.io.IOException;
-import java.util.List;
 
 
 // Mappatura della servlet
@@ -22,17 +11,27 @@ import java.util.List;
 public class LogoutServlet extends HttpServlet {
     private static final long serialVersionUID = 1L;
 
-    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    @Override
+    protected void doGet(HttpServletRequest request, HttpServletResponse response) {
+        try {
+            HttpSession session = request.getSession(false);
+            if (session != null) {
+                session.invalidate();
+            }
 
-        HttpSession session = request.getSession(false);
-        if (session != null) {
-            session.invalidate();
+            response.sendRedirect(request.getContextPath() + "/Home");
+        } catch (IOException e) {
+            request.getServletContext().log("Error processing logout request", e);
+            try {
+                response.sendRedirect(request.getContextPath() + "/Home");
+            } catch (IOException ioException) {
+                request.getServletContext().log("Failed to redirect after logout error", ioException);
+            }
         }
-
-        response.sendRedirect(request.getContextPath() + "/Home");
     }
 
-    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    @Override
+    protected void doPost(HttpServletRequest request, HttpServletResponse response) {
         doGet(request, response);
     }
 }

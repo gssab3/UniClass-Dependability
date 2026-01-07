@@ -23,12 +23,12 @@ class GetEmailServletTest {
     // Sottoclasse per rendere pubblici i metodi protetti
     static class TestableGetEmailServlet extends GetEmailServlet {
         @Override
-        public void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        public void doGet(HttpServletRequest req, HttpServletResponse resp) {
             super.doGet(req, resp);
         }
 
         @Override
-        public void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        public void doPost(HttpServletRequest req, HttpServletResponse resp) {
             super.doPost(req, resp);
         }
     }
@@ -48,6 +48,7 @@ class GetEmailServletTest {
         stringWriter = new StringWriter();
         printWriter = new PrintWriter(stringWriter);
         when(response.getWriter()).thenReturn(printWriter);
+        when(request.getServletContext()).thenReturn(mock(jakarta.servlet.ServletContext.class));
     }
 
     @Test

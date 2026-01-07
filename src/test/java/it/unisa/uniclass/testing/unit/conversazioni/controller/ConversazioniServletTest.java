@@ -53,6 +53,7 @@ class ConversazioniServletTest {
         MockitoAnnotations.openMocks(this);
         servlet = new ConversazioniServlet();
         servlet.setMessaggioService(messaggioService);
+        when(request.getServletContext()).thenReturn(mock(jakarta.servlet.ServletContext.class));
     }
 
     @Test

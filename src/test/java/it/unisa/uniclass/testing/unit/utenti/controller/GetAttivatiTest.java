@@ -52,6 +52,7 @@ class GetAttivatiTest {
     void setUp() {
         MockitoAnnotations.openMocks(this);
         servlet = new TestableGetAttivati();
+        when(request.getServletContext()).thenReturn(mock(jakarta.servlet.ServletContext.class));
     }
 
     @Test

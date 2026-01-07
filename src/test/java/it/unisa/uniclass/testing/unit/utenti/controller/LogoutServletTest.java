@@ -17,12 +17,12 @@ class LogoutServletTest {
     // Sottoclasse per rendere pubblici i metodi protetti
     static class TestableLogoutServlet extends LogoutServlet {
         @Override
-        public void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        public void doGet(HttpServletRequest req, HttpServletResponse resp) {
             super.doGet(req, resp);
         }
 
         @Override
-        public void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        public void doPost(HttpServletRequest req, HttpServletResponse resp) {
             super.doPost(req, resp);
         }
     }
@@ -40,10 +40,11 @@ class LogoutServletTest {
         session = mock(HttpSession.class);
 
         when(request.getContextPath()).thenReturn("/ctx");
+        when(request.getServletContext()).thenReturn(mock(jakarta.servlet.ServletContext.class));
     }
 
     @Test
-    void testDoGetWithSession() throws ServletException, IOException {
+    void testDoGetWithSession() throws IOException {
         when(request.getSession(false)).thenReturn(session);
 
         servlet.doGet(request, response);
@@ -53,7 +54,7 @@ class LogoutServletTest {
     }
 
     @Test
-    void testDoGetWithoutSession() throws ServletException, IOException {
+    void testDoGetWithoutSession() throws IOException {
         when(request.getSession(false)).thenReturn(null);
 
         servlet.doGet(request, response);
@@ -62,7 +63,7 @@ class LogoutServletTest {
     }
 
     @Test
-    void testDoPostDelegatesToDoGet() throws ServletException, IOException {
+    void testDoPostDelegatesToDoGet() throws IOException {
         when(request.getSession(false)).thenReturn(session);
 
         servlet.doPost(request, response);

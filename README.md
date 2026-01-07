@@ -33,9 +33,29 @@ UniClass è costruita con una serie di moduli separati che coprono le diverse fu
 
 ## Avvio
 
-Per iniziare a utilizzare UniClass, segui questi passaggi:
+### Opzione 1: Build locale (Sviluppo)
 
-- mvn clean package
-- docker compose down --volumes --remove-orphans
-- docker compose build --no-cache
-- docker compose up
+Per buildare ed eseguire UniClass localmente:
+
+```bash
+mvn clean package
+docker compose down --volumes --remove-orphans
+docker compose build --no-cache
+docker compose up
+```
+
+### Opzione 2: Usa l'immagine da DockerHub (Produzione)
+
+Per eseguire UniClass usando l'immagine pre-buildata da DockerHub (`gssab3/uniclass-dependability`):
+
+```bash
+# Scarica il file docker-compose.prod.yml dalla repository (se non lo hai già)
+# oppure usa quello presente nella directory del progetto
+
+# Avvia l'applicazione completa (TomEE + PostgreSQL)
+docker compose -f docker-compose.prod.yml up
+```
+
+L'applicazione sarà disponibile su `http://localhost:8080/UniClass-Dependability/`
+
+**Nota importante**: Non usare solo `docker run gssab3/uniclass-dependability:latest` perché manca il database PostgreSQL necessario. Usa sempre `docker-compose.prod.yml` che include sia l'applicazione che il database.

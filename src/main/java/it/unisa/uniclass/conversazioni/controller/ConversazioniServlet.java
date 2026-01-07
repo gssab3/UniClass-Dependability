@@ -37,13 +37,11 @@ public class ConversazioniServlet extends HttpServlet {
      * Gestisce le richieste GET delegando al metodo doPost.
      * @param request la richiesta HTTP
      * @param response la risposta HTTP
-     * @throws ServletException se si verifica un errore nella servlet
-     * @throws IOException se si verifica un errore di I/O
      */
     //@ requires request != null;
     //@ requires response != null;
     @Override
-    public void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    public void doGet(HttpServletRequest request, HttpServletResponse response) {
         doPost(request, response);
     }
 
@@ -52,34 +50,41 @@ public class ConversazioniServlet extends HttpServlet {
      * Recupera i messaggi inviati, ricevuti e gli avvisi per l'utente corrente.
      * @param request la richiesta HTTP
      * @param response la risposta HTTP
-     * @throws ServletException se si verifica un errore nella servlet
-     * @throws IOException se si verifica un errore di I/O
      */
     //@ requires request != null;
     //@ requires response != null;
     //@ requires request.getSession() != null;
     //@ requires request.getSession().getAttribute("utenteEmail") != null;
     @Override
-    public void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-         HttpSession session = request.getSession();
-         String email = session.getAttribute("utenteEmail").toString();
+    public void doPost(HttpServletRequest request, HttpServletResponse response) {
+        try {
+            HttpSession session = request.getSession();
+            String email = session.getAttribute("utenteEmail").toString();
 
 
-         AccademicoService accademicoService = new AccademicoService();
-         Accademico accademicoSelf = accademicoService.trovaEmailUniClass(email);
+            AccademicoService accademicoService = new AccademicoService();
+            Accademico accademicoSelf = accademicoService.trovaEmailUniClass(email);
 
-         //Messaggi ricevuti dall'accademicoSelf
-         List<Messaggio> messaggiRicevuti = messaggioService.trovaMessaggiRicevuti(email);
-         //Messaggi inviati
-         List<Messaggio> messaggiInviati = messaggioService.trovaMessaggiInviati(email);
+            //Messaggi ricevuti dall'accademicoSelf
+            List<Messaggio> messaggiRicevuti = messaggioService.trovaMessaggiRicevuti(email);
+            //Messaggi inviati
+            List<Messaggio> messaggiInviati = messaggioService.trovaMessaggiInviati(email);
 
-         List<Messaggio> messaggi = messaggioService.trovaAvvisi();
+            List<Messaggio> messaggi = messaggioService.trovaAvvisi();
 
-         request.setAttribute("accademicoSelf", accademicoSelf);
-         request.setAttribute("messaggiRicevuti", messaggiRicevuti);
-         request.setAttribute("messaggiInviati", messaggiInviati);
-         request.setAttribute("messaggi", messaggi);
+            request.setAttribute("accademicoSelf", accademicoSelf);
+            request.setAttribute("messaggiRicevuti", messaggiRicevuti);
+            request.setAttribute("messaggiInviati", messaggiInviati);
+            request.setAttribute("messaggi", messaggi);
 
-         request.getRequestDispatcher("Conversazioni.jsp").forward(request, response);
-     }
+            request.getRequestDispatcher("Conversazioni.jsp").forward(request, response);
+        } catch (ServletException | IOException e) {
+            request.getServletContext().log("Error processing conversazioni request", e);
+            try {
+                response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "An error occurred processing your request");
+            } catch (IOException ioException) {
+                request.getServletContext().log("Failed to send error response", ioException);
+            }
+        }
+    }
 }

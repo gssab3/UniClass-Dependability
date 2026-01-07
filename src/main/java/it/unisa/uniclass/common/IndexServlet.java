@@ -34,14 +34,13 @@ public class IndexServlet extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-
         try {
             Context ctx = new InitialContext();
             System.out.println("---- Listing JNDI java:global ----");
             listJNDI(ctx, "java:global");
             System.out.println("---- End JNDI listing ----");
         } catch (Exception e) {
-            e.printStackTrace();
+            request.getServletContext().log("Error listing JNDI resources", e);
         }
 
         try {
@@ -51,7 +50,12 @@ public class IndexServlet extends HttpServlet {
             request.setAttribute("corsi", corsi);
             request.getRequestDispatcher("index.jsp").forward(request, response);
         } catch (Exception e) {
-            throw new ServletException("Errore durante il recupero dei corsi", e);
+            request.getServletContext().log("Error retrieving courses", e);
+            try {
+                response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "An error occurred processing your request");
+            } catch (IOException ioException) {
+                request.getServletContext().log("Failed to send error response", ioException);
+            }
         }
     }
 }
