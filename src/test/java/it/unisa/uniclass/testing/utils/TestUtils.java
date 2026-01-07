@@ -1,5 +1,6 @@
 package it.unisa.uniclass.testing.utils;
 
+import java.util.Random;
 import java.util.UUID;
 
 public class TestUtils {
@@ -9,5 +10,10 @@ public class TestUtils {
      */
     public static String generateTestPassword() {
         return "Test-" + UUID.randomUUID().toString();
+    }
+
+    public static String generateTestMatricola() {
+        // Genera qualcosa tipo MAT-12345 dinamico
+        return "MAT-" + (10000 + new Random().nextInt(90000));
     }
 }
