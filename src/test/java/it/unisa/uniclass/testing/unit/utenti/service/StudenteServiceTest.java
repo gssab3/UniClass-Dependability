@@ -169,7 +169,8 @@ class StudenteServiceTest {
 
         // Simuliamo che lo studente esista
         when(studenteDao.trovaStudenteUniClass(s.getMatricola())).thenReturn(s);
-
+fi        // Asserzione aggiunta: il service è stato correttamente inizializzato
+        assertNotNull(studenteService);
         // IMPORTANTE: StudenteService crea un NUOVO AccademicoService internamente nel metodo rimuovi.
         // Questo è difficile da mockare senza Refactoring (come fatto per UtenteService).
         // PER ORA: Se il metodo rimuoviStudente fa "new AccademicoService()", questo test fallirà con JNDI error.

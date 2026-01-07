@@ -96,5 +96,7 @@ class GetAttivatiTest {
     void testDoPost() throws Exception {
         // Chiamata al metodo doPost ereditato da HttpServlet
         servlet.callDoPost(request, response);
+        verify(response, never()).getWriter();
+
     }
 }

@@ -7,7 +7,7 @@ import org.junit.After;
 
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.core.IsNot.not;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.Assert.assertTrue;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
@@ -64,6 +64,9 @@ public class AttivazioneTest {
     driver.findElement(By.id("email")).click();
     driver.findElement(By.id("email")).sendKeys("s.davanzo5@studenti.unisa.it");
     driver.findElement(By.cssSelector(".submit-btn")).click();
+
+    // Asserzione: il pulsante di submit deve essere visibile dopo l'azione
+    assertTrue(driver.findElement(By.cssSelector(".submit-btn")).isDisplayed());
   }
   @Test
   public void tC2associazioneErrata() {
@@ -78,6 +81,9 @@ public class AttivazioneTest {
       dropdown.findElement(By.xpath("//option[. = 'Docente']")).click();
     }
     driver.findElement(By.cssSelector(".submit-btn")).click();
+
+    // Asserzione: il pulsante di submit è visibile
+    assertTrue(driver.findElement(By.cssSelector(".submit-btn")).isDisplayed());
   }
   @Test
   public void tC3mailNotPresentDB() {
@@ -105,6 +111,9 @@ public class AttivazioneTest {
     }
     driver.findElement(By.cssSelector(".center-block")).click();
     driver.findElement(By.cssSelector(".submit-btn")).click();
+
+    // Asserzione: il pulsante di submit è visibile
+    assertTrue(driver.findElement(By.cssSelector(".submit-btn")).isDisplayed());
   }
   @Test
   public void tC4emailNotFormatted() {
@@ -116,6 +125,9 @@ public class AttivazioneTest {
     driver.findElement(By.id("tipo")).click();
     driver.findElement(By.id("tipo")).click();
     driver.findElement(By.cssSelector(".submit-btn")).click();
+
+    // Asserzione: il pulsante di submit è visibile
+    assertTrue(driver.findElement(By.cssSelector(".submit-btn")).isDisplayed());
   }
   @Test
   public void tC5notPresentBothInfo() {
@@ -125,6 +137,9 @@ public class AttivazioneTest {
     driver.findElement(By.id("matricola")).click();
     driver.findElement(By.id("matricola")).sendKeys("0512117895");
     driver.findElement(By.cssSelector(".submit-btn")).click();
+
+    // Asserzione: il pulsante di submit è visibile
+    assertTrue(driver.findElement(By.cssSelector(".submit-btn")).isDisplayed());
   }
   @Test
   public void tC6notPresentBothAndNotFormattedEmail() {
@@ -134,6 +149,9 @@ public class AttivazioneTest {
     driver.findElement(By.id("matricola")).click();
     driver.findElement(By.id("matricola")).sendKeys("0512117895");
     driver.findElement(By.cssSelector(".submit-btn")).click();
+
+    // Asserzione: il pulsante di submit è visibile
+    assertTrue(driver.findElement(By.cssSelector(".submit-btn")).isDisplayed());
   }
   @Test
   public void tC7notPresentBothNotFormattedMatricola() {
@@ -145,6 +163,9 @@ public class AttivazioneTest {
     driver.findElement(By.id("matricola")).click();
     driver.findElement(By.id("matricola")).sendKeys("aaaaa?");
     driver.findElement(By.cssSelector(".submit-btn")).click();
+
+    // Asserzione: il pulsante di submit è visibile
+    assertTrue(driver.findElement(By.cssSelector(".submit-btn")).isDisplayed());
   }
   @Test
   public void tC8nothingGood() {
@@ -154,5 +175,8 @@ public class AttivazioneTest {
     driver.findElement(By.id("matricola")).click();
     driver.findElement(By.id("matricola")).sendKeys("aaaaa");
     driver.findElement(By.cssSelector(".submit-btn")).click();
+
+    // Asserzione: il pulsante di submit è visibile
+    assertTrue(driver.findElement(By.cssSelector(".submit-btn")).isDisplayed());
   }
 }
