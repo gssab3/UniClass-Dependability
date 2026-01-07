@@ -2,6 +2,7 @@ package it.unisa.uniclass.testing.unit.utenti.model;
 
 import it.unisa.uniclass.utenti.model.Tipo;
 import it.unisa.uniclass.utenti.model.Utente;
+import it.unisa.uniclass.testing.utils.TestUtils; // Import della utility
 import org.junit.jupiter.api.Test;
 
 import java.time.LocalDate;
@@ -31,10 +32,12 @@ class UtenteTest {
         utente.setEmail("mario.rossi@example.com");
         assertEquals("mario.rossi@example.com", utente.getEmail());
 
-        utente.setPassword("pass123"); // ggignore
-        assertEquals("pass123", utente.getPassword());
+        // Generazione dinamica della password per evitare hardcoding
+        String dummyPassword = TestUtils.generateTestPassword();
 
-
+        // Rimozione hardcoding e ggignore
+        utente.setPassword(dummyPassword);
+        assertEquals(dummyPassword, utente.getPassword());
 
         // Test toString
         String toStringResult = utente.toString();
@@ -42,6 +45,7 @@ class UtenteTest {
         assertTrue(toStringResult.contains("Rossi"));
         assertTrue(toStringResult.contains("1990-05-15"));
         assertTrue(toStringResult.contains("mario.rossi@example.com"));
-        assertTrue(toStringResult.contains("pass123"));
+
+        assertTrue(toStringResult.contains(dummyPassword));
     }
 }
