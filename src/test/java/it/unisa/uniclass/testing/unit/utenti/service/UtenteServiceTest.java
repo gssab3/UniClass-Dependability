@@ -7,6 +7,7 @@ import it.unisa.uniclass.utenti.model.Utente;
 import it.unisa.uniclass.utenti.service.AccademicoService;
 import it.unisa.uniclass.utenti.service.PersonaleTAService;
 import it.unisa.uniclass.utenti.service.UtenteService;
+import it.unisa.uniclass.testing.utils.TestUtils; // Utility per dati dinamici
 import jakarta.persistence.NoResultException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -19,7 +20,6 @@ import static org.mockito.Mockito.*;
 
 class UtenteServiceTest {
 
-    // Sottoclasse per esporre i metodi protected
     static class TestableUtenteService extends UtenteService {
         public PersonaleTAService exposePersonaleTAService() {
             return super.getPersonaleTAService();
@@ -85,41 +85,46 @@ class UtenteServiceTest {
     // --- retrieveByUserAndPassword ---
     @Test
     void testRetrieveByUserAndPassword_PersonaleTACorretta() throws AuthenticationException {
+        String dynamicPassword = TestUtils.generateTestPassword();
         PersonaleTA pta = new PersonaleTA();
         pta.setEmail("pta@unisa.it");
-        pta.setPassword("pwd123"); // ggignore
+        pta.setPassword(dynamicPassword); // Rimosso hardcoding
 
         when(personaleTAService.trovaEmail("pta@unisa.it")).thenReturn(pta);
 
-        Utente result = utenteService.retrieveByUserAndPassword("pta@unisa.it", "pwd123");
+        Utente result = utenteService.retrieveByUserAndPassword("pta@unisa.it", dynamicPassword);
         assertNotNull(result);
         assertEquals("pta@unisa.it", result.getEmail());
     }
 
     @Test
     void testRetrieveByUserAndPassword_AccademicoCorretta() throws AuthenticationException {
+        String dynamicPassword = TestUtils.generateTestPassword();
         Accademico acc = new Accademico();
         acc.setEmail("acc@unisa.it");
-        acc.setPassword("pass456"); // ggignore
+        acc.setPassword(dynamicPassword); // Rimosso hardcoding
 
         when(personaleTAService.trovaEmail("acc@unisa.it")).thenReturn(null);
         when(accademicoService.trovaEmailUniClass("acc@unisa.it")).thenReturn(acc);
 
-        Utente result = utenteService.retrieveByUserAndPassword("acc@unisa.it", "pass456");
+        Utente result = utenteService.retrieveByUserAndPassword("acc@unisa.it", dynamicPassword);
         assertNotNull(result);
         assertEquals("acc@unisa.it", result.getEmail());
     }
 
     @Test
     void testRetrieveByUserAndPassword_PasswordErrata() {
+        String correctPassword = TestUtils.generateTestPassword();
+        String wrongPassword = correctPassword + "_WRONG";
+
         PersonaleTA pta = new PersonaleTA();
         pta.setEmail("pta@unisa.it");
-        pta.setPassword("pwd123"); // ggignore
+        pta.setPassword(correctPassword);
 
         when(personaleTAService.trovaEmail("pta@unisa.it")).thenReturn(pta);
 
         assertThrows(AuthenticationException.class, () ->
-                utenteService.retrieveByUserAndPassword("pta@unisa.it", "wrong"));
+                utenteService.retrieveByUserAndPassword("pta@unisa.it", wrongPassword));
     }
 
     @Test
@@ -131,7 +136,6 @@ class UtenteServiceTest {
         assertNull(result);
     }
 
-    // --- setters ---
     @Test
     void testSetters() {
         PersonaleTAService mockPTA = mock(PersonaleTAService.class);
@@ -143,11 +147,10 @@ class UtenteServiceTest {
         assertNotNull(utenteService);
     }
 
-    // --- copertura aggiuntiva ---
     @Test
     void testLazyLoadingPersonaleTAServiceSafe() {
         try (MockedConstruction<PersonaleTAService> mocked = mockConstruction(PersonaleTAService.class)) {
-            TestableUtenteService service = new TestableUtenteService(); // non setti nulla
+            TestableUtenteService service = new TestableUtenteService();
             PersonaleTAService result = service.exposePersonaleTAService();
             assertNotNull(result);
         }
@@ -163,23 +166,26 @@ class UtenteServiceTest {
 
     @Test
     void testRetrieveByUserAndPassword_AccademicoPasswordErrata() {
+        String correctPassword = TestUtils.generateTestPassword();
+        String wrongPassword = correctPassword + "_WRONG";
+
         Accademico acc = new Accademico();
         acc.setEmail("acc@unisa.it");
-        acc.setPassword("pass456"); // ggignore
+        acc.setPassword(correctPassword);
 
         when(personaleTAService.trovaEmail("acc@unisa.it")).thenReturn(null);
         when(accademicoService.trovaEmailUniClass("acc@unisa.it")).thenReturn(acc);
 
         assertThrows(AuthenticationException.class, () ->
-                utenteService.retrieveByUserAndPassword("acc@unisa.it", "wrong"));
+                utenteService.retrieveByUserAndPassword("acc@unisa.it", wrongPassword));
     }
+
     @Test
     void testLazyLoadingAccademicoServiceSafe() {
         try (MockedConstruction<AccademicoService> mocked = mockConstruction(AccademicoService.class)) {
-            TestableUtenteService service = new TestableUtenteService(); // non setti nulla
+            TestableUtenteService service = new TestableUtenteService();
             AccademicoService result = service.exposeAccademicoService();
             assertNotNull(result);
         }
     }
-
 }

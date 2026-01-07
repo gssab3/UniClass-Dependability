@@ -5,6 +5,7 @@ import it.unisa.uniclass.orari.model.CorsoLaurea;
 import it.unisa.uniclass.orari.model.Lezione;
 import it.unisa.uniclass.utenti.model.Docente;
 import it.unisa.uniclass.utenti.model.Tipo;
+import it.unisa.uniclass.testing.utils.TestUtils; // Import della utility
 import org.junit.jupiter.api.Test;
 
 import java.time.LocalDate;
@@ -22,16 +23,19 @@ class DocenteTest {
         LocalDate dataNascita = LocalDate.of(1980, 1, 1);
         LocalDate iscrizione = LocalDate.of(2020, 10, 1);
 
-        // Costruttore parametrico
+        // Generazione dinamica della password per evitare hardcoding
+        String dummyPassword = TestUtils.generateTestPassword();
+
+        // Costruttore parametrico - rimosso ggignore
         Docente docente = new Docente("Mario", "Rossi", dataNascita, "m.rossi@example.com",
-                "password", "MAT123", iscrizione, corsoLaurea, "Informatica"); // ggignore
+                dummyPassword, "MAT123", iscrizione, corsoLaurea, "Informatica");
 
         // Verifica campi tramite getter
         assertEquals("Mario", docente.getNome());
         assertEquals("Rossi", docente.getCognome());
         assertEquals(dataNascita, docente.getDataNascita());
         assertEquals("m.rossi@example.com", docente.getEmail());
-        assertEquals("password", docente.getPassword());
+        assertEquals(dummyPassword, docente.getPassword()); // Verifica con variabile dinamica
         assertEquals("MAT123", docente.getMatricola());
         assertEquals(iscrizione, docente.getIscrizione());
         assertEquals(corsoLaurea, docente.getCorsoLaurea());
