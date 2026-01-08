@@ -30,8 +30,7 @@ These issues are distributed across multiple severity levels and categories, pro
 
 From a risk-oriented perspective, the **295 BLOCKER and CRITICAL issues** represent an immediate threat to system security, correctness, and operational stability.
 
-
-pie title 📊 Severity Distribution
+pie title Severity Distribution
     "BLOCKER" : 17
     "CRITICAL" : 278
     "MAJOR" : 294
@@ -48,26 +47,6 @@ Although Code Smells constitute the largest group numerically, the analysis deli
 
 The following diagram highlights the relationship between issue types and severity levels.
 
-graph BT
-    subgraph Severity
-        B[BLOCKER]
-        C[CRITICAL]
-        MA[MAJOR]
-        MI[MINOR]
-    end
-
-    subgraph Issue_Type
-        BUG[BUG]
-        CS[CODE_SMELL]
-        VUL[VULNERABILITY]
-    end
-
-    BUG --- B
-    BUG --- C
-    BUG --- MI
-    CS --- MA
-    CS --- MI
-    VUL --- C
 
 
 This representation shows that Bugs span the entire severity spectrum, while Vulnerabilities are concentrated in higher severity levels, confirming their critical security relevance.
@@ -99,12 +78,7 @@ MAJOR issues increase long-term technical risk, while MINOR issues mainly affect
 
 To align technical findings with engineering decision-making, issues were reclassified according to their dominant quality impact.
 
-%%{init: {'themeVariables': { 'barColor': '#ff4d4d'}}}%%
-xychart-beta
-    title "📊 Risk-Oriented Classification"
-    x-axis ["Security (VULNERABILITY)", "Reliability (BUG)", "Maintainability (CODE_SMELL)"]
-    y-axis "Issues Count"
-    bar [42, 312, 528]
+///GRAFICO
 
 
 Despite the numerical prevalence of maintainability-related issues, the analysis clearly shows that security and reliability constitute the highest operational risk and therefore drive remediation priorities.
@@ -141,14 +115,7 @@ Resolve remaining MINOR Code Smells
 
 Apply cosmetic and stylistic improvements
 
-graph TD
-    A[BLOCKER + CRITICAL Issues] -->|Priority 1| B(Security Vulnerabilities)
-    B -->|Priority 2| C(Critical Bugs)
-    C -->|Priority 3| D(Major Bugs)
-    D -->|Priority 4| E(Code Smells)
-
-    style A fill:#f96,stroke:#333,stroke-width:4px
-    style B fill:#f96,stroke:#333,stroke-width:2px
+//GRAFICO
 
 
 This phased approach ensures that security and dependability are treated as first-class concerns, while maintainability improvements are addressed only after achieving a stable and secure baseline.
@@ -157,18 +124,18 @@ This phased approach ensures that security and dependability are treated as firs
 
 To guarantee full traceability and auditability, the most frequently detected violations are reported below, classified by SonarCloud rule ID, including issue type, severity, occurrence count, and representative locations.
 
-Issue ID (Rule)	Type	Severity	Count	Main Locations (Examples)
-Web:S7930	BUG	CRITICAL	226	Account.jsp, chat.jsp, Conversazioni.jsp
-java:S125	CODE_SMELL	MAJOR	131	Resto.java, Studente.java, Topic.java
-java:S1128	CODE_SMELL	MINOR	99	Resto.java, Studente.java, IndexServlet.java
-Web:ItemTagNotWithinContainer	BUG	MINOR	61	Account.jsp, Conversazioni.jsp, aula.jsp
-java:S1989	VULNERABILITY	MINOR	42	EdificioServlet.java, IndexServlet.java, ChatServlet.java
-Web:S6844	CODE_SMELL	MAJOR	40	Account.jsp, chat.jsp, Conversazioni.jsp
-javascript:S3504	CODE_SMELL	CRITICAL	23	formOrario.js, formChat.js, trovaNonAttivati.js
-java:S106	CODE_SMELL	MAJOR	22	IndexServlet.java, inviaMessaggioChatServlet.java
-java:S2190	BUG	BLOCKER	17	cercaOrario.java (infinite recursion)
-Web:S5254	BUG	MAJOR	15	Conversazioni.jsp, ErroreAccesso.jsp, Login.jsp
-8. Baseline Conclusion
+| Rule ID                       | Type          | Severity | Count | Main Locations (Examples)                                 |
+| ----------------------------- | ------------- | -------- | ----- | --------------------------------------------------------- |
+| Web:S7930                     | BUG           | CRITICAL | 226   | Account.jsp, chat.jsp, Conversazioni.jsp                  |
+| java:S125                     | CODE_SMELL    | MAJOR    | 131   | Resto.java, Studente.java, Topic.java                     |
+| java:S1128                    | CODE_SMELL    | MINOR    | 99    | Resto.java, Studente.java, IndexServlet.java              |
+| Web:ItemTagNotWithinContainer | BUG           | MINOR    | 61    | Account.jsp, Conversazioni.jsp, aula.jsp                  |
+| java:S1989                    | VULNERABILITY | MINOR    | 42    | EdificioServlet.java, IndexServlet.java, ChatServlet.java |
+| Web:S6844                     | CODE_SMELL    | MAJOR    | 40    | Account.jsp, chat.jsp, Conversazioni.jsp                  |
+| javascript:S3504              | CODE_SMELL    | CRITICAL | 23    | formOrario.js, formChat.js, trovaNonAttivati.js           |
+| java:S106                     | CODE_SMELL    | MAJOR    | 22    | IndexServlet.java, inviaMessaggioChatServlet.java         |
+| java:S2190                    | BUG           | BLOCKER  | 17    | cercaOrario.java (infinite recursion)                     |
+| Web:S5254                     | BUG           | MAJOR    | 15    | Conversazioni.jsp, ErroreAccesso.jsp, Login.jsp           |
 
 This assessment establishes a clear and measurable baseline for the project’s quality and security posture.
 The analysis reveals a significant concentration of high-severity issues, with security and reliability risks outweighing maintainability concerns.
